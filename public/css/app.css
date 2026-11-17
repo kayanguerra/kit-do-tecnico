@@ -251,8 +251,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .chips { display: flex; flex-direction: column; gap: 8px; margin: 0 0 16px; }
 /* Celular: só Tipo e o botão Filtros; Onde roda e Categoria ficam no painel */
-.chips > .chip-divisor, .chips > .chips-onde, .chips > .chips-cat-wrap { display: none; }
+.chips-linha1 { display: flex; align-items: center; gap: 8px; }
+.chips-linha1 > .chips-linha-tipo { flex: 1; min-width: 0; }
+.chips-linha1 > .chip-divisor, .chips-linha1 > .chips-onde, .chips-linha1 > .chip-redefinir, .chips > .chips-cat-wrap { display: none; }
 .chips-linha-tipo { display: flex; align-items: center; gap: 8px; }
+.chip-qtd { font-size: 12px; color: var(--texto-3, var(--texto-2)); opacity: 0.75; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] .chip-qtd { color: inherit; opacity: 0.85; }
+.chips-rotulo { flex: none; font-family: var(--sans); font-size: 13px; color: var(--texto-2); line-height: 32px; }
+.chip-mais { font-family: var(--sans); color: var(--texto); border-style: dashed; }
 
 .chips-grupo, .chips-cat-wrap { display: flex; gap: 8px; }
 .chips-grupo { flex-wrap: wrap; }
@@ -616,16 +622,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .titulo-secao { font-size: 32px; line-height: 40px; }
   .ordem select { font-size: 13px; font-family: var(--mono); min-height: 36px; padding-top: 6px; padding-bottom: 6px; }
 
-  /* Filtros numa linha: Tipo (segmentado) | Onde roda | Categorias + Redefinir */
-  .chips { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; }
-  .chips > .chip-divisor, .chips > .chips-onde, .chips > .chips-cat-wrap { display: flex; }
-  .chips-linha-tipo { display: contents; }
+  /* Linha 1: Tipo (segmentado) | Onde roda ........ Redefinir
+     Linha 2: Categorias (com quantidade), recolhidas em uma linha com "+N" */
+  .chips { gap: 12px; }
+  .chips-linha1 { flex-wrap: wrap; }
+  .chips-linha1 > .chips-linha-tipo { display: contents; }
+  .chips-linha1 > .chip-divisor, .chips-linha1 > .chips-onde { display: flex; }
+  .chips-linha1 > .chip-redefinir { display: inline-flex; margin-left: auto; }
+  .chips-linha1 > .chip-redefinir:disabled { visibility: hidden; }
   .chip-filtros { display: none; }
   .chips-tipo { flex: none; display: inline-grid; grid-template-columns: repeat(3, auto); }
   .chips-tipo .chip { padding: 6px 16px; }
-  .chips > .chips-onde .chip, .chips-cat-wrap .chip { min-height: 32px; padding: 4px 12px; }
-  .chips-cat-wrap { flex-wrap: wrap; align-items: center; }
-  .chips-cat { display: contents; }
+  .chips-linha1 > .chips-onde .chip, .chips-cat-wrap .chip, .chips-linha1 > .chip-redefinir { min-height: 32px; padding: 4px 12px; }
+  .chips > .chips-cat-wrap { display: flex; align-items: flex-start; gap: 12px; padding-top: 12px; border-top: 1px solid var(--borda); }
+  .chips-cat { flex: 1; min-width: 0; flex-wrap: wrap; padding: 2px; margin: -2px; }
+  .chips-cat.recolhido { max-height: 36px; overflow: hidden; }
+  .chip-mais[hidden] { display: none; }
 
   .linha { align-items: center; }
   .linha-acoes { flex-direction: row; align-items: center; padding: 8px 12px 8px 0; }

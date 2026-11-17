@@ -25,6 +25,7 @@
 
   let detalheLateral = null; // { id, anteriores } quando o painel da direita (computador) está aberto; anteriores = itens abertos antes via "Comandos relacionados"
   const DESKTOP = window.matchMedia('(min-width: 1024px)');
+  const TELA_MEDIA = window.matchMedia('(min-width: 768px)'); // a partir daqui os filtros ficam na tela (igual ao CSS)
   const pilha = [];          // painéis abertos: { no, corpo, nome, id, render }
   const esperandoVolta = []; // promessas aguardando o popstate
 
@@ -648,11 +649,16 @@
 
   // ---------- Tela principal ----------
 
-  function chip(rotulo, ativo, acao) {
-    const b = el('button', { type: 'button', class: 'chip', 'aria-pressed': String(ativo), text: rotulo });
+  function chip(rotulo, ativo, acao, qtd = null) {
+    const b = qtd === null
+      ? el('button', { type: 'button', class: 'chip', 'aria-pressed': String(ativo), text: rotulo })
+      : el('button', { type: 'button', class: 'chip', 'aria-pressed': String(ativo), 'aria-label': `${rotulo}, ${qtd} ${qtd === 1 ? 'item' : 'itens'}` },
+        el('span', { text: rotulo }), el('span', { class: 'chip-qtd', 'aria-hidden': 'true', text: String(qtd) }));
     b.addEventListener('click', acao);
     return b;
   }
+
+  let categoriasAbertas = false; // computador: linha de categorias expandida
 
   const TITULOS_SECAO = { biblioteca: 'Biblioteca', favoritos: 'Favoritos', recentes: 'Recentes' };
 
@@ -679,12 +685,15 @@
       g2.append(chip(rotulo, ativo, () => { estado.onde = ativo ? null : valor; redesenhar(); }));
     }
 
-    // 3. Categorias com itens (a selecionada aparece sempre)
+    // 3. Categorias que têm itens no filtro atual, com a quantidade (a selecionada aparece sempre)
     const g3 = grupo('chips-cat');
-    for (const c of categoriasVisiveis()) {
+    g3.setAttribute('aria-label', 'Categoria');
+    for (const { c, n } of categoriasVisiveis()) {
       const ativo = estado.categoria !== null && normalizar(estado.categoria) === normalizar(c.nome);
-      g3.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; redesenhar(); }));
+      g3.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; redesenhar(); }, n));
     }
+    const btnMais = el('button', { type: 'button', class: 'chip chip-mais', hidden: true, 'aria-expanded': String(categoriasAbertas) });
+    btnMais.addEventListener('click', () => { categoriasAbertas = !categoriasAbertas; ajustarCategorias(); });
 
     // 4. Redefinir: limpa só os filtros da faixa (mantém seção, busca e ordenação)
     const redefinir = el('button', {
@@ -696,8 +705,8 @@
       estado.categoria = null;
       redesenhar();
     });
-    // Categorias + Redefinir: no celular as categorias rolam de lado e o Redefinir fica fixo no fim
-    const g3wrap = el('div', { class: 'chips-cat-wrap' }, g3, redefinir);
+    // Computador: categorias numa linha própria, recolhida em uma linha com botão "+N"
+    const g3wrap = el('div', { class: 'chips-cat-wrap' }, el('span', { class: 'chips-rotulo', text: 'Categorias' }), g3, btnMais);
 
     // Celular: Onde roda e Categoria ficam atrás de um botão Filtros, com a quantidade ativa
     const ativos = (estado.onde ? 1 : 0) + (estado.categoria ? 1 : 0);
@@ -708,14 +717,45 @@
     btnFiltros.addEventListener('click', abrirFiltros);
     const linhaTipo = el('div', { class: 'chips-linha-tipo' }, g1, btnFiltros);
 
-    raiz.append(linhaTipo, el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g2,
-      el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g3wrap);
+    raiz.append(
+      el('div', { class: 'chips-linha1' }, linhaTipo, el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g2, redefinir),
+      g3wrap);
+    requestAnimationFrame(ajustarCategorias);
   }
 
+  // Recolhe as categorias em uma linha e mostra "+N" com quantas ficaram escondidas
+  function ajustarCategorias() {
+    const g3 = $('#chips .chips-cat');
+    const btn = $('#chips .chip-mais');
+    if (!g3 || !btn) return;
+    if (!TELA_MEDIA.matches) { btn.hidden = true; return; } // celular usa o painel Filtros
+    const filhos = [...g3.children];
+    const topo = filhos.length ? filhos[0].offsetTop : 0;
+    const ocultos = filhos.filter((f) => f.offsetTop > topo + 4);
+    // a categoria selecionada nunca fica escondida
+    if (!categoriasAbertas && ocultos.some((f) => f.getAttribute('aria-pressed') === 'true')) categoriasAbertas = true;
+    g3.classList.toggle('recolhido', !categoriasAbertas);
+    btn.hidden = ocultos.length === 0;
+    btn.setAttribute('aria-expanded', String(categoriasAbertas));
+    btn.textContent = categoriasAbertas ? 'Mostrar menos' : `+${ocultos.length}`;
+    btn.setAttribute('aria-label', categoriasAbertas ? 'Mostrar menos categorias' : `Mostrar mais ${ocultos.length} categorias`);
+  }
+
+  // Categorias com itens na seção, tipo e "onde roda" atuais, com a quantidade de cada uma
   function categoriasVisiveis() {
-    const usadas = new Set(estado.itens.map((i) => normalizar(i.categoria)));
-    return estado.categorias.filter((c) => usadas.has(normalizar(c.nome))
-      || (estado.categoria && normalizar(estado.categoria) === normalizar(c.nome)));
+    const qtd = new Map();
+    for (const item of estado.itens) {
+      if (estado.secao === 'favoritos' && !item.favorito) continue;
+      if (estado.secao === 'recentes' && !item.ultimo_uso) continue;
+      if (estado.tipo !== 'todos' && item.tipo !== estado.tipo) continue;
+      if (estado.onde && !ondeRodar(item).includes(estado.onde)) continue;
+      const k = normalizar(item.categoria);
+      qtd.set(k, (qtd.get(k) || 0) + 1);
+    }
+    const sel = estado.categoria ? normalizar(estado.categoria) : null;
+    return estado.categorias
+      .map((c) => ({ c, n: qtd.get(normalizar(c.nome)) || 0 }))
+      .filter(({ c, n }) => n > 0 || normalizar(c.nome) === sel);
   }
 
   // Painel de filtros do celular (Onde roda e Categoria)
@@ -732,9 +772,9 @@
         onde.append(chip(rotulo, ativo, () => { estado.onde = ativo ? null : valor; mudou(); }));
       }
       const cats = el('div', { class: 'chips-painel', role: 'group', 'aria-label': 'Categoria' });
-      for (const c of categoriasVisiveis()) {
+      for (const { c, n } of categoriasVisiveis()) {
         const ativo = estado.categoria !== null && normalizar(estado.categoria) === normalizar(c.nome);
-        cats.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; mudou(); }));
+        cats.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; mudou(); }, n));
       }
       corpo.append(
         el('section', { class: 'secao' }, el('h3', { text: 'Onde roda' }), onde),
@@ -1665,6 +1705,12 @@
     prepararGaveta();
     medirTopo();
     window.addEventListener('resize', medirTopo);
+    let aguardandoAjuste = false;
+    window.addEventListener('resize', () => {
+      if (aguardandoAjuste) return;
+      aguardandoAjuste = true;
+      requestAnimationFrame(() => { aguardandoAjuste = false; ajustarCategorias(); });
+    });
     DESKTOP.addEventListener('change', () => { if (!DESKTOP.matches) fecharLateral(); medirTopo(); });
     $('#btn-tema').addEventListener('click', alternarTema);
     atualizarBotaoTema();
