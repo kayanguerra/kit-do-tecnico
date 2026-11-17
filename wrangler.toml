@@ -10,3 +10,10 @@ binding = "DB"
 database_name = "kit-do-tecnico"
 # Substitua pelo ID exibido por: npx wrangler d1 create kit-do-tecnico
 database_id = "d125ccc5-d6e1-4a71-babb-c7af8d8b6896"
+
+# Validação do token do Cloudflare Access na API (functions/_lib/access.js).
+# Não são segredos: o AUD é o "Application Audience (AUD) Tag" da aplicação Kit do Técnico.
+# Se a aplicação do Access for recriada, o AUD muda e a API passa a responder 403 até atualizar aqui.
+[vars]
+ACCESS_TEAM_DOMAIN = "https://muddy-wildflower-6d6c.cloudflareaccess.com"
+ACCESS_AUD = "9dacc16949c88c2ce0d42d6eb7a69e4834883a10eb2d856b4d7c701e80cce2d4"
