@@ -24,7 +24,7 @@ const LIMITES = {
 // Ordem das colunas usada em INSERT/UPDATE.
 export const COLUNAS = [
   'id', 'tipo', 'titulo', 'categoria',
-  'conteudo', 'descricao', 'prerequisitos', 'requer_admin',
+  'conteudo', 'descricao', 'prerequisitos', 'requer_admin', 'script',
   'sintoma', 'causa', 'solucao', 'observacoes', 'relacionados',
   'tags', 'favorito', 'usos', 'ultimo_uso', 'criado_em', 'atualizado_em'
 ];
@@ -88,6 +88,7 @@ export function linhaParaItem(linha) {
     descricao: linha.descricao,
     prerequisitos: linha.prerequisitos,
     requer_admin: linha.requer_admin === 1,
+    script: linha.script === 1,
     sintoma: linha.sintoma,
     causa: linha.causa,
     solucao: linha.solucao,
@@ -144,7 +145,7 @@ export function validarItem(entrada) {
   if (!item.categoria) erros.push('Escolha a categoria.');
 
   if (item.tipo === 'comando') {
-    if (!item.conteudo.trim()) erros.push('Informe o conteúdo do comando ou atalho.');
+    if (!item.conteudo.trim()) erros.push(booleano(entrada.script) ? 'Informe o conteúdo do script.' : 'Informe o conteúdo do comando ou atalho.');
     // Campos que não pertencem ao tipo são limpos.
     item.sintoma = '';
     item.causa = '';
@@ -207,6 +208,8 @@ export function validarItem(entrada) {
   }
 
   item.requer_admin = item.tipo === 'comando' ? booleano(entrada.requer_admin) : 0;
+  // Script = comando com várias linhas para salvar/rodar como arquivo (.ps1, .bat...)
+  item.script = item.tipo === 'comando' ? booleano(entrada.script) : 0;
   item.favorito = booleano(entrada.favorito);
 
   return { item, erros };

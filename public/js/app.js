@@ -15,7 +15,7 @@
     indice: new Map(),
     secao: 'biblioteca', // biblioteca | favoritos | recentes
     busca: '',
-    tipo: 'todos',       // todos | comando | artigo
+    tipo: 'todos',       // todos | comando | script | artigo
     categoria: null,     // nome da categoria ou null
     onde: null,          // powershell | cmd | executar | atalho | null
     ordem: 'relevancia', // relevancia | usados | recentes | alfabetica
@@ -301,6 +301,36 @@
 
   const comparadorTexto = new Intl.Collator('pt-BR', { sensitivity: 'base', numeric: true });
 
+  // Tipo do item para a interface: comando | script | artigo (script = comando com script: true)
+  function tipoDe(item) {
+    if (item.tipo === 'comando' && item.script) return 'script';
+    return item.tipo;
+  }
+
+  function casaTipo(item) {
+    return estado.tipo === 'todos' || tipoDe(item) === estado.tipo;
+  }
+
+  function rotuloTipo(item) {
+    if (item.tipo === 'artigo') return 'Artigo';
+    if (item.script) return 'Script';
+    return ehLink(item) ? 'Link' : 'Comando';
+  }
+
+  // Extensão do arquivo ao baixar um script, conforme "onde rodar"
+  function extensaoScript(item) {
+    const onde = ondeRodar(item);
+    if (onde.includes('powershell')) return 'ps1';
+    if (onde.includes('cmd')) return 'bat';
+    if (/^#!/.test(item.conteudo)) return 'sh';
+    return 'txt';
+  }
+
+  function nomeArquivo(titulo, ext) {
+    const base = normalizar(titulo).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'script';
+    return `${base}.${ext}`;
+  }
+
   function itensVisiveis() {
     const frase = normalizar(estado.busca).trim().replace(/\s+/g, ' ');
     const termos = frase.split(' ').filter(Boolean);
@@ -309,8 +339,7 @@
     let lista = estado.itens.filter((item) => {
       if (estado.secao === 'favoritos' && !item.favorito) return false;
       if (estado.secao === 'recentes' && !item.ultimo_uso) return false;
-      if (estado.tipo === 'comando' && item.tipo !== 'comando') return false;
-      if (estado.tipo === 'artigo' && item.tipo !== 'artigo') return false;
+      if (!casaTipo(item)) return false;
       if (cat && normalizar(item.categoria) !== cat) return false;
       if (estado.onde && !ondeRodar(item).includes(estado.onde)) return false;
       return true;
@@ -564,7 +593,7 @@
 
   function ondeRodar(item) {
     if (item.tipo !== 'comando') return [];
-    if (ehAtalho(item.conteudo)) return ['atalho'];
+    if (!item.script && ehAtalho(item.conteudo)) return ['atalho'];
     const tags = item.tags.map(normalizar);
     const lista = Object.keys(TAG_ONDE).filter((k) => tags.includes(TAG_ONDE[k]));
     if (!lista.length && (VERBO_PS.test(item.conteudo) || /\$[A-Za-z_]/.test(item.conteudo))) lista.push('powershell');
@@ -572,7 +601,7 @@
   }
 
   function ehLink(item) {
-    if (item.tipo !== 'comando') return false;
+    if (item.tipo !== 'comando' || item.script) return false;
     const t = String(item.conteudo || '').trim();
     return /^https?:\/\/\S+$/i.test(t) && !t.includes('\n');
   }
@@ -595,7 +624,7 @@
 
   function selos(item) {
     return [
-      el('span', { class: `selo selo-${ehLink(item) ? 'link' : item.tipo}`, text: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando') }),
+      el('span', { class: `selo selo-${ehLink(item) ? 'link' : tipoDe(item)}`, text: rotuloTipo(item) }),
       el('span', { class: 'selo', text: item.categoria }),
       ondeRodar(item).map((k) => el('span', { class: `selo selo-onde selo-${k}`, text: ONDE.find((o) => o[0] === k)[1] })),
       item.requer_admin ? el('span', { class: 'selo selo-admin', title: 'Requer administrador' }, icone('escudo'), 'Admin') : null
@@ -605,10 +634,12 @@
   function linha(item) {
     let previa = null;
     if (item.tipo === 'comando') {
-      if (ehAtalho(item.conteudo)) previa = el('div', { class: 'linha-previa' }, teclas(item.conteudo));
+      const linhas = item.conteudo.split('\n');
+      if (!item.script && ehAtalho(item.conteudo)) previa = el('div', { class: 'linha-previa' }, teclas(item.conteudo));
       else previa = el('p', { class: 'linha-previa' },
         el('span', { class: 'linha-prompt', 'aria-hidden': 'true', text: '>' }),
-        el('span', { class: 'linha-comando', text: item.conteudo.split('\n')[0] }));
+        el('span', { class: 'linha-comando', text: (linhas.find((l) => l.trim()) || '').trim() }),
+        item.script && linhas.length > 1 ? el('span', { class: 'linha-qtd', text: `${linhas.length} linhas` }) : null);
     }
     const resumo = item.tipo === 'artigo' ? item.sintoma : item.descricao;
 
@@ -673,7 +704,7 @@
 
     // 1. Tipo
     const g1 = grupo('chips-tipo');
-    const tipos = [['todos', 'Todos'], ['comando', 'Comandos'], ['artigo', 'Artigos']];
+    const tipos = [['todos', 'Todos'], ['comando', 'Comandos'], ['script', 'Scripts'], ['artigo', 'Artigos']];
     for (const [valor, rotulo] of tipos) {
       g1.append(chip(rotulo, estado.tipo === valor, () => { estado.tipo = valor; redesenhar(); }));
     }
@@ -747,7 +778,7 @@
     for (const item of estado.itens) {
       if (estado.secao === 'favoritos' && !item.favorito) continue;
       if (estado.secao === 'recentes' && !item.ultimo_uso) continue;
-      if (estado.tipo !== 'todos' && item.tipo !== estado.tipo) continue;
+      if (!casaTipo(item)) continue;
       if (estado.onde && !ondeRodar(item).includes(estado.onde)) continue;
       const k = normalizar(item.categoria);
       qtd.set(k, (qtd.get(k) || 0) + 1);
@@ -932,7 +963,7 @@
 
     raiz.append(
       el('div', { class: 'painel-topo' }, btnVoltar,
-        el('h2', { text: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando') }), btnFav, btnFechar),
+        el('h2', { text: rotuloTipo(item) }), btnFav, btnFechar),
       el('div', { class: 'painel-corpo' }, conteudoDetalhe(item)),
       el('div', { class: 'painel-rodape so-online' }, btnExcluir, btnEditar));
   }
@@ -1006,7 +1037,7 @@
     const btnEditar = el('button', { type: 'button', class: 'btn btn-primario' }, icone('editar'), 'Editar item');
 
     const painel = abrirPainel({
-      titulo: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando'),
+      titulo: rotuloTipo(item),
       nome: 'detalhe',
       lateral: true,
       acoesTopo: [btnFav],
@@ -1037,7 +1068,17 @@
     );
 
     if (item.tipo === 'comando') {
-      if (ehAtalho(item.conteudo)) {
+      if (item.script) {
+        const ext = extensaoScript(item);
+        const baixar = el('button', { type: 'button', class: 'btn btn-secundario btn-baixar' }, icone('baixar'), el('span', { text: `Baixar .${ext}` }));
+        baixar.addEventListener('click', () => {
+          // .bat precisa de quebra de linha do Windows (CRLF)
+          const texto = ext === 'sh' ? item.conteudo : item.conteudo.replace(/\r?\n/g, '\r\n');
+          baixarArquivo(nomeArquivo(item.titulo, ext), texto, 'text/plain');
+          registrarUso(item.id);
+        });
+        frag.append(blocoCodigo(item.conteudo, item.id), baixar);
+      } else if (ehAtalho(item.conteudo)) {
         frag.append(el('div', { class: 'atalho-bloco' }, teclas(item.conteudo)), botaoCopiar(item.conteudo, item.id));
       } else if (ehLink(item)) {
         const abrir = el('button', { type: 'button', class: 'btn btn-copiar' }, icone('externo'), el('span', { class: 'rotulo', text: 'Abrir link' }));
@@ -1059,7 +1100,7 @@
       );
       const rel = item.relacionados.map(buscarItem).filter(Boolean);
       if (rel.length) {
-        frag.append(secao('Comandos relacionados', el('div', null, rel.map((r) => {
+        frag.append(secao(rel.some((r) => r.script) ? 'Comandos e scripts relacionados' : 'Comandos relacionados', el('div', null, rel.map((r) => {
           const link = el('button', { type: 'button', class: 'relacionado-link', text: r.titulo });
           link.addEventListener('click', () => abrirDetalhe(r.id, true));
           const copia = el('button', { type: 'button', class: 'btn btn-pequeno btn-copiar' }, icone('copiar'), el('span', { class: 'rotulo', text: 'Copiar' }));
@@ -1152,20 +1193,22 @@
     const editando = Boolean(item);
     const base = item || {
       tipo: estado.tipo === 'artigo' ? 'artigo' : 'comando',
+      script: estado.tipo === 'script',
       titulo: '',
       categoria: estado.categoria || (estado.categorias[0] && estado.categorias[0].nome) || '',
       conteudo: '', descricao: '', prerequisitos: '', requer_admin: false,
       sintoma: '', causa: '', solucao: '', observacoes: '', relacionados: [],
       tags: [], favorito: false
     };
-    let tipo = base.tipo;
+    let tipo = tipoDe(base); // comando | script | artigo
 
     const form = el('form', { class: 'form', id: 'form-item', novalidate: true });
 
     // Tipo
     const btnComando = el('button', { type: 'button', text: 'Comando ou atalho' });
+    const btnScript = el('button', { type: 'button', text: 'Script' });
     const btnArtigo = el('button', { type: 'button', text: 'Artigo de solução' });
-    const segmentado = el('div', { class: 'segmentado', role: 'group', 'aria-label': 'Tipo do item' }, btnComando, btnArtigo);
+    const segmentado = el('div', { class: 'segmentado segmentado-3', role: 'group', 'aria-label': 'Tipo do item' }, btnComando, btnScript, btnArtigo);
 
     const fTitulo = el('input', { type: 'text', maxlength: '200', autocomplete: 'off', enterkeyhint: 'next' });
     fTitulo.value = base.titulo;
@@ -1216,7 +1259,7 @@
           if (caixa.checked) selecionados.add(c.id);
           else selecionados.delete(c.id);
         });
-        listaRel.append(el('label', null, caixa, el('span', { text: `${c.titulo} · ${c.categoria}` })));
+        listaRel.append(el('label', null, caixa, el('span', { text: `${c.titulo} · ${c.script ? 'Script · ' : ''}${c.categoria}` })));
       }
     };
     filtroRel.addEventListener('input', desenharRelacionados);
@@ -1229,8 +1272,9 @@
 
     const errosServidor = el('div', { class: 'erros-servidor', hidden: true, role: 'alert' });
 
+    const campoConteudo = campo('Conteúdo', fConteudo, { obrigatorio: true, nome: 'conteudo', ajuda: 'O que será copiado. Para atalho, escreva assim: Ctrl + Shift + T' });
     const grupoComando = el('div', { class: 'form' },
-      campo('Conteúdo', fConteudo, { obrigatorio: true, nome: 'conteudo', ajuda: 'O que será copiado. Para atalho, escreva assim: Ctrl + Shift + T' }),
+      campoConteudo,
       campo('Quando usar', fDescricao, { nome: 'descricao' }),
       campo('Pré-requisitos', fPre, { nome: 'prerequisitos' }),
       el('div', { class: 'campo' },
@@ -1260,14 +1304,27 @@
       campo('Tags', fTags, { nome: 'tags', ajuda: 'Separe por vírgula. Ex.: impressora, fila, spooler' }),
       el('label', { class: 'alternar' }, fFav, el('span', { text: 'Favorito' })));
 
+    const rotuloConteudo = campoConteudo.querySelector('label, .rotulo');
+    const ajudaConteudo = campoConteudo.querySelector('.ajuda');
+    const textoRotulo = rotuloConteudo ? rotuloConteudo.firstChild : null;
     const definirTipo = (novo) => {
       tipo = novo;
       btnComando.setAttribute('aria-pressed', String(tipo === 'comando'));
+      btnScript.setAttribute('aria-pressed', String(tipo === 'script'));
       btnArtigo.setAttribute('aria-pressed', String(tipo === 'artigo'));
-      grupoComando.hidden = tipo !== 'comando';
+      grupoComando.hidden = tipo === 'artigo';
       grupoArtigo.hidden = tipo !== 'artigo';
+      const ehScript = tipo === 'script';
+      if (textoRotulo && textoRotulo.nodeType === Node.TEXT_NODE) textoRotulo.nodeValue = ehScript ? 'Script' : 'Conteúdo';
+      if (ajudaConteudo) {
+        ajudaConteudo.textContent = ehScript
+          ? 'Cole o script inteiro. Marque em "Onde rodar" se é PowerShell (.ps1) ou CMD (.bat) para baixar com a extensão certa.'
+          : 'O que será copiado. Para atalho, escreva assim: Ctrl + Shift + T';
+      }
+      fConteudo.rows = ehScript ? 14 : 5;
     };
     btnComando.addEventListener('click', () => definirTipo('comando'));
+    btnScript.addEventListener('click', () => definirTipo('script'));
     btnArtigo.addEventListener('click', () => definirTipo('artigo'));
     definirTipo(tipo);
 
@@ -1304,7 +1361,8 @@
       limparErros();
 
       const dados = {
-        tipo,
+        tipo: tipo === 'script' ? 'comando' : tipo,
+        script: tipo === 'script',
         titulo: fTitulo.value.trim(),
         categoria: fCategoria.value,
         conteudo: fConteudo.value,
@@ -1316,7 +1374,7 @@
         solucao: fSolucao.value,
         observacoes: fObs.value,
         relacionados: tipo === 'artigo' ? [...selecionados].filter((rid) => buscarItem(rid)) : [],
-        tags: juntarTagsOnde(fTags.value.split(',').map((t) => t.trim()).filter(Boolean), tipo === 'comando' ? caixasOnde : []),
+        tags: juntarTagsOnde(fTags.value.split(',').map((t) => t.trim()).filter(Boolean), tipo !== 'artigo' ? caixasOnde : []),
         favorito: fFav.checked
       };
 
@@ -1324,6 +1382,7 @@
       if (!dados.titulo) faltando.push(['titulo', 'Informe o título.']);
       if (!dados.categoria) faltando.push(['categoria', 'Escolha a categoria.']);
       if (tipo === 'comando' && !dados.conteudo.trim()) faltando.push(['conteudo', 'Informe o conteúdo do comando ou atalho.']);
+      if (tipo === 'script' && !dados.conteudo.trim()) faltando.push(['conteudo', 'Informe o conteúdo do script.']);
       if (tipo === 'artigo' && !dados.sintoma.trim()) faltando.push(['sintoma', 'Informe o sintoma ou problema.']);
       if (tipo === 'artigo' && !dados.solucao.trim()) faltando.push(['solucao', 'Informe a solução passo a passo.']);
       if (faltando.length) {
@@ -1444,8 +1503,8 @@
     trocarSecao(estado.secao);
   }
 
-  function baixarArquivo(nome, texto) {
-    const blob = new Blob([texto], { type: 'application/json' });
+  function baixarArquivo(nome, texto, tipoMime = 'application/json') {
+    const blob = new Blob([texto], { type: tipoMime });
     const url = URL.createObjectURL(blob);
     const a = el('a', { href: url, download: nome });
     document.body.append(a);

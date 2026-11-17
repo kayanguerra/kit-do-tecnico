@@ -284,7 +284,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* Tipo: controle segmentado (escolha única) */
 .chips-tipo {
-  flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0;
+  flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
   padding: 3px; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio-md);
 }
 .chips-tipo .chip { border: 0; border-radius: var(--raio-sm); min-height: 36px; padding: 6px 8px; font-family: var(--sans); font-size: 14px; }
@@ -392,6 +392,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .selo svg { width: 12px; height: 12px; }
 .selo-comando, .selo-onde { color: var(--destaque); background: var(--destaque-suave); border-color: var(--borda-forte); }
 .selo-artigo, .selo-link { color: var(--texto-2); }
+.selo-script { color: var(--texto); border-color: var(--destaque); }
+.linha-qtd { flex: none; font-size: 12px; color: var(--texto-3); }
+.btn-baixar { width: 100%; margin-top: 8px; }
 .selo-admin { color: var(--admin); border-color: color-mix(in srgb, var(--admin) 50%, transparent); }
 .onde-opcoes { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 
@@ -550,6 +553,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .msg-erro { color: var(--erro); font-size: 14px; margin: 0; }
 
 .segmentado { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--superficie); padding: 3px; border-radius: var(--raio-md); border: 1px solid var(--borda); }
+.segmentado.segmentado-3 { grid-template-columns: repeat(3, 1fr); }
 .segmentado button { min-height: 36px; border: 0; border-radius: var(--raio-sm); background: transparent; color: var(--texto-2); font-weight: 500; cursor: pointer; transition: background-color var(--rapido) var(--curva), color var(--rapido) var(--curva); }
 .segmentado button[aria-pressed="true"] { background: var(--superficie-2); color: var(--texto); box-shadow: inset 0 0 0 1px var(--borda-forte); }
 
@@ -631,7 +635,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .chips-linha1 > .chip-redefinir { display: inline-flex; margin-left: auto; }
   .chips-linha1 > .chip-redefinir:disabled { visibility: hidden; }
   .chip-filtros { display: none; }
-  .chips-tipo { flex: none; display: inline-grid; grid-template-columns: repeat(3, auto); }
+  .chips-tipo { flex: none; display: inline-grid; grid-template-columns: repeat(4, auto); }
   .chips-tipo .chip { padding: 6px 16px; }
   .chips-linha1 > .chips-onde .chip, .chips-cat-wrap .chip, .chips-linha1 > .chip-redefinir { min-height: 32px; padding: 4px 12px; }
   .chips > .chips-cat-wrap { display: flex; align-items: flex-start; gap: 12px; padding-top: 12px; border-top: 1px solid var(--borda); }
@@ -700,4 +704,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+}
+
+/* Celular estreito: 4 tipos (Todos, Comandos, Scripts, Artigos) + Filtros só com ícone */
+@media (max-width: 479.98px) {
+  .chips-tipo .chip { font-size: 13px; padding: 6px 2px; }
+  .chip-filtros { padding: 6px 12px; }
+  .chip-filtros > span:not(.chip-total) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }

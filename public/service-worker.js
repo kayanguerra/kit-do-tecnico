@@ -6,7 +6,7 @@
  * - Gravações (POST, PUT, PATCH, DELETE) nunca passam pelo cache.
  * IMPORTANTE: ao alterar index.html, CSS ou JS, aumente a VERSAO abaixo.
  */
-const VERSAO = 'kit-estaticos-v9';
+const VERSAO = 'kit-estaticos-v10';
 const CACHE_API = 'kit-api-v1';
 const ESTATICOS = [
   '/',

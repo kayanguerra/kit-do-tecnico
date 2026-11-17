@@ -26,6 +26,7 @@ CREATE TABLE itens (
   descricao     TEXT NOT NULL DEFAULT '',   -- "quando usar"
   prerequisitos TEXT NOT NULL DEFAULT '',
   requer_admin  INTEGER NOT NULL DEFAULT 0 CHECK (requer_admin IN (0, 1)),
+  script        INTEGER NOT NULL DEFAULT 0 CHECK (script IN (0, 1)), -- comando que é um script (migração 0002)
   -- Campos do tipo "artigo"
   sintoma       TEXT NOT NULL DEFAULT '',
   causa         TEXT NOT NULL DEFAULT '',
