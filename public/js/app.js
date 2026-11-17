@@ -592,15 +592,6 @@
     registrarUso(id);
   }
 
-  // Na linha da lista: só categoria e onde roda, em texto, e Admin quando precisa
-  function metaLinha(item) {
-    const partes = [item.categoria, ...ondeRodar(item).map((k) => ONDE.find((o) => o[0] === k)[1])].filter(Boolean);
-    return [
-      partes.length ? el('span', { class: 'meta-texto', text: partes.join(' · ') }) : null,
-      item.requer_admin ? el('span', { class: 'selo selo-admin', title: 'Requer administrador' }, icone('escudo'), 'Admin') : null
-    ];
-  }
-
   function selos(item) {
     return [
       el('span', { class: `selo selo-${ehLink(item) ? 'link' : item.tipo}`, text: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando') }),
@@ -624,7 +615,7 @@
       el('span', { class: 'linha-titulo', text: item.titulo }),
       resumo ? el('span', { class: 'linha-resumo', text: resumo }) : null,
       previa,
-      el('span', { class: 'linha-meta' }, metaLinha(item)));
+      el('span', { class: 'linha-meta' }, selos(item)));
     principal.addEventListener('click', () => {
       if (item.tipo === 'artigo') lerItem(item.id);
       else abrirDetalhe(item.id);

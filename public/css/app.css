@@ -52,15 +52,15 @@
 }
 
 /* Kayan Design System — tema escuro (o da marca).
-   Regras: o verde neon marca só a ação de copiar, a seleção, o foco, o prompt ">" e o texto dos
-   comandos. Bordas, rótulos e selos ficam neutros. Grade de 4 px. Inter na interface, JetBrains
+   Regras: bordas verdes fracas em repouso que acendem no hover; verde cheio na ação de copiar,
+   na seleção, no foco, no prompt ">", nos selos de onde roda e no texto dos comandos. Grade de 4 px. Inter na interface, JetBrains
    Mono em comandos e dados, Space Grotesk só na marca e no título da página. */
 :root {
   --fundo: #050505;
   --superficie: #0D1117;
   --superficie-2: #161B22;
-  --borda: rgba(230, 237, 243, 0.08);
-  --borda-forte: rgba(230, 237, 243, 0.16);
+  --borda: rgba(0, 255, 135, 0.10);
+  --borda-forte: rgba(0, 255, 135, 0.24);
   --texto: #E6EDF3;
   --texto-2: #9BA3AD;
   --texto-3: #7D8590;
@@ -107,8 +107,8 @@
   --fundo: #F6F8FA;
   --superficie: #FFFFFF;
   --superficie-2: #EEF1F4;
-  --borda: rgba(13, 17, 23, 0.1);
-  --borda-forte: rgba(13, 17, 23, 0.2);
+  --borda: rgba(0, 112, 64, 0.16);
+  --borda-forte: rgba(0, 112, 64, 0.32);
   --texto: #0D1117;
   --texto-2: #57606A;
   --texto-3: #6E7781;
@@ -226,6 +226,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .busca input::placeholder { color: var(--texto-3); }
 .busca input::-webkit-search-cancel-button { display: none; }
+.busca input:hover { border-color: color-mix(in srgb, var(--destaque) 50%, transparent); }
 .busca input:focus { border-color: var(--destaque); outline: none; }
 .busca-icone { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--texto-3); pointer-events: none; }
 .busca-dica {
@@ -266,7 +267,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   transition: border-color var(--rapido) var(--curva), color var(--rapido) var(--curva), background-color var(--rapido) var(--curva);
 }
-.chip:hover:not(:disabled) { border-color: var(--texto-3); color: var(--texto); }
+.chip:hover:not(:disabled) { border-color: var(--destaque); color: var(--texto); }
 .chip svg { width: 16px; height: 16px; }
 /* área de toque de 44 px mesmo com o chip visualmente menor */
 .chip::after { content: ""; position: absolute; inset: -4px 0; }
@@ -350,7 +351,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio);
   transition: border-color var(--rapido) var(--curva), background-color var(--rapido) var(--curva);
 }
-.linha:hover { border-color: var(--borda-forte); }
+.linha:hover { border-color: var(--destaque); }
 .linha.selecionada { border-color: var(--destaque); background: var(--destaque-suave); }
 .linha-principal {
   flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; text-align: left;
@@ -363,7 +364,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .linha-comando { min-width: 0; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .linha-previa .teclas kbd { font-size: 12px; padding: 0 6px; min-width: 24px; }
 .linha-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 4px; }
-.meta-texto { font-family: var(--mono); font-size: 12px; line-height: 16px; color: var(--texto-3); }
 .linha-acoes { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 4px; padding: 8px 8px 8px 0; flex: none; }
 .modo-leitura .linha-acoes .btn-estrela { display: none !important; }
 
@@ -384,7 +384,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border-radius: var(--raio-sm); background: transparent; color: var(--texto-2); border: 1px solid var(--borda-forte);
 }
 .selo svg { width: 12px; height: 12px; }
-.selo-comando, .selo-artigo, .selo-link { color: var(--texto); }
+.selo-comando, .selo-onde { color: var(--destaque); background: var(--destaque-suave); border-color: var(--borda-forte); }
+.selo-artigo, .selo-link { color: var(--texto-2); }
 .selo-admin { color: var(--admin); border-color: color-mix(in srgb, var(--admin) 50%, transparent); }
 .onde-opcoes { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 
@@ -454,6 +455,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .secao .texto-livre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tag { font-family: var(--mono); font-size: 12px; line-height: 16px; padding: 4px 8px; border-radius: var(--raio-sm); border: 1px solid var(--borda-forte); color: var(--texto-2); }
+.tag:hover { border-color: var(--destaque); color: var(--destaque); }
 .uso-info { color: var(--texto-3); font-family: var(--mono); font-size: 12px; margin-top: 24px; }
 .link-endereco { font-family: var(--mono); font-size: 14px; color: var(--link); margin: 8px 0 12px; }
 
@@ -480,7 +482,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border: 1px solid var(--borda); border-radius: var(--raio); padding: 4px 4px 4px 12px; margin-bottom: 8px;
   transition: border-color var(--rapido) var(--curva);
 }
-.relacionado:hover { border-color: var(--borda-forte); }
+.relacionado:hover { border-color: var(--destaque); }
 .relacionado-link {
   flex: 1; text-align: left; background: none; border: 0; color: var(--texto);
   min-height: var(--toque); cursor: pointer; padding: 0; font-weight: 500;
@@ -498,7 +500,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   transition: background-color var(--rapido) var(--curva), border-color var(--rapido) var(--curva), color var(--rapido) var(--curva), transform var(--rapido) var(--curva);
 }
 .btn svg { width: 18px; height: 18px; }
-.btn:hover:not(:disabled) { background: var(--superficie-2); border-color: var(--texto-3); }
+.btn:not(.btn-primario):not(.btn-perigo):not(.btn-copiar):not(.copiado):hover:not(:disabled) { background: var(--destaque-suave); border-color: var(--destaque); color: var(--destaque); }
 .btn:active:not(:disabled) { transform: scale(0.98); }
 .btn:disabled { opacity: 0.5; cursor: default; }
 .btn-secundario { background: transparent; }
