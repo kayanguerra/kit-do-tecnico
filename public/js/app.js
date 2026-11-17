@@ -1540,30 +1540,29 @@
     return linha;
   }
 
-  // ---------- Tema (marinho / verde) ----------
+  // ---------- Tema (escuro / claro — Kayan Design System) ----------
 
-  const CORES_TEMA = { marinho: '#06142B', verde: '#0a0f0c' };
-  const NOMES_TEMA = { marinho: 'azul-marinho', verde: 'verde' };
+  const CORES_TEMA = { escuro: '#050505', claro: '#F6F8FA' };
 
   function temaAtual() {
-    return document.documentElement.getAttribute('data-tema') === 'verde' ? 'verde' : 'marinho';
+    return document.documentElement.getAttribute('data-tema') === 'claro' ? 'claro' : 'escuro';
   }
 
   function atualizarBotaoTema() {
-    const proximo = temaAtual() === 'marinho' ? 'verde' : 'marinho';
+    const proximo = temaAtual() === 'escuro' ? 'claro' : 'escuro';
     const botao = $('#btn-tema');
-    botao.setAttribute('aria-label', `Mudar para o tema ${NOMES_TEMA[proximo]}`);
-    botao.setAttribute('title', `Mudar para o tema ${NOMES_TEMA[proximo]}`);
+    botao.setAttribute('aria-label', `Mudar para o tema ${proximo}`);
+    botao.setAttribute('title', `Mudar para o tema ${proximo}`);
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', CORES_TEMA[temaAtual()]);
   }
 
   function alternarTema() {
-    const novo = temaAtual() === 'marinho' ? 'verde' : 'marinho';
+    const novo = temaAtual() === 'escuro' ? 'claro' : 'escuro';
     document.documentElement.setAttribute('data-tema', novo);
     gravarLocal('kit-tema', novo);
     atualizarBotaoTema();
-    aviso(`Tema ${NOMES_TEMA[novo]}`, 'ok');
+    aviso(`Tema ${novo}`, 'ok');
   }
 
   // ---------- Início ----------

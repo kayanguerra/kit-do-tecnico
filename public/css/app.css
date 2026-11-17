@@ -1,4 +1,5 @@
-/* Kit do Técnico — mobile first (base ~360 px), ampliado com min-width */
+/* Kit do Técnico — mobile first (base ~360 px), ampliado com min-width
+   Visual: Kayan Design System (https://claude.ai/artifact/6j9J5HrTFuTKpwcVSKY37c) */
 
 @font-face {
   font-family: "Inter";
@@ -17,65 +18,118 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-latin-wght-normal.woff2") format("woff2-variations"), url("/fonts/space-grotesk-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-latin-ext-wght-normal.woff2") format("woff2-variations"), url("/fonts/space-grotesk-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations"), url("/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin-ext-wght-normal.woff2") format("woff2-variations"), url("/fonts/jetbrains-mono-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Kayan Design System — tema escuro (o da marca). Tokens: bg, surface, surface-raised, line,
+   line-strong, ink, ink-muted, neon, neon-hover, neon-soft, amber, red. Um verde só: neon. */
 :root {
-  /* Tema padrão: azul-marinho (identidade NexGuard) */
-  --fundo: #06142B;
-  --superficie: #0B2146;
-  --superficie-2: #12305E;
-  --borda: #1E3B6B;
-  --borda-forte: #2B4F86;
-  --texto: #F4F7FB;
-  --texto-2: #A9BAD3;
-  --destaque: #22D3EE;
-  --destaque-suave: rgba(34, 211, 238, 0.12);
-  --destaque-texto: #04222B;
-  --ok: #34D399;
-  --copiado-fundo: #34D399;
-  --copiado-texto: #04170F;
-  --erro: #FF6B6B;
-  --erro-texto: #FFB3B3;
-  --alerta: #F5C451;
-  --admin: #FFA657;
-  --artigo: #C4B5FD;
-  --link: #7DD3FC;
-  --topo: rgba(6, 20, 43, 0.94);
-  --codigo: #041022;
-  --offline-fundo: #3A2E0B;
-  --offline-texto: #FFE08A;
-  --offline-borda: #5C4A12;
-  --fonte-marca: var(--sans);
-  --raio: 12px;
+  --fundo: #050505;                         /* bg */
+  --superficie: #0D1117;                    /* surface */
+  --superficie-2: #161B22;                  /* surface-raised */
+  --borda: rgba(0, 255, 135, 0.18);         /* line */
+  --borda-forte: rgba(0, 255, 135, 0.45);   /* line-strong */
+  --texto: #E6EDF3;                         /* ink */
+  --texto-2: #7D8590;                       /* ink-muted */
+  --destaque: #00FF87;                      /* neon */
+  --destaque-hover: #00C864;                /* neon-hover */
+  --destaque-suave: rgba(0, 255, 135, 0.08);/* neon-soft */
+  --destaque-texto: #050505;                /* on-neon */
+  --ok: #00FF87;
+  --copiado-fundo: #00C864;
+  --copiado-texto: #050505;
+  --erro: #FF6B6B;                          /* red */
+  --erro-texto: #FF9C9C;
+  --alerta: #FFB547;                        /* amber */
+  --admin: #FFB547;
+  --artigo: #E6EDF3;
+  --link: #00FF87;
+  --topo: rgba(5, 5, 5, 0.94);
+  --codigo: #161B22;
+  --offline-fundo: rgba(255, 181, 71, 0.08);
+  --offline-texto: #FFB547;
+  --offline-borda: rgba(255, 181, 71, 0.45);
+  --scrim: rgba(0, 0, 0, 0.7);
+  --brilho: 0 0 20px rgba(0, 255, 135, 0.15); /* glow-neon */
+  --sombra: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --fonte-marca: var(--display);
+  --raio-sm: 4px;
+  --raio-md: 8px;
+  --raio: 12px;                             /* radius-lg */
+  --raio-xl: 16px;
   --toque: 44px;
   --altura-topo: 64px;
-  --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --seg-topo: env(safe-area-inset-top, 0px);
   --seg-baixo: env(safe-area-inset-bottom, 0px);
   --seg-esq: env(safe-area-inset-left, 0px);
   --seg-dir: env(safe-area-inset-right, 0px);
+  color-scheme: dark;
 }
 
-/* Tema alternativo: verde (estilo terminal) */
-:root[data-tema="verde"] {
-  --fundo: #0a0f0c;
-  --superficie: #0f1712;
-  --superficie-2: #16211a;
-  --borda: #24362a;
-  --borda-forte: #33503d;
-  --texto: #d4eedb;
-  --texto-2: #8aab95;
-  --destaque: #3ddc84;
-  --destaque-suave: rgba(61, 220, 132, 0.12);
-  --destaque-texto: #03140a;
-  --ok: #3ddc84;
-  --copiado-fundo: #d4eedb;
-  --copiado-texto: #03140a;
-  --artigo: #9fe8ff;
-  --link: #9fe8ff;
-  --alerta: #e8c66a;
-  --topo: rgba(10, 15, 12, 0.96);
-  --codigo: #060a07;
-  --fonte-marca: var(--mono);
+/* Tema claro (sol forte, impressão) */
+:root[data-tema="claro"] {
+  --fundo: #F6F8FA;
+  --superficie: #FFFFFF;
+  --superficie-2: #EEF1F4;
+  --borda: #D0D7DE;
+  --borda-forte: #6B8F7D;
+  --texto: #0D1117;
+  --texto-2: #57606A;
+  --destaque: #007040;
+  --destaque-hover: #005C34;
+  --destaque-suave: #EBF4F0;
+  --destaque-texto: #FFFFFF;
+  --ok: #007040;
+  --copiado-fundo: #005C34;
+  --copiado-texto: #FFFFFF;
+  --erro: #C0283A;
+  --erro-texto: #C0283A;
+  --alerta: #8A5300;
+  --admin: #8A5300;
+  --artigo: #0D1117;
+  --link: #007040;
+  --topo: rgba(246, 248, 250, 0.94);
+  --codigo: #EEF1F4;
+  --offline-fundo: #FFF4E0;
+  --offline-texto: #8A5300;
+  --offline-borda: #E2B866;
+  --scrim: rgba(13, 17, 23, 0.45);
+  --brilho: 0 0 0 transparent;
+  --sombra: 0 6px 20px rgba(13, 17, 23, 0.15);
+  color-scheme: light;
 }
 
 *,
@@ -129,8 +183,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .topo-linha { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-height: var(--toque); }
 
 .marca { display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0; font-weight: 700; flex: 1; min-width: 0; letter-spacing: 0.1px; font-family: var(--fonte-marca); white-space: nowrap; }
-.marca img { width: 28px; height: 28px; border-radius: 7px; flex: none; }
-.marca span { overflow: hidden; text-overflow: ellipsis; }
+.marca-prompt, .marca-cursor { flex: none; }
+
 
 .pilula {
   font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px;
@@ -500,6 +554,139 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .aviso.ok { border-color: var(--ok); color: var(--ok); }
 .aviso.erro { border-color: var(--erro); color: var(--erro-texto); }
 
+/* ======================================================================
+   Kayan Design System — camada de componentes
+   Princípios: um verde só (neon); borda verde em vez de sombra; hover acende
+   (borda neon + sobe 2px); mono para rótulos, comandos e dados; Space Grotesk
+   para títulos e botões; Inter para texto corrido.
+   ====================================================================== */
+
+/* Marca: > Kit do Técnico_ */
+.marca { font-family: var(--display); font-weight: 700; letter-spacing: -0.01em; gap: 0; }
+.marca-prompt, .marca-cursor { color: var(--destaque); }
+.marca-prompt { margin-right: 0.35em; }
+.marca span.marca-texto { overflow: hidden; text-overflow: ellipsis; }
+
+/* Títulos */
+.titulo-secao, .detalhe-titulo, .painel-topo h2 { font-family: var(--display); letter-spacing: -0.01em; }
+.titulo-secao { font-size: 24px; line-height: 30px; }
+.detalhe-titulo { font-size: 24px; line-height: 30px; }
+
+/* Rótulos de seção em mono maiúsculo neon */
+.secao h3, .gaveta-sub, .menu-sub {
+  font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--destaque);
+}
+.contagem { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.gaveta-contador, .uso-info, .cat-linha .cat-total { font-family: var(--mono); }
+
+/* Busca */
+.busca input { background: var(--superficie-2); border-color: var(--borda-forte); border-radius: var(--raio-md); }
+.busca input:focus { box-shadow: none; }
+.busca-dica { font-family: var(--mono); border-radius: var(--raio-sm); }
+
+/* Chips de filtro */
+.chip { border-radius: var(--raio-sm); font-family: var(--mono); font-size: 13px; background: var(--superficie); color: var(--texto); }
+.chip:hover:not(:disabled) { border-color: var(--destaque); }
+.chip[aria-pressed="true"] { font-weight: 500; }
+.chip-redefinir { background: transparent; }
+
+/* Botões */
+.btn, .btn-acao, .fab, .segmentado button { font-family: var(--display); }
+.btn { border-radius: var(--raio-md); transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:active:not(:disabled) { transform: translateY(0); }
+.btn-secundario, .btn { background: transparent; border-color: var(--borda-forte); }
+.btn-secundario:hover:not(:disabled), .btn:not(.btn-primario):not(.btn-perigo):not(.btn-copiar):not(.copiado):hover:not(:disabled) {
+  border-color: var(--destaque); color: var(--destaque); background: var(--destaque-suave);
+}
+.btn-primario, .btn-copiar { background: var(--destaque); border-color: var(--destaque); color: var(--destaque-texto); }
+.btn-primario:hover:not(:disabled), .btn-copiar:hover:not(:disabled):not(.copiado) {
+  background: var(--destaque-hover); border-color: var(--destaque-hover); box-shadow: var(--brilho);
+}
+.btn-perigo { background: transparent; border-color: var(--erro); color: var(--erro); }
+.btn-perigo:hover:not(:disabled) { background: color-mix(in srgb, var(--erro) 10%, transparent); }
+.btn-icone { border-radius: var(--raio-md); transition: background 0.2s, color 0.2s; }
+.btn-icone:hover { color: var(--destaque); background: var(--destaque-suave); }
+.btn-acao { border-radius: var(--raio-md); }
+.linha .btn-acao:not(.copiado):hover { color: var(--destaque); border-color: var(--destaque); background: var(--destaque-suave); }
+.btn-estrela[aria-pressed="true"], .btn-fav[aria-pressed="true"] { color: var(--destaque); }
+
+/* Botão flutuante Novo item */
+.fab { border-radius: var(--raio-md); height: 56px; font-weight: 600; box-shadow: var(--sombra), var(--brilho); }
+.fab:hover { background: var(--destaque-hover); }
+
+/* Lista: cards */
+.lista { gap: 8px; }
+.linha { border-radius: var(--raio); transition: border-color 0.2s, transform 0.2s; }
+.linha:hover { border-color: var(--destaque); transform: translateY(-2px); }
+.linha.selecionada { border-color: var(--destaque); box-shadow: none; background: var(--destaque-suave); }
+.linha-titulo { font-family: var(--display); font-size: 15px; line-height: 22px; }
+.linha-previa { color: var(--destaque); opacity: 1; }
+
+/* Selos (onde roda, tipo, admin) */
+.selo { font-family: var(--mono); font-size: 11px; line-height: 16px; font-weight: 400; padding: 2px 8px; border-radius: var(--raio-sm); background: transparent; }
+.selo-comando, .selo-onde, .selo-powershell, .selo-cmd, .selo-executar, .selo-atalho {
+  color: var(--destaque); background: var(--destaque-suave); border-color: var(--borda);
+}
+.selo-artigo, .selo-link { color: var(--texto-2); }
+.selo-admin { color: var(--admin); border-color: var(--admin); background: transparent; }
+.tag { font-family: var(--mono); font-size: 12px; border-radius: var(--raio-sm); border: 1px solid var(--borda); background: transparent; }
+
+/* Teclas */
+.teclas kbd { border-color: var(--borda-forte); border-bottom-width: 2px; border-radius: var(--raio-sm); }
+
+/* Código */
+.codigo { border-radius: var(--raio-md); }
+.codigo pre { color: var(--destaque); font-size: 13px; line-height: 20px; }
+.codigo-acoes { background: transparent; }
+.atalho-bloco { border-radius: var(--raio-md); }
+.link-endereco { color: var(--destaque); }
+
+/* Relacionados */
+.relacionado { border-radius: var(--raio); transition: border-color 0.2s; }
+.relacionado:hover { border-color: var(--destaque); }
+
+/* Formulário */
+.campo input[type="text"], .campo input[type="search"], .campo select, .campo textarea, .cat-nova input {
+  background-color: var(--superficie-2); border-color: var(--borda-forte); border-radius: var(--raio-md);
+}
+.campo textarea.mono { color: var(--destaque); }
+.campo .obrig { color: var(--destaque); }
+.ordem select { background-color: var(--superficie-2); border-color: var(--borda-forte); border-radius: var(--raio-md); font-family: var(--mono); font-size: 14px; }
+@media (max-width: 767.98px) { .ordem select { font-size: 16px; } }
+.segmentado { background: var(--superficie-2); border-radius: var(--raio-md); }
+.segmentado button { border-radius: var(--raio-sm); }
+.segmentado button[aria-pressed="true"] { background: var(--destaque-suave); color: var(--destaque); box-shadow: inset 0 0 0 1px var(--destaque); }
+.lista-escolha { border-radius: var(--raio-md); border-color: var(--borda-forte); }
+.aviso-segredo, .erros-servidor { border-radius: var(--raio-md); }
+.previa-import { border-radius: var(--raio); border-color: var(--borda-forte); }
+.previa-import strong { font-family: var(--display); color: var(--destaque); }
+
+/* Menu lateral */
+.gaveta-fundo { background: var(--scrim); }
+.gaveta { border-radius: 0 var(--raio-xl) var(--raio-xl) 0; box-shadow: var(--sombra); }
+.gaveta-item { border-radius: var(--raio-md); }
+.gaveta-item:hover, .gaveta-item:focus-visible { background: var(--destaque-suave); }
+.gaveta-item[aria-current="page"] { box-shadow: inset 0 0 0 1px var(--borda); }
+
+/* Aviso offline e status */
+.aviso-offline { font-family: var(--mono); font-size: 13px; }
+.pilula { font-family: var(--mono); border-radius: var(--raio-sm); }
+
+/* Diálogo e toast */
+.dialogo { border-radius: var(--raio-xl); border-color: var(--borda-forte); }
+.dialogo::backdrop { background: var(--scrim); }
+.aviso { border-radius: var(--raio-md); font-family: var(--mono); font-size: 14px; font-weight: 500; background: var(--superficie); box-shadow: var(--sombra); }
+.aviso.ok { border-color: var(--destaque); color: var(--destaque); box-shadow: var(--sombra), var(--brilho); }
+
+/* Painéis */
+.painel-topo, .painel-rodape { background: var(--superficie); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover, .linha:hover { transform: none !important; }
+}
+
 /* ---------- Tablet ---------- */
 
 @media (min-width: 768px) {
@@ -515,7 +702,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .fab { display: none; }
   .layout { max-width: calc(1100px + 48px); }
   .principal { padding-left: 24px; padding-right: 24px; }
-  .titulo-secao { font-size: 24px; }
+  .titulo-secao { font-size: 32px; line-height: 38px; }
   /* Tablet e computador: a faixa quebra em linhas, com divisores */
   .chips { flex-direction: row; flex-wrap: wrap; align-items: center; margin: 0 0 14px; }
   .chips-grupo { flex-wrap: wrap; overflow: visible; padding: 0; }
@@ -526,11 +713,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .linha-acoes { flex-direction: row; align-items: center; padding: 6px 10px 6px 0; }
 
   /* Formulário e painéis viram modal centralizado */
-  .painel { background: rgba(0, 0, 0, 0.6); align-items: center; justify-content: center; padding: 24px; }
+  .painel { background: var(--scrim); align-items: center; justify-content: center; padding: 24px; }
   .painel-caixa {
     width: min(720px, 100%); max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px);
     display: flex; flex-direction: column; background: var(--fundo);
-    border: 1px solid var(--borda); border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--borda-forte); border-radius: var(--raio-xl); overflow: hidden;
   }
   .painel-topo { padding-top: 6px; }
   .painel-corpo { padding: 20px; }
