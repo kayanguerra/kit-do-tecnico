@@ -1,18 +1,17 @@
--- Kit do Técnico — esquema do banco D1 (SQLite)
--- Aplicar com: npx wrangler d1 execute kit-do-tecnico --remote --file=./schema.sql
--- ATENÇÃO: este script apaga e recria as tabelas. Não rode de novo em produção com dados.
+-- Kit do Técnico — migração 0001: esquema inicial
+-- Mesmo esquema do antigo schema.sql, SEM apagar nada.
+-- Seguro no banco de produção que já existe: IF NOT EXISTS não mexe em tabelas e dados atuais;
+-- só registra esta migração como aplicada na tabela d1_migrations.
+-- Aplicar: npx wrangler d1 migrations apply kit-do-tecnico --remote
 
-DROP TABLE IF EXISTS itens;
-DROP TABLE IF EXISTS categorias;
-
-CREATE TABLE categorias (
+CREATE TABLE IF NOT EXISTS categorias (
   id        TEXT PRIMARY KEY,
   nome      TEXT NOT NULL UNIQUE COLLATE NOCASE,
   ordem     INTEGER NOT NULL DEFAULT 0,
   criado_em TEXT NOT NULL
 );
 
-CREATE TABLE itens (
+CREATE TABLE IF NOT EXISTS itens (
   id            TEXT PRIMARY KEY,
   tipo          TEXT NOT NULL CHECK (tipo IN ('comando', 'artigo')),
   titulo        TEXT NOT NULL,
@@ -37,5 +36,5 @@ CREATE TABLE itens (
   atualizado_em TEXT NOT NULL
 );
 
-CREATE INDEX idx_itens_categoria ON itens (categoria);
-CREATE INDEX idx_itens_tipo ON itens (tipo);
+CREATE INDEX IF NOT EXISTS idx_itens_categoria ON itens (categoria);
+CREATE INDEX IF NOT EXISTS idx_itens_tipo ON itens (tipo);

@@ -6,7 +6,8 @@ Site estático no **Cloudflare Pages**, API em **Pages Functions** e dados no **
 ```
 kit-do-tecnico/
 ├── wrangler.toml          configuração do projeto e vínculo com o D1
-├── schema.sql             cria as tabelas (apaga as existentes!)
+├── migrations/            estrutura do banco, em ordem (0001, 0002…)
+├── scripts/backup.ps1     backup do D1 de produção em .sql
 ├── seed.sql               5 exemplos iniciais
 ├── functions/             API (/api/...)
 └── public/                site (HTML, CSS, JS, PWA)
@@ -59,14 +60,15 @@ Na resposta aparece um `database_id` (um código longo com hífens). **Copie ess
 ### 2.3 Criar as tabelas e os exemplos
 
 ```powershell
-npx wrangler d1 execute kit-do-tecnico --remote --file=./schema.sql
+npx wrangler d1 migrations apply kit-do-tecnico --remote
 npx wrangler d1 execute kit-do-tecnico --remote --file=./seed.sql
 ```
 
 Se perguntar se quer continuar, responda `y`.
 
-> ⚠️ Rode o `schema.sql` **só nesta primeira vez**. Ele apaga todas as tabelas. Rodar de novo depois de
-> cadastrar itens = perder tudo.
+> O `seed.sql` é só para banco novo e vazio. As migrações podem ser rodadas sempre: o wrangler aplica
+> apenas as que ainda não foram aplicadas. O arquivo `schema-INSTALACAO-INICIAL-APAGA-TUDO.sql` é
+> histórico e **apaga todos os dados**: não use.
 
 ### 2.4 Publicar o site
 
@@ -133,7 +135,17 @@ em modo somente leitura.
 2. Rode `npx wrangler pages deploy`.
 3. No celular, feche e abra o app duas vezes (a primeira baixa a versão nova, a segunda usa).
 
-Para mudar o banco (novas colunas etc.), **não** rode o `schema.sql` de novo: peça um script de migração.
+Para mudar o banco (novas colunas etc.):
+
+```powershell
+npx wrangler d1 migrations create kit-do-tecnico descricao_da_mudanca   # cria migrations/000N_...sql
+# escreva o ALTER TABLE no arquivo criado
+npx wrangler d1 migrations apply kit-do-tecnico --local                 # testa no banco local
+powershell -ExecutionPolicy Bypass -File .\scripts\backup.ps1          # backup antes de mexer em produção
+npx wrangler d1 migrations apply kit-do-tecnico --remote
+```
+
+Nunca edite uma migração que já foi aplicada; crie uma nova.
 
 ---
 
@@ -144,6 +156,23 @@ celular (OneDrive, e-mail para você mesmo).
 
 Menu ☰ → **Importar backup** mostra quantos itens serão criados e quantos substituídos antes de aplicar.
 Itens que não estão no arquivo não são apagados.
+
+**Backup do banco inteiro (recomendado, semanal):**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\backup.ps1
+```
+
+Salva em `OneDrive\Backups\kit-do-tecnico` (ou em Documentos, sem OneDrive), mantém os 12 mais recentes
+de cada tipo e registra cada execução em `backup.log` na mesma pasta:
+
+- `kit-do-tecnico-AAAA-MM-DD_HHMM.json`: sempre. Mesmo formato do Exportar backup do site; restaura
+  pelo site em Menu ☰ → Importar backup.
+- `kit-do-tecnico-AAAA-MM-DD_HHMM.sql`: só quando a rede permite o download do `wrangler d1 export`
+  (algumas redes corporativas bloqueiam). Restaura um banco **vazio** com
+  `npx wrangler d1 execute kit-do-tecnico --remote --file=ARQUIVO.sql`.
+Para voltar o banco de produção a um momento dos últimos 7 dias, use o Time Travel do D1:
+`npx wrangler d1 time-travel info kit-do-tecnico`.
 
 ---
 
