@@ -1,0 +1,2130 @@
+{
+  "app": "kit-do-tecnico",
+  "versao": 1,
+  "exportado_em": "2026-11-13T15:14:38.000Z",
+  "categorias": [
+    {
+      "nome": "Acesso remoto"
+    },
+    {
+      "nome": "Active Directory e Entra ID"
+    },
+    {
+      "nome": "Atalhos do Windows"
+    },
+    {
+      "nome": "Busca e indexação"
+    },
+    {
+      "nome": "Diagnóstico"
+    },
+    {
+      "nome": "Disco"
+    },
+    {
+      "nome": "Energia e desempenho"
+    },
+    {
+      "nome": "Impressoras"
+    },
+    {
+      "nome": "Inicialização e serviços"
+    },
+    {
+      "nome": "Integridade do sistema"
+    },
+    {
+      "nome": "Programas e atualizações"
+    },
+    {
+      "nome": "Redes"
+    },
+    {
+      "nome": "Registro e configurações"
+    },
+    {
+      "nome": "Usuários e segurança"
+    },
+    {
+      "nome": "Microsoft 365"
+    }
+  ],
+  "itens": [
+    {
+      "id": "d4c25b0c-45b7-414d-afb1-0fcfca8f0d82",
+      "tipo": "comando",
+      "titulo": "Abrir o Monitor de Recursos",
+      "categoria": "Diagnóstico",
+      "conteudo": "resmon",
+      "descricao": "PC lento e você quer ver, por processo, quem está usando CPU, memória, disco ou rede em tempo real.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "lento",
+        "travando",
+        "cpu",
+        "memória",
+        "ram",
+        "disco 100%",
+        "desempenho",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "649937db-d0dd-4acc-85a0-9ce60e51782e",
+      "tipo": "comando",
+      "titulo": "Ver resumo de desempenho do sistema",
+      "categoria": "Diagnóstico",
+      "conteudo": "perfmon /res",
+      "descricao": "Visão rápida de CPU, disco, rede e memória sem abrir o Monitor de Desempenho completo.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "lento",
+        "desempenho",
+        "monitor",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "96372870-17a6-458f-b7eb-c4789e15dbea",
+      "tipo": "comando",
+      "titulo": "Ver informações completas do sistema",
+      "categoria": "Diagnóstico",
+      "conteudo": "msinfo32",
+      "descricao": "Levantar modelo, BIOS, processador, RAM, drivers e versão do Windows de uma vez.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "hardware",
+        "inventário",
+        "bios",
+        "modelo",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "6036b564-8197-4dcb-b9a8-96446394f3f8",
+      "tipo": "comando",
+      "titulo": "Abrir o Gerenciador de Tarefas",
+      "categoria": "Diagnóstico",
+      "conteudo": "taskmgr",
+      "descricao": "Ver processos, encerrar programa travado, conferir aplicativos de inicialização e uso de recursos.",
+      "prerequisitos": "Rodar em Win + R. Atalho direto: Ctrl + Shift + Esc.",
+      "requer_admin": false,
+      "tags": [
+        "travado",
+        "processo",
+        "lento",
+        "inicialização",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "6bdb795f-2b02-4149-92f8-afd9b2bfdbc1",
+      "tipo": "comando",
+      "titulo": "Abrir o Visualizador de Eventos",
+      "categoria": "Diagnóstico",
+      "conteudo": "eventvwr.msc",
+      "descricao": "Investigar erros, travamentos, telas azuis e falhas de serviço pelos logs do Windows.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "log",
+        "erro",
+        "eventos",
+        "tela azul",
+        "bsod",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "05a37d69-22b1-4dbe-a4e7-3b3a94eca4d1",
+      "tipo": "comando",
+      "titulo": "Diagnóstico de vídeo e áudio (DirectX)",
+      "categoria": "Diagnóstico",
+      "conteudo": "dxdiag",
+      "descricao": "Conferir placa de vídeo, driver de vídeo e áudio, e versão do DirectX.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "vídeo",
+        "placa de vídeo",
+        "driver",
+        "áudio",
+        "som",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "21e7afa6-6c54-4a6d-92c4-077a442fab4d",
+      "tipo": "comando",
+      "titulo": "Ver a versão e o build do Windows",
+      "categoria": "Diagnóstico",
+      "conteudo": "winver",
+      "descricao": "Confirmar versão e build exatos antes de aplicar atualização, correção ou abrir chamado.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "versão",
+        "build",
+        "windows 10",
+        "windows 11",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d4e5f8d0-73a6-4457-81fa-8876ebfe4e65",
+      "tipo": "comando",
+      "titulo": "Testar a memória RAM",
+      "categoria": "Diagnóstico",
+      "conteudo": "mdsched",
+      "descricao": "Suspeita de RAM com defeito: telas azuis aleatórias, travamentos, programas fechando sozinhos.",
+      "prerequisitos": "Rodar em Win + R. O teste roda depois de reiniciar o PC; avise o usuário antes.",
+      "requer_admin": false,
+      "tags": [
+        "ram",
+        "memória",
+        "tela azul",
+        "bsod",
+        "travando",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "66250d00-f267-4f5b-9d55-b3de3da2c6af",
+      "tipo": "comando",
+      "titulo": "Ver os 10 processos que mais usam RAM",
+      "categoria": "Diagnóstico",
+      "conteudo": "Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10",
+      "descricao": "Descobrir rápido quem está consumindo memória sem abrir o Gerenciador de Tarefas.",
+      "prerequisitos": "PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "ram",
+        "memória",
+        "lento",
+        "processo",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "e08db1ef-42a2-4096-bebd-1d79be82e42b",
+      "tipo": "comando",
+      "titulo": "Ver os últimos 20 erros do log de Sistema",
+      "categoria": "Diagnóstico",
+      "conteudo": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2} -MaxEvents 20",
+      "descricao": "Triagem rápida de problemas recentes do sistema pelo terminal.",
+      "prerequisitos": "PowerShell. Funciona no Windows PowerShell 5.1 e no PowerShell 7.",
+      "requer_admin": false,
+      "tags": [
+        "log",
+        "erro",
+        "eventos",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "cd0f310f-6ff0-4f6f-abc2-06c672740921",
+      "tipo": "comando",
+      "titulo": "Ver as últimas atualizações instaladas",
+      "categoria": "Diagnóstico",
+      "conteudo": "Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 10",
+      "descricao": "Problema começou depois de uma atualização? Veja quais entraram e quando.",
+      "prerequisitos": "PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "windows update",
+        "atualização",
+        "kb",
+        "patch",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b9c9c232-ba74-4894-8015-305ca887063a",
+      "tipo": "comando",
+      "titulo": "Ver nome do Windows e RAM total",
+      "categoria": "Diagnóstico",
+      "conteudo": "Get-ComputerInfo | Select-Object WindowsProductName, TotalPhysicalMemory",
+      "descricao": "Conferir edição do Windows e memória instalada pelo terminal (RAM aparece em bytes).",
+      "prerequisitos": "PowerShell. Pode demorar alguns segundos.",
+      "requer_admin": false,
+      "tags": [
+        "inventário",
+        "ram",
+        "versão",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "2e0d174d-66ae-4a7b-894b-daa22ce511f9",
+      "tipo": "comando",
+      "titulo": "Resumo completo do sistema",
+      "categoria": "Diagnóstico",
+      "conteudo": "systeminfo",
+      "descricao": "SO, RAM, domínio, atualizações instaladas e tempo desde o último boot (uptime), tudo em texto.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "inventário",
+        "uptime",
+        "domínio",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "689dd2ad-90fc-4a52-a1f1-f0c6d95ec40d",
+      "tipo": "comando",
+      "titulo": "Abrir a Configuração do Sistema",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "msconfig",
+      "descricao": "Ajustar opções de boot, inicialização seletiva e modo de segurança.",
+      "prerequisitos": "Rodar em Win + R. No Windows 10/11 os programas de inicialização ficam no Gerenciador de Tarefas.",
+      "requer_admin": false,
+      "tags": [
+        "boot",
+        "modo de segurança",
+        "inicialização",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "3137c7d7-6fee-4769-917e-5de06e8e0d80",
+      "tipo": "comando",
+      "titulo": "Abrir o Gerenciador de Serviços",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "services.msc",
+      "descricao": "Iniciar, parar, reiniciar ou mudar o tipo de inicialização de serviços.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "serviço",
+        "services",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "a5f26e75-196b-4b1e-a85b-400b5046ef5b",
+      "tipo": "comando",
+      "titulo": "Abrir a pasta de inicialização do usuário",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "shell:startup",
+      "descricao": "Ver ou remover programas que abrem no login só deste usuário.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "inicialização",
+        "login",
+        "startup",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b12e1b4a-9fd4-4a7b-9c67-c08674a47833",
+      "tipo": "comando",
+      "titulo": "Abrir a pasta de inicialização de todos os usuários",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "shell:common startup",
+      "descricao": "Ver ou remover programas que abrem no login de qualquer usuário da máquina.",
+      "prerequisitos": "Rodar em Win + R. Alterar essa pasta exige administrador.",
+      "requer_admin": false,
+      "tags": [
+        "inicialização",
+        "startup",
+        "todos os usuários",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "a362df94-c1ad-4170-b74a-76c1738093c8",
+      "tipo": "comando",
+      "titulo": "Consultar o status de um serviço",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "sc query NOME_DO_SERVICO",
+      "descricao": "Confirmar se um serviço está rodando, parado ou travado, sem abrir a tela de serviços.",
+      "prerequisitos": "CMD. Troque NOME_DO_SERVICO pelo nome curto do serviço (ex.: Spooler).",
+      "requer_admin": false,
+      "tags": [
+        "serviço",
+        "status",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "70b89433-8185-45f3-b947-687315022199",
+      "tipo": "comando",
+      "titulo": "Parar um serviço pelo terminal",
+      "categoria": "Inicialização e serviços",
+      "conteudo": "sc stop NOME_DO_SERVICO",
+      "descricao": "Parar um serviço travado ou que precisa estar parado para manutenção.",
+      "prerequisitos": "CMD como administrador. Troque NOME_DO_SERVICO pelo nome curto do serviço.",
+      "requer_admin": true,
+      "tags": [
+        "serviço",
+        "parar",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b8a185dc-ed21-4e70-a0fc-f81c3c9a8048",
+      "tipo": "comando",
+      "titulo": "Abrir a Limpeza de Disco",
+      "categoria": "Disco",
+      "conteudo": "cleanmgr",
+      "descricao": "Disco cheio: remover temporários, cache de atualizações e outros arquivos descartáveis.",
+      "prerequisitos": "Rodar em Win + R. Para limpar arquivos do sistema, clique em \"Limpar arquivos do sistema\" (pede admin).",
+      "requer_admin": false,
+      "tags": [
+        "disco cheio",
+        "espaço",
+        "limpeza",
+        "temporários",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "f89377dd-5a05-47f6-8674-a8012e45ada4",
+      "tipo": "comando",
+      "titulo": "Verificar e corrigir erros no disco",
+      "categoria": "Disco",
+      "conteudo": "chkdsk C: /f /r /x",
+      "descricao": "Suspeita de erro de disco: arquivos corrompidos, lentidão extrema, avisos do sistema de arquivos.",
+      "prerequisitos": "CMD como administrador. No C: a verificação fica agendada para o próximo boot e pode demorar horas. Avise o usuário antes.",
+      "requer_admin": true,
+      "tags": [
+        "disco",
+        "hd",
+        "ssd",
+        "erro",
+        "corrompido",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "14f1799c-4aa4-4bbe-8d2e-b86fa1601088",
+      "tipo": "comando",
+      "titulo": "Otimizar o disco (escolhe o certo para HD ou SSD)",
+      "categoria": "Disco",
+      "conteudo": "defrag C: /O",
+      "descricao": "Manutenção do disco. O parâmetro /O faz desfragmentação em HD e TRIM em SSD automaticamente.",
+      "prerequisitos": "CMD como administrador. Evite /U /V em SSD: prefira /O, que detecta o tipo de disco.",
+      "requer_admin": true,
+      "tags": [
+        "desfragmentar",
+        "otimizar",
+        "hd",
+        "ssd",
+        "trim",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "2cbe2723-83b3-4cc3-b84b-974b2f97eb5a",
+      "tipo": "comando",
+      "titulo": "Abrir o Gerenciamento de Disco",
+      "categoria": "Disco",
+      "conteudo": "diskmgmt.msc",
+      "descricao": "Ver partições, trocar letra de unidade, inicializar ou formatar discos.",
+      "prerequisitos": "Rodar em Win + R. Formatar ou excluir volume apaga os dados.",
+      "requer_admin": false,
+      "tags": [
+        "partição",
+        "letra de unidade",
+        "formatar",
+        "disco novo",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "4fd69b95-3116-4fed-a862-9bfc40ba62a3",
+      "tipo": "comando",
+      "titulo": "Abrir o DiskPart (particionamento avançado)",
+      "categoria": "Disco",
+      "conteudo": "diskpart",
+      "descricao": "Particionamento avançado quando a tela de Gerenciamento de Disco não resolve.",
+      "prerequisitos": "CMD como administrador. Operações destrutivas: confirme o disco selecionado (list disk) antes de qualquer clean ou delete.",
+      "requer_admin": true,
+      "tags": [
+        "partição",
+        "formatar",
+        "pendrive",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "1919119b-9289-4d3d-bbc3-b10621ea3c30",
+      "tipo": "comando",
+      "titulo": "Ver espaço livre do disco C:",
+      "categoria": "Disco",
+      "conteudo": "fsutil volume diskfree C:",
+      "descricao": "Conferir espaço livre e total pelo terminal.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "espaço",
+        "disco cheio",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "2ee2ce76-9be8-41ed-b930-e16b80f0b630",
+      "tipo": "comando",
+      "titulo": "Listar os discos físicos",
+      "categoria": "Disco",
+      "conteudo": "Get-Disk",
+      "descricao": "Ver discos conectados, tamanho, estado (online/offline) e saúde.",
+      "prerequisitos": "PowerShell como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "disco",
+        "hd",
+        "ssd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d8f545dc-54e5-4bf3-ad61-d79ac2786adf",
+      "tipo": "comando",
+      "titulo": "Esvaziar a Lixeira do usuário atual",
+      "categoria": "Disco",
+      "conteudo": "Clear-RecycleBin -Force",
+      "descricao": "Liberar espaço esvaziando a Lixeira de todas as unidades, sem confirmação.",
+      "prerequisitos": "PowerShell. Limpa só a Lixeira do usuário que está rodando o comando, mesmo como administrador.",
+      "requer_admin": false,
+      "tags": [
+        "lixeira",
+        "espaço",
+        "disco cheio",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "927ef650-5c9a-4c55-938c-1326bf43a015",
+      "tipo": "comando",
+      "titulo": "Verificação rápida da imagem do Windows",
+      "categoria": "Integridade do sistema",
+      "conteudo": "DISM /Online /Cleanup-Image /CheckHealth",
+      "descricao": "Primeiro passo: checa em segundos se a imagem do Windows já está marcada como corrompida. Não repara.",
+      "prerequisitos": "CMD ou PowerShell como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "dism",
+        "corrompido",
+        "reparo",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "e1424797-788a-4fef-806b-c41c5d8ead42",
+      "tipo": "comando",
+      "titulo": "Varredura completa da imagem do Windows",
+      "categoria": "Integridade do sistema",
+      "conteudo": "DISM /Online /Cleanup-Image /ScanHealth",
+      "descricao": "Varredura mais profunda que o CheckHealth. Demora mais e também não repara.",
+      "prerequisitos": "CMD ou PowerShell como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "dism",
+        "corrompido",
+        "reparo",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d7f5d62c-bbb5-4a1a-819e-83768992076d",
+      "tipo": "comando",
+      "titulo": "Reparar a imagem do Windows (DISM)",
+      "categoria": "Integridade do sistema",
+      "conteudo": "DISM /Online /Cleanup-Image /RestoreHealth",
+      "descricao": "Repara a imagem usando o Windows Update como fonte. Rode antes do sfc /scannow.",
+      "prerequisitos": "CMD ou PowerShell como administrador. Precisa de internet. Pode parecer parado em 20% ou 62% por vários minutos; é normal.",
+      "requer_admin": true,
+      "tags": [
+        "dism",
+        "corrompido",
+        "reparo",
+        "windows update",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "f875ad0e-046d-4a89-9985-67d3eac01278",
+      "tipo": "comando",
+      "titulo": "Reparar arquivos do sistema (SFC)",
+      "categoria": "Integridade do sistema",
+      "conteudo": "sfc /scannow",
+      "descricao": "Corrige arquivos de sistema corrompidos. Rode depois do DISM RestoreHealth.",
+      "prerequisitos": "CMD ou PowerShell como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "sfc",
+        "corrompido",
+        "reparo",
+        "arquivos do sistema",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "6201ee0b-5895-454a-a4e2-5d95a1ac6f53",
+      "tipo": "comando",
+      "titulo": "Só verificar arquivos do sistema (sem reparar)",
+      "categoria": "Integridade do sistema",
+      "conteudo": "sfc /verifyonly",
+      "descricao": "Checar a integridade dos arquivos sem alterar nada.",
+      "prerequisitos": "CMD ou PowerShell como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "sfc",
+        "verificar",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "a301a7c0-5e2f-4264-83b5-c7f171c76f23",
+      "tipo": "comando",
+      "titulo": "Abrir as Opções de Indexação",
+      "categoria": "Busca e indexação",
+      "conteudo": "control srchadmin.dll",
+      "descricao": "Reduzir as pastas indexadas ou reconstruir o índice quando a busca está lenta ou incompleta.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "indexação",
+        "busca",
+        "pesquisa",
+        "windows search",
+        "outlook",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "711a6fcf-929b-4e25-93ac-b70163158233",
+      "tipo": "comando",
+      "titulo": "Ver o estado do serviço de indexação",
+      "categoria": "Busca e indexação",
+      "conteudo": "Get-Service WSearch | Select-Object Status, StartType",
+      "descricao": "Conferir se o Windows Search está rodando e como ele inicia.",
+      "prerequisitos": "PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "indexação",
+        "windows search",
+        "wsearch",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d418881d-516d-4960-a68d-81b4d2051eab",
+      "tipo": "comando",
+      "titulo": "Parar o serviço de indexação",
+      "categoria": "Busca e indexação",
+      "conteudo": "Stop-Service WSearch -Force",
+      "descricao": "Parar o indexador temporariamente (por exemplo, antes de apagar o índice para reconstruir).",
+      "prerequisitos": "PowerShell como administrador. Enquanto estiver parado, a busca do Outlook clássico e do menu Iniciar fica lenta.",
+      "requer_admin": true,
+      "tags": [
+        "indexação",
+        "windows search",
+        "wsearch",
+        "disco 100%",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "550e1e2d-fc0e-4ae0-992e-8ad7ec1a49ab",
+      "tipo": "comando",
+      "titulo": "Desativar o serviço de indexação",
+      "categoria": "Busca e indexação",
+      "conteudo": "Set-Service WSearch -StartupType Disabled",
+      "descricao": "Só em último caso, quando o indexador comprovadamente pesa na máquina.",
+      "prerequisitos": "PowerShell como administrador. CUIDADO: o Outlook clássico usa o Windows Search; desativado, a busca de e-mails fica lenta e incompleta. Para voltar: Set-Service WSearch -StartupType Automatic",
+      "requer_admin": true,
+      "tags": [
+        "indexação",
+        "windows search",
+        "wsearch",
+        "outlook",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "610e6955-9aaa-4828-932a-245849f5c69c",
+      "tipo": "comando",
+      "titulo": "Apagar o índice de busca para reconstruir",
+      "categoria": "Busca e indexação",
+      "conteudo": "Stop-Service WSearch -Force\nRemove-Item \"$env:ProgramData\\Microsoft\\Search\\Data\\Applications\\Windows\\Windows.db\" -Force -ErrorAction SilentlyContinue\nRemove-Item \"$env:ProgramData\\Microsoft\\Search\\Data\\Applications\\Windows\\Windows.edb\" -Force -ErrorAction SilentlyContinue\nStart-Service WSearch",
+      "descricao": "Índice gigante ou corrompido: apaga e força o Windows a reconstruir do zero.",
+      "prerequisitos": "PowerShell como administrador. Windows 11 usa Windows.db e Windows 10 usa Windows.edb; o comando tenta os dois. A reconstrução leva horas e a busca fica incompleta nesse período.",
+      "requer_admin": true,
+      "tags": [
+        "indexação",
+        "windows search",
+        "windows.edb",
+        "windows.db",
+        "disco cheio",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "938d00bf-4836-40f4-bcd9-d7ac4f7fd7ad",
+      "tipo": "comando",
+      "titulo": "Ver toda a configuração de rede",
+      "categoria": "Redes",
+      "conteudo": "ipconfig /all",
+      "descricao": "Conferir IP, máscara, gateway, DNS, DHCP e endereço MAC.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "ip",
+        "dns",
+        "gateway",
+        "mac",
+        "dhcp",
+        "rede",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "01a7c6d4-87e2-42fb-aa0c-627e2af41015",
+      "tipo": "comando",
+      "titulo": "Liberar e renovar o IP (DHCP)",
+      "categoria": "Redes",
+      "conteudo": "ipconfig /release\nipconfig /renew",
+      "descricao": "IP errado, 169.254.x.x ou sem rede depois de trocar de rede ou de cabo.",
+      "prerequisitos": "CMD como administrador. Em acesso remoto a conexão cai no /release; prefira rodar localmente.",
+      "requer_admin": true,
+      "tags": [
+        "ip",
+        "dhcp",
+        "169.254",
+        "sem internet",
+        "rede",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b682d897-71bb-4aaf-a4bc-19ba73811344",
+      "tipo": "comando",
+      "titulo": "Resetar o Winsock",
+      "categoria": "Redes",
+      "conteudo": "netsh winsock reset",
+      "descricao": "Internet não funciona mesmo com rede conectada, após remover VPN, antivírus ou proxy.",
+      "prerequisitos": "CMD como administrador. Exige reiniciar o PC.",
+      "requer_admin": true,
+      "tags": [
+        "sem internet",
+        "winsock",
+        "rede",
+        "vpn",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "5813f48d-6612-4215-b6ec-d4547db836cb",
+      "tipo": "comando",
+      "titulo": "Resetar a pilha TCP/IP",
+      "categoria": "Redes",
+      "conteudo": "netsh int ip reset",
+      "descricao": "Problema de rede que não saiu com o reset do Winsock.",
+      "prerequisitos": "CMD como administrador. Exige reiniciar o PC. Remove IP fixo configurado manualmente: anote antes.",
+      "requer_admin": true,
+      "tags": [
+        "sem internet",
+        "tcp/ip",
+        "rede",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "656373cd-79df-4e37-a930-f829cd9e322e",
+      "tipo": "comando",
+      "titulo": "Testar conexão contínua com a internet",
+      "categoria": "Redes",
+      "conteudo": "ping 8.8.8.8 -t",
+      "descricao": "Ver se a internet cai, oscila ou perde pacotes. Ctrl + C para parar.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "ping",
+        "sem internet",
+        "oscilando",
+        "perda de pacote",
+        "rede",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "5421c62e-9927-4a42-a195-40c263d53720",
+      "tipo": "comando",
+      "titulo": "Rastrear o caminho até um destino",
+      "categoria": "Redes",
+      "conteudo": "tracert 8.8.8.8",
+      "descricao": "Descobrir em qual ponto da rede (local, provedor, destino) a conexão para.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "tracert",
+        "rota",
+        "sem internet",
+        "rede",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "3cad8d94-e017-468e-ab47-8616d454c2c5",
+      "tipo": "comando",
+      "titulo": "Consultar o DNS de um domínio",
+      "categoria": "Redes",
+      "conteudo": "nslookup dominio.com.br",
+      "descricao": "Site não abre pelo nome mas abre pelo IP, ou suspeita de DNS errado.",
+      "prerequisitos": "CMD ou PowerShell. Troque dominio.com.br pelo endereço.",
+      "requer_admin": false,
+      "tags": [
+        "dns",
+        "site não abre",
+        "domínio",
+        "rede",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "324dea01-119d-40ab-aac8-5eb16585b1c8",
+      "tipo": "comando",
+      "titulo": "Ver conexões e portas abertas",
+      "categoria": "Redes",
+      "conteudo": "netstat -ano",
+      "descricao": "Descobrir qual processo (PID) está usando uma porta ou conexões suspeitas.",
+      "prerequisitos": "CMD ou PowerShell. Cruze o PID com o Gerenciador de Tarefas.",
+      "requer_admin": false,
+      "tags": [
+        "porta",
+        "conexão",
+        "pid",
+        "segurança",
+        "rede",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "9ad242e0-df66-4f6c-a79e-128acbc41e8c",
+      "tipo": "comando",
+      "titulo": "Testar se uma porta está acessível",
+      "categoria": "Redes",
+      "conteudo": "Test-NetConnection servidor -Port 443",
+      "descricao": "Ver se um servidor responde numa porta específica (substitui o telnet).",
+      "prerequisitos": "PowerShell. Troque servidor e 443 pelo host e porta.",
+      "requer_admin": false,
+      "tags": [
+        "porta",
+        "firewall",
+        "telnet",
+        "servidor",
+        "rede",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "abf72c7d-9e48-4b65-a5e4-e30df49f1d96",
+      "tipo": "comando",
+      "titulo": "Ver o status das placas de rede",
+      "categoria": "Redes",
+      "conteudo": "Get-NetAdapter | Select-Object Name, Status, LinkSpeed",
+      "descricao": "Conferir se a placa está conectada e em qual velocidade (cabo ruim costuma cair para 100 Mbps).",
+      "prerequisitos": "PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "placa de rede",
+        "wi-fi",
+        "cabo",
+        "velocidade",
+        "rede",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d728e7c3-3c31-44fa-845d-2615d6e771b1",
+      "tipo": "comando",
+      "titulo": "Criar o plano \"Desempenho Máximo\"",
+      "categoria": "Energia e desempenho",
+      "conteudo": "powercfg /duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61",
+      "descricao": "Desktops e notebooks na tomada que precisam do máximo de desempenho.",
+      "prerequisitos": "CMD ou PowerShell como administrador. O comando só CRIA o plano; para usar, escolha em Opções de Energia (powercfg.cpl) ou rode powercfg /setactive com o GUID que ele mostrar. Evite em notebook na bateria.",
+      "requer_admin": true,
+      "tags": [
+        "energia",
+        "desempenho",
+        "lento",
+        "plano de energia",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "949f22a1-26e8-4869-ba7c-31d8913fd2e0",
+      "tipo": "comando",
+      "titulo": "Listar os planos de energia",
+      "categoria": "Energia e desempenho",
+      "conteudo": "powercfg /list",
+      "descricao": "Ver os planos disponíveis, o GUID de cada um e qual está ativo (marcado com *).",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "energia",
+        "plano de energia",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d183a915-b1f9-4fb8-b093-1f0088187a77",
+      "tipo": "comando",
+      "titulo": "Gerar relatório de eficiência energética",
+      "categoria": "Energia e desempenho",
+      "conteudo": "powercfg /energy",
+      "descricao": "Bateria acabando rápido ou PC que não suspende: o relatório aponta drivers e configurações problemáticas.",
+      "prerequisitos": "CMD como administrador. Leva 60 segundos e gera energy-report.html na pasta atual.",
+      "requer_admin": true,
+      "tags": [
+        "bateria",
+        "energia",
+        "suspensão",
+        "relatório",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "03543914-f77f-4904-99e8-6198c0de6fd4",
+      "tipo": "comando",
+      "titulo": "Gerar relatório de saúde da bateria",
+      "categoria": "Energia e desempenho",
+      "conteudo": "powercfg /batteryreport",
+      "descricao": "Ver capacidade original x atual da bateria e histórico de uso do notebook.",
+      "prerequisitos": "CMD como administrador. Gera battery-report.html na pasta atual.",
+      "requer_admin": true,
+      "tags": [
+        "bateria",
+        "notebook",
+        "saúde",
+        "relatório",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "c06b798e-40a9-4903-91bb-d9328faf4fb7",
+      "tipo": "comando",
+      "titulo": "Ajustar efeitos visuais",
+      "categoria": "Energia e desempenho",
+      "conteudo": "SystemPropertiesPerformance",
+      "descricao": "PC fraco: desligar animações e transparências para ganhar desempenho.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "lento",
+        "efeitos visuais",
+        "animação",
+        "desempenho",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "004a1428-e8d1-4a4e-a90c-5b815fbbc767",
+      "tipo": "comando",
+      "titulo": "Abrir Usuários e Grupos Locais",
+      "categoria": "Usuários e segurança",
+      "conteudo": "lusrmgr.msc",
+      "descricao": "Criar, desativar ou redefinir contas locais e gerenciar grupos.",
+      "prerequisitos": "Rodar em Win + R. Não existe no Windows Home (use netplwiz).",
+      "requer_admin": false,
+      "tags": [
+        "usuário",
+        "conta local",
+        "grupo",
+        "senha",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "1c25f645-bbde-4683-9b1a-edcaabe59345",
+      "tipo": "comando",
+      "titulo": "Abrir o painel de Contas de Usuário",
+      "categoria": "Usuários e segurança",
+      "conteudo": "netplwiz",
+      "descricao": "Gerenciar contas, grupos e o login automático.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "usuário",
+        "login automático",
+        "conta",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "9918bcb7-2623-40ad-a09c-7e8132b2c62a",
+      "tipo": "comando",
+      "titulo": "Redefinir a senha de uma conta local",
+      "categoria": "Usuários e segurança",
+      "conteudo": "net user NOME_DO_USUARIO *",
+      "descricao": "Usuário local esqueceu a senha.",
+      "prerequisitos": "CMD como administrador. O * faz o Windows pedir a senha sem mostrar na tela. Não digite a senha no próprio comando, porque ela fica no histórico.",
+      "requer_admin": true,
+      "tags": [
+        "senha",
+        "usuário",
+        "conta local",
+        "resetar senha",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d495b149-626c-4fcb-99e1-a93bfa573620",
+      "tipo": "comando",
+      "titulo": "Adicionar usuário aos administradores locais",
+      "categoria": "Usuários e segurança",
+      "conteudo": "net localgroup Administradores NOME_DO_USUARIO /add",
+      "descricao": "Dar permissão de administrador local a um usuário.",
+      "prerequisitos": "CMD como administrador. Em Windows em português o grupo se chama \"Administradores\"; em inglês, \"Administrators\".",
+      "requer_admin": true,
+      "tags": [
+        "administrador",
+        "permissão",
+        "grupo",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "987e05b5-3182-49f3-acb0-98db409daec1",
+      "tipo": "comando",
+      "titulo": "Abrir o Editor de Política de Grupo local",
+      "categoria": "Usuários e segurança",
+      "conteudo": "gpedit.msc",
+      "descricao": "Configurar políticas locais de segurança e comportamento do sistema.",
+      "prerequisitos": "Rodar em Win + R. Só existe no Windows Pro, Enterprise e Education.",
+      "requer_admin": false,
+      "tags": [
+        "gpo",
+        "política",
+        "segurança",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "bf4e7400-1318-4935-90fc-2ae19c424b33",
+      "tipo": "comando",
+      "titulo": "Abrir a Política de Segurança Local",
+      "categoria": "Usuários e segurança",
+      "conteudo": "secpol.msc",
+      "descricao": "Regras de senha, bloqueio de conta e auditoria.",
+      "prerequisitos": "Rodar em Win + R. Só existe no Windows Pro, Enterprise e Education.",
+      "requer_admin": false,
+      "tags": [
+        "senha",
+        "bloqueio de conta",
+        "auditoria",
+        "segurança",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "6012b3e3-06da-436b-a7db-a8ce0799f505",
+      "tipo": "comando",
+      "titulo": "Ver os privilégios do usuário atual",
+      "categoria": "Usuários e segurança",
+      "conteudo": "whoami /priv",
+      "descricao": "Diagnosticar falta de permissão: mostra se o terminal está mesmo elevado e quais privilégios tem.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "permissão",
+        "acesso negado",
+        "administrador",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "ea67d603-49ee-4354-b359-641060fd9f9e",
+      "tipo": "comando",
+      "titulo": "Abrir o Editor do Registro",
+      "categoria": "Registro e configurações",
+      "conteudo": "regedit",
+      "descricao": "Ajustes avançados que não existem nas telas de configuração.",
+      "prerequisitos": "Rodar em Win + R. Uma alteração errada pode deixar o Windows instável. Exporte a chave antes de mexer.",
+      "requer_admin": false,
+      "tags": [
+        "registro",
+        "regedit",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "006826a9-c7ef-4248-a883-470c074e734a",
+      "tipo": "comando",
+      "titulo": "Fazer backup de uma chave do Registro",
+      "categoria": "Registro e configurações",
+      "conteudo": "reg export \"HKCU\\Software\\NOME_DA_CHAVE\" \"%USERPROFILE%\\Desktop\\backup.reg\"",
+      "descricao": "Sempre antes de alterar o Registro: gera um .reg que restaura a chave com dois cliques.",
+      "prerequisitos": "CMD. Troque o caminho pela chave que vai alterar. Exportar a HKLM\\SOFTWARE inteira gera um arquivo enorme; prefira a chave específica. Chaves HKLM exigem administrador.",
+      "requer_admin": false,
+      "tags": [
+        "registro",
+        "backup",
+        "regedit",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "aedf87da-bc23-42dd-a9a8-5867b46c73d9",
+      "tipo": "comando",
+      "titulo": "Abrir as Propriedades do Sistema",
+      "categoria": "Registro e configurações",
+      "conteudo": "sysdm.cpl",
+      "descricao": "Nome do computador, ingresso em domínio, variáveis de ambiente e restauração do sistema.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "nome do computador",
+        "domínio",
+        "variáveis de ambiente",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "1cc494d6-92cf-4eeb-9241-40b8f13b6dc8",
+      "tipo": "comando",
+      "titulo": "Abrir o Painel de Controle clássico",
+      "categoria": "Registro e configurações",
+      "conteudo": "control",
+      "descricao": "Configurações que as Configurações novas do Windows não mostram.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "painel de controle",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "943c316f-865a-470a-8950-a1d2503889a4",
+      "tipo": "comando",
+      "titulo": "Abrir as Configurações do Windows",
+      "categoria": "Registro e configurações",
+      "conteudo": "ms-settings:",
+      "descricao": "Abrir direto a tela de Configurações.",
+      "prerequisitos": "Rodar em Win + R. Atalho direto: Win + I.",
+      "requer_admin": false,
+      "tags": [
+        "configurações",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "ee1120ad-c822-416e-87c8-2d0229147e67",
+      "tipo": "comando",
+      "titulo": "Abrir Programas e Recursos",
+      "categoria": "Programas e atualizações",
+      "conteudo": "appwiz.cpl",
+      "descricao": "Desinstalar ou reparar programas.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "desinstalar",
+        "programa",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "e47153fb-1a7d-42a0-a7b9-7ebbc3472ad2",
+      "tipo": "comando",
+      "titulo": "Atualizar todos os programas (winget)",
+      "categoria": "Programas e atualizações",
+      "conteudo": "winget upgrade --all",
+      "descricao": "Atualizar de uma vez os programas instalados.",
+      "prerequisitos": "PowerShell ou CMD. Requer o App Installer (winget). Em máquina de cliente, rode antes só \"winget upgrade\" para ver a lista: atualizar tudo pode quebrar programas que precisam de versão específica.",
+      "requer_admin": false,
+      "tags": [
+        "atualizar",
+        "programas",
+        "winget",
+        "update",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "99db1106-9fc6-45bb-abb4-39a72440d27c",
+      "tipo": "comando",
+      "titulo": "Ver o status de ingresso no Entra ID (Azure AD)",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "dsregcmd /status",
+      "descricao": "Verificar se a máquina está ingressada no Entra ID ou Hybrid Join, e o estado do SSO (problemas de login no Microsoft 365).",
+      "prerequisitos": "CMD ou PowerShell. Veja AzureAdJoined, DomainJoined e AzureAdPrt.",
+      "requer_admin": false,
+      "tags": [
+        "entra id",
+        "azure ad",
+        "hybrid join",
+        "sso",
+        "microsoft 365",
+        "intune",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "883ddf83-22c9-4adf-8fa4-ef4d8050c41f",
+      "tipo": "comando",
+      "titulo": "Forçar a atualização das GPOs",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "gpupdate /force",
+      "descricao": "Aplicar na hora uma GPO nova ou alterada sem reiniciar.",
+      "prerequisitos": "CMD. Algumas políticas de computador só aplicam após reiniciar.",
+      "requer_admin": false,
+      "tags": [
+        "gpo",
+        "política",
+        "domínio",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b07b40c5-f832-46cb-9c9b-cf86f953be8d",
+      "tipo": "comando",
+      "titulo": "Ver as GPOs aplicadas",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "gpresult /r",
+      "descricao": "Confirmar quais políticas chegaram ao usuário e ao computador.",
+      "prerequisitos": "CMD. Para ver as de computador, rode como administrador.",
+      "requer_admin": false,
+      "tags": [
+        "gpo",
+        "política",
+        "domínio",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "0ea5e96e-8abc-49fa-a690-fc8e93e6fdfb",
+      "tipo": "comando",
+      "titulo": "Verificar o canal seguro com o domínio",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "nltest /sc_verify:DOMINIO",
+      "descricao": "Erro \"a relação de confiança entre esta estação e o domínio falhou\".",
+      "prerequisitos": "CMD. Troque DOMINIO pelo nome do domínio.",
+      "requer_admin": false,
+      "tags": [
+        "domínio",
+        "relação de confiança",
+        "canal seguro",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "ebfc0a6c-782e-42a5-aef1-b97902998fca",
+      "tipo": "comando",
+      "titulo": "Listar os tickets Kerberos",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "klist",
+      "descricao": "Diagnosticar falhas de autenticação em compartilhamentos e recursos do domínio.",
+      "prerequisitos": "CMD ou PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "kerberos",
+        "autenticação",
+        "domínio",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d971ffd2-ddfd-43e8-b419-0df9e9a3de37",
+      "tipo": "comando",
+      "titulo": "Limpar os tickets Kerberos",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "klist purge",
+      "descricao": "Usuário mudou de grupo ou senha e o acesso não atualizou: força novos tickets sem reiniciar.",
+      "prerequisitos": "CMD ou PowerShell. Pode ser preciso fazer logoff para pegar os grupos novos.",
+      "requer_admin": false,
+      "tags": [
+        "kerberos",
+        "autenticação",
+        "domínio",
+        "permissão",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "35a524d3-bcd3-4469-b974-1ae95e4241dc",
+      "tipo": "comando",
+      "titulo": "Reparar o canal seguro com o domínio",
+      "categoria": "Active Directory e Entra ID",
+      "conteudo": "Test-ComputerSecureChannel -Repair -Credential DOMINIO\\usuario_admin",
+      "descricao": "Relação de confiança quebrada: repara sem tirar e recolocar a máquina no domínio.",
+      "prerequisitos": "Windows PowerShell 5.1 como administrador (o comando não existe no PowerShell 7). Precisa de credencial de administrador do domínio.",
+      "requer_admin": true,
+      "tags": [
+        "domínio",
+        "relação de confiança",
+        "canal seguro",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "02decdd6-5c45-4814-8b1f-c01328b04c96",
+      "tipo": "comando",
+      "titulo": "Abrir o Gerenciamento de Impressão",
+      "categoria": "Impressoras",
+      "conteudo": "printmanagement.msc",
+      "descricao": "Gerenciar impressoras, drivers e filas de forma avançada.",
+      "prerequisitos": "Rodar em Win + R. Não existe no Windows Home.",
+      "requer_admin": false,
+      "tags": [
+        "impressora",
+        "driver",
+        "fila",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d416fb3c-4576-428e-bc49-f71676abad42",
+      "tipo": "comando",
+      "titulo": "Abrir Dispositivos e Impressoras",
+      "categoria": "Impressoras",
+      "conteudo": "control printers",
+      "descricao": "Ver rapidamente as impressoras instaladas e a padrão.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "impressora",
+        "padrão",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "35d132e0-86df-490c-95e8-e9986fda3aa7",
+      "tipo": "comando",
+      "titulo": "Reiniciar o spooler de impressão (CMD)",
+      "categoria": "Impressoras",
+      "conteudo": "net stop spooler && net start spooler",
+      "descricao": "Fila de impressão travada (versão para CMD).",
+      "prerequisitos": "CMD como administrador. O && não funciona no Windows PowerShell 5.1; lá use Restart-Service Spooler.",
+      "requer_admin": true,
+      "tags": [
+        "impressora",
+        "spooler",
+        "fila",
+        "travada",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "f957b566-d681-417b-a106-7ba64591c5ec",
+      "tipo": "comando",
+      "titulo": "Limpar a fila de impressão (CMD)",
+      "categoria": "Impressoras",
+      "conteudo": "net stop spooler\ndel /Q /F /S \"%systemroot%\\System32\\spool\\PRINTERS\\*\"\nnet start spooler",
+      "descricao": "Documentos presos na fila que não somem nem reiniciando o spooler.",
+      "prerequisitos": "CMD como administrador. Apaga os trabalhos pendentes de todos os usuários da máquina.",
+      "requer_admin": true,
+      "tags": [
+        "impressora",
+        "spooler",
+        "fila",
+        "travada",
+        "não imprime",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "8b7ef0df-7a33-44cf-accf-52f3a829c4d5",
+      "tipo": "comando",
+      "titulo": "Abrir a Área de Trabalho Remota",
+      "categoria": "Acesso remoto",
+      "conteudo": "mstsc",
+      "descricao": "Conectar via RDP a outro computador ou servidor.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "rdp",
+        "remoto",
+        "servidor",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "51d20e3c-6bac-43a8-be63-5511872a3c48",
+      "tipo": "comando",
+      "titulo": "Conectar via RDP na sessão administrativa",
+      "categoria": "Acesso remoto",
+      "conteudo": "mstsc /v:IP_DO_SERVIDOR /admin",
+      "descricao": "Servidor sem licença de RDS livre ou que precisa da sessão de console.",
+      "prerequisitos": "CMD ou PowerShell. Troque IP_DO_SERVIDOR.",
+      "requer_admin": false,
+      "tags": [
+        "rdp",
+        "remoto",
+        "servidor",
+        "console",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "5ed65952-f308-4ef6-aa7e-287391b4a536",
+      "tipo": "comando",
+      "titulo": "Abrir a Assistência Remota do Windows",
+      "categoria": "Acesso remoto",
+      "conteudo": "msra",
+      "descricao": "Dar suporte remoto com permissão do usuário, sem ferramenta de terceiros.",
+      "prerequisitos": "Rodar em Win + R (Executar).",
+      "requer_admin": false,
+      "tags": [
+        "remoto",
+        "assistência",
+        "suporte",
+        "win+r"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "7c42a628-09ee-4cbe-a650-f36a7f4d1e72",
+      "tipo": "comando",
+      "titulo": "Listar sessões de usuários conectados",
+      "categoria": "Acesso remoto",
+      "conteudo": "quser",
+      "descricao": "Ver quem está logado no servidor ou máquina, inclusive via RDP, e o ID de cada sessão.",
+      "prerequisitos": "CMD.",
+      "requer_admin": false,
+      "tags": [
+        "rdp",
+        "sessão",
+        "usuário logado",
+        "servidor",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "370d9eca-d6c4-4ee3-b912-d37db9433038",
+      "tipo": "comando",
+      "titulo": "Derrubar uma sessão RDP travada",
+      "categoria": "Acesso remoto",
+      "conteudo": "logoff ID_DA_SESSAO",
+      "descricao": "Usuário com sessão travada no servidor: encerra pelo ID mostrado no quser.",
+      "prerequisitos": "CMD como administrador. O usuário perde o que não salvou.",
+      "requer_admin": true,
+      "tags": [
+        "rdp",
+        "sessão",
+        "travado",
+        "servidor",
+        "cmd"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "04e59fe8-f858-4dc3-b95f-9dcdc323ed0b",
+      "tipo": "comando",
+      "titulo": "Abrir o Executar",
+      "categoria": "Atalhos do Windows",
+      "conteudo": "Win + R",
+      "descricao": "Ponto de partida para quase todos os comandos .msc e .cpl deste kit.",
+      "prerequisitos": "",
+      "requer_admin": false,
+      "tags": [
+        "executar",
+        "run",
+        "atalho"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "09605051-7767-405d-b550-6f2389a703f9",
+      "tipo": "comando",
+      "titulo": "Abrir o Gerenciador de Tarefas direto",
+      "categoria": "Atalhos do Windows",
+      "conteudo": "Ctrl + Shift + Esc",
+      "descricao": "Abrir o Gerenciador de Tarefas sem passar pelo Ctrl + Alt + Del.",
+      "prerequisitos": "",
+      "requer_admin": false,
+      "tags": [
+        "gerenciador de tarefas",
+        "travado",
+        "atalho"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "66b5fdd2-8480-4a82-875a-2dcb4eab4c4a",
+      "tipo": "artigo",
+      "titulo": "Windows com arquivos corrompidos (DISM + SFC)",
+      "categoria": "Integridade do sistema",
+      "sintoma": "Erros estranhos do Windows, programas do sistema que não abrem, atualização que falha, telas pretas ou brancas, mensagens de arquivo corrompido.",
+      "causa": "Arquivos de sistema ou a própria imagem do Windows corrompidos, por queda de energia, disco com problema ou atualização interrompida.",
+      "solucao": "1. Abra o CMD ou o PowerShell como administrador.\n2. Faça a verificação rápida:\n```\nDISM /Online /Cleanup-Image /CheckHealth\n```\n3. Repare a imagem (precisa de internet e pode demorar):\n```\nDISM /Online /Cleanup-Image /RestoreHealth\n```\n4. Depois, repare os arquivos do sistema:\n```\nsfc /scannow\n```\n5. Reinicie o computador.\n6. Se o sfc ainda encontrar erros, rode o sfc /scannow mais uma vez e reinicie de novo.",
+      "observacoes": "A ordem importa: o SFC usa a imagem do Windows como referência. Se a imagem estiver corrompida, o SFC sozinho não resolve. Se o DISM falhar, verifique o disco com chkdsk.",
+      "relacionados": [
+        "927ef650-5c9a-4c55-938c-1326bf43a015",
+        "d7f5d62c-bbb5-4a1a-819e-83768992076d",
+        "f875ad0e-046d-4a89-9985-67d3eac01278",
+        "f89377dd-5a05-47f6-8674-a8012e45ada4"
+      ],
+      "tags": [
+        "corrompido",
+        "reparo",
+        "dism",
+        "sfc",
+        "windows quebrado"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "b270b8bf-8b05-4d5f-848d-3341a52d3465",
+      "tipo": "artigo",
+      "titulo": "Computador lento: triagem rápida",
+      "categoria": "Diagnóstico",
+      "sintoma": "Usuário reclama que o computador está lento, travando ou demorando para abrir programas.",
+      "causa": "As causas mais comuns são: processo consumindo CPU ou RAM, disco a 100%, disco cheio, pouca memória ou atualização rodando em segundo plano.",
+      "solucao": "1. Abra o Gerenciador de Tarefas (Ctrl + Shift + Esc) e ordene por CPU, Memória e Disco.\n2. Se precisar de detalhe por processo, abra o Monitor de Recursos:\n```\nresmon\n```\n3. Veja quem mais usa memória:\n```\nGet-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10\n```\n4. Confira o espaço livre:\n```\nfsutil volume diskfree C:\n```\n5. Veja erros recentes no sistema:\n```\nGet-WinEvent -FilterHashtable @{LogName='System'; Level=2} -MaxEvents 20\n```\n6. Se o disco estiver a 100% por causa do Windows Search, veja o artigo de indexação antes de desativar qualquer coisa.",
+      "observacoes": "Desativar serviços é o último recurso. Antes, confirme o que está consumindo e se não é uma atualização ou um antivírus rodando uma varredura.",
+      "relacionados": [
+        "6036b564-8197-4dcb-b9a8-96446394f3f8",
+        "d4c25b0c-45b7-414d-afb1-0fcfca8f0d82",
+        "66250d00-f267-4f5b-9d55-b3de3da2c6af",
+        "1919119b-9289-4d3d-bbc3-b10621ea3c30",
+        "e08db1ef-42a2-4096-bebd-1d79be82e42b"
+      ],
+      "tags": [
+        "lento",
+        "travando",
+        "desempenho",
+        "disco 100%",
+        "cpu",
+        "ram"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "86bee6c1-04b7-4428-b15a-cd128cb0b008",
+      "tipo": "artigo",
+      "titulo": "Sem internet ou rede instável",
+      "categoria": "Redes",
+      "sintoma": "Usuário sem internet, sites que não abrem ou conexão que cai e volta.",
+      "causa": "IP errado ou sem DHCP, DNS com problema, Winsock ou TCP/IP corrompidos (comum após remover VPN ou antivírus), cabo ou Wi-Fi ruim.",
+      "solucao": "1. Veja se a máquina tem IP válido. Endereço 169.254.x.x significa que não pegou IP do DHCP:\n```\nipconfig /all\n```\n2. Teste se chega na internet:\n```\nping 8.8.8.8 -t\n```\n3. Se o ping no IP funciona mas o site não abre pelo nome, o problema é DNS:\n```\nnslookup google.com\n```\n4. Renove o IP:\n```\nipconfig /release\nipconfig /renew\n```\n5. Se nada resolver, resete o Winsock e reinicie o PC:\n```\nnetsh winsock reset\n```\n6. Último recurso: resete o TCP/IP e reinicie de novo:\n```\nnetsh int ip reset\n```",
+      "observacoes": "Os resets dos passos 5 e 6 exigem reiniciar o PC e o passo 6 apaga IP fixo configurado manualmente. Anote a configuração antes.",
+      "relacionados": [
+        "938d00bf-4836-40f4-bcd9-d7ac4f7fd7ad",
+        "656373cd-79df-4e37-a930-f829cd9e322e",
+        "3cad8d94-e017-468e-ab47-8616d454c2c5",
+        "01a7c6d4-87e2-42fb-aa0c-627e2af41015",
+        "b682d897-71bb-4aaf-a4bc-19ba73811344",
+        "5813f48d-6612-4215-b6ec-d4547db836cb"
+      ],
+      "tags": [
+        "sem internet",
+        "rede",
+        "dns",
+        "ip",
+        "wi-fi",
+        "oscilando"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:14:38.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "d9d3598f-cc18-45aa-931b-2a56d8c5ac13",
+      "tipo": "comando",
+      "titulo": "Instalar os módulos do Graph e do Excel (uma vez por PC)",
+      "categoria": "Microsoft 365",
+      "conteudo": "Install-Module Microsoft.Graph -Scope CurrentUser\nInstall-Module ImportExcel -Scope CurrentUser",
+      "descricao": "Primeira vez usando Graph/relatório neste computador, ou erro \"Connect-MgGraph não é reconhecido\" / \"Export-Excel não é reconhecido\".",
+      "prerequisitos": "PowerShell (não precisa de administrador com -Scope CurrentUser). O Microsoft.Graph é grande e pode levar alguns minutos. Se perguntar sobre repositório não confiável (PSGallery), responda S.",
+      "requer_admin": false,
+      "tags": [
+        "graph",
+        "módulo",
+        "instalar",
+        "importexcel",
+        "export-excel",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "0802c3bd-57c4-4107-a09d-ac0444ad7d89",
+      "tipo": "comando",
+      "titulo": "Conectar ao tenant do cliente (Microsoft Graph)",
+      "categoria": "Microsoft 365",
+      "conteudo": "Connect-MgGraph -TenantId \"cliente.onmicrosoft.com\" -Scopes \"User.Read.All\",\"Organization.Read.All\" -NoWelcome",
+      "descricao": "Início de qualquer consulta no Microsoft 365 de um cliente. Abre o login interativo com permissão de leitura de usuários e da organização.",
+      "prerequisitos": "PowerShell. Troque cliente.onmicrosoft.com pelo domínio onmicrosoft do cliente (também aceita o ID do tenant). Se já estiver conectado em outro cliente, rode Disconnect-MgGraph antes. A conta precisa ter permissão de admin (ex.: Leitor Global) ou consentir os scopes.",
+      "requer_admin": false,
+      "tags": [
+        "graph",
+        "tenant",
+        "conectar",
+        "login",
+        "cliente",
+        "onmicrosoft",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "25972bed-0abb-4309-b98f-b222713490d6",
+      "tipo": "comando",
+      "titulo": "Ver a sessão atual do Graph (conta, tenant e scopes)",
+      "categoria": "Microsoft 365",
+      "conteudo": "Get-MgContext",
+      "descricao": "Conferir com qual conta e em qual tenant você está conectado antes de rodar qualquer coisa.",
+      "prerequisitos": "PowerShell. Mostra o TenantId como código (GUID), não o nome do cliente: para ver o nome, use \"Confirmar o nome do cliente conectado\".",
+      "requer_admin": false,
+      "tags": [
+        "graph",
+        "sessão",
+        "tenant",
+        "conta",
+        "scopes",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "11044ce2-9feb-4b1d-9f66-f61b45215821",
+      "tipo": "comando",
+      "titulo": "Confirmar o nome do cliente conectado",
+      "categoria": "Microsoft 365",
+      "conteudo": "Get-MgOrganization | Select-Object DisplayName, Id",
+      "descricao": "Garantir que está no tenant do cliente certo antes de gerar relatório ou alterar algo. Evita mandar a planilha de um cliente com o nome de outro.",
+      "prerequisitos": "PowerShell, conectado com o scope Organization.Read.All.",
+      "requer_admin": false,
+      "tags": [
+        "graph",
+        "tenant",
+        "cliente",
+        "organização",
+        "conferir",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "cd0a9c78-73ab-4e5f-abd3-577f6101106a",
+      "tipo": "comando",
+      "titulo": "Desconectar do Microsoft Graph",
+      "categoria": "Microsoft 365",
+      "conteudo": "Disconnect-MgGraph",
+      "descricao": "Sempre ao terminar e antes de trocar de cliente. Sem isso, o próximo Connect-MgGraph pode reaproveitar o login anterior.",
+      "prerequisitos": "PowerShell.",
+      "requer_admin": false,
+      "tags": [
+        "graph",
+        "desconectar",
+        "trocar de cliente",
+        "tenant",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "b08501a3-3b3a-437b-bfa9-d0c63951b36e",
+      "tipo": "comando",
+      "titulo": "Gerar planilha de usuários licenciados do cliente",
+      "categoria": "Microsoft 365",
+      "conteudo": "# Relatório de usuários licenciados do Microsoft 365\n# Antes: Connect-MgGraph com os scopes User.Read.All e Organization.Read.All\n# Requer os módulos Microsoft.Graph e ImportExcel\n\n$Cliente = \"NOME_DO_CLIENTE\"\n\n$Destino = \"C:\\365\\NOVO\\$Cliente\"\n$Arquivo = Join-Path $Destino \"${Cliente}_Usuarios_Licenciados.xlsx\"\nNew-Item -ItemType Directory -Path $Destino -Force | Out-Null\n\n# Nomes comerciais. SKU fora da lista aparece com o código (ex.: SPE_E3)\n$NomesComerciais = @{\n    \"O365_BUSINESS_ESSENTIALS\" = \"Microsoft 365 Business Basic\"\n    \"O365_BUSINESS_PREMIUM\"    = \"Microsoft 365 Business Standard\"\n    \"SPB\"                      = \"Microsoft 365 Business Premium\"\n    \"O365_BUSINESS\"            = \"Microsoft 365 Apps for business\"\n    \"EXCHANGESTANDARD\"         = \"Exchange Online (Plan 1)\"\n    \"EXCHANGEENTERPRISE\"       = \"Exchange Online (Plan 2)\"\n    \"ENTERPRISEPACK\"           = \"Office 365 E3\"\n    \"SPE_E3\"                   = \"Microsoft 365 E3\"\n    \"SPE_E5\"                   = \"Microsoft 365 E5\"\n    \"FLOW_FREE\"                = \"Microsoft Power Automate Free\"\n    \"POWER_BI_STANDARD\"        = \"Microsoft Fabric (Free)\"\n    \"TEAMS_EXPLORATORY\"        = \"Microsoft Teams Exploratory\"\n}\n\n# 1 consulta para traduzir o código interno (SkuId) no nome do SKU\n$Skus = @{}\nGet-MgSubscribedSku -All | ForEach-Object { $Skus[\"$($_.SkuId)\"] = $_.SkuPartNumber }\n\n# 1 consulta só com quem tem licença (em vez de 1 consulta por usuário)\n$Usuarios = Get-MgUser -All `\n    -Filter 'assignedLicenses/$count ne 0' `\n    -ConsistencyLevel eventual -CountVariable TotalLicenciados `\n    -Property Id, DisplayName, UserPrincipalName, AccountEnabled, AssignedLicenses\n\n$Relatorio = foreach ($Usuario in $Usuarios) {\n    $Licencas = foreach ($Licenca in $Usuario.AssignedLicenses) {\n        $Sku = $Skus[\"$($Licenca.SkuId)\"]\n        if (-not $Sku) { $Sku = \"$($Licenca.SkuId)\" }\n        if ($NomesComerciais.ContainsKey($Sku)) { $NomesComerciais[$Sku] } else { $Sku }\n    }\n\n    [PSCustomObject]@{\n        Nome     = $Usuario.DisplayName\n        Email    = $Usuario.UserPrincipalName\n        Status   = if ($Usuario.AccountEnabled) { \"Ativo\" } else { \"Bloqueado\" }\n        Licencas = (($Licencas | Where-Object { $_ } | Sort-Object -Unique) -join \"; \")\n    }\n}\n\n$Relatorio |\n    Sort-Object Nome |\n    Export-Excel `\n        -Path $Arquivo `\n        -WorksheetName \"Usuarios Licenciados\" `\n        -TableName \"UsuariosLicenciados\" `\n        -AutoSize `\n        -FreezeTopRow `\n        -BoldTopRow `\n        -ClearSheet\n\n$Bloqueados = @($Relatorio | Where-Object Status -eq \"Bloqueado\").Count\n\nWrite-Host \"\"\nWrite-Host \"Relatório gerado com sucesso!\" -ForegroundColor Green\nWrite-Host $Arquivo -ForegroundColor Green\nWrite-Host \"Usuários licenciados: $(@($Relatorio).Count)\" -ForegroundColor Cyan\nif ($Bloqueados) { Write-Host \"Atenção: $Bloqueados conta(s) bloqueada(s) ainda com licença\" -ForegroundColor Yellow }",
+      "descricao": "Levantamento de licenças de um cliente: gera um Excel com nome, e-mail, status da conta e licenças de cada usuário licenciado.",
+      "prerequisitos": "PowerShell, já conectado ao tenant (Connect-MgGraph com User.Read.All e Organization.Read.All) e com os módulos Microsoft.Graph e ImportExcel instalados. Troque NOME_DO_CLIENTE na linha $Cliente: ele vira a pasta C:\\365\\NOVO\\NOME_DO_CLIENTE e o nome do arquivo. Se a planilha já existir, a aba é sobrescrita (-ClearSheet). Rode no PowerShell, não no Windows Terminal com CMD.",
+      "requer_admin": false,
+      "tags": [
+        "licença",
+        "licenças",
+        "relatório",
+        "planilha",
+        "excel",
+        "usuários",
+        "graph",
+        "auditoria",
+        "m365",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "859afabf-1735-4a1b-b106-b2bc39f2a861",
+      "tipo": "artigo",
+      "titulo": "Levantar as licenças Microsoft 365 de um cliente",
+      "categoria": "Microsoft 365",
+      "sintoma": "Precisa entregar ou conferir a lista de usuários e licenças do Microsoft 365 de um cliente.",
+      "causa": "",
+      "solucao": "1. Só na primeira vez neste PC: instale os módulos (comando relacionado \"Instalar os módulos\").\n2. Se estava em outro cliente, desconecte:\n```\nDisconnect-MgGraph\n```\n3. Conecte no tenant do cliente:\n```\nConnect-MgGraph -TenantId \"cliente.onmicrosoft.com\" -Scopes \"User.Read.All\",\"Organization.Read.All\" -NoWelcome\n```\n4. Confirme que está no cliente certo:\n```\nGet-MgOrganization | Select-Object DisplayName, Id\n```\n5. Rode o script \"Gerar planilha de usuários licenciados do cliente\", trocando NOME_DO_CLIENTE.\n6. Abra a planilha em C:\\365\\NOVO\\NOME_DO_CLIENTE e confira as contas marcadas como Bloqueado: são licenças pagas sem uso.\n7. Ao terminar, desconecte de novo com Disconnect-MgGraph.",
+      "observacoes": "Os scopes pedidos são só de leitura: o script não altera nada no tenant. SKU que aparecer com código (ex.: algo como SPE_F1) é porque não está na lista de nomes do script; é só acrescentar a linha no $NomesComerciais.",
+      "relacionados": [
+        "d9d3598f-cc18-45aa-931b-2a56d8c5ac13",
+        "cd0a9c78-73ab-4e5f-abd3-577f6101106a",
+        "0802c3bd-57c4-4107-a09d-ac0444ad7d89",
+        "11044ce2-9feb-4b1d-9f66-f61b45215821",
+        "b08501a3-3b3a-437b-bfa9-d0c63951b36e",
+        "25972bed-0abb-4309-b98f-b222713490d6"
+      ],
+      "tags": [
+        "licença",
+        "licenças",
+        "relatório",
+        "planilha",
+        "cliente",
+        "tenant",
+        "m365",
+        "graph"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-13T15:27:58.000Z",
+      "atualizado_em": "2026-11-13T15:27:58.000Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "tipo": "comando",
+      "titulo": "Reiniciar o Windows Explorer",
+      "categoria": "Diagnóstico",
+      "conteudo": "Stop-Process -Name explorer -Force\nStart-Sleep -Seconds 2\nif (-not (Get-Process -Name explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }",
+      "descricao": "Barra de tarefas, menu Iniciar ou área de trabalho travados ou sem resposta.",
+      "prerequisitos": "PowerShell aberto na sessão do próprio usuário (não funciona pela sessão de outro usuário).",
+      "requer_admin": false,
+      "tags": [
+        "explorer",
+        "barra de tarefas",
+        "menu iniciar",
+        "travado",
+        "área de trabalho",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-12T00:00:00.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "tipo": "comando",
+      "titulo": "Limpar o cache DNS",
+      "categoria": "Redes",
+      "conteudo": "ipconfig /flushdns",
+      "descricao": "Site ou servidor que mudou de IP continua abrindo o endereço antigo, ou nome não resolve depois de alteração no DNS ou VPN.",
+      "prerequisitos": "CMD ou PowerShell. Em versões atuais do Windows 10/11 costuma funcionar sem elevação. Se aparecer \"A operação solicitada requer elevação\", abra como administrador.",
+      "requer_admin": false,
+      "tags": [
+        "dns",
+        "cache",
+        "rede",
+        "internet",
+        "site não abre",
+        "flushdns",
+        "vpn",
+        "cmd",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-12T00:00:00.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "tipo": "comando",
+      "titulo": "Reiniciar o spooler de impressão",
+      "categoria": "Impressoras",
+      "conteudo": "Restart-Service -Name Spooler -Force",
+      "descricao": "Fila de impressão travada, documentos presos em \"Imprimindo\" ou \"Erro\".",
+      "prerequisitos": "PowerShell aberto como administrador.",
+      "requer_admin": true,
+      "tags": [
+        "impressora",
+        "impressão",
+        "imprimir",
+        "spooler",
+        "fila",
+        "powershell"
+      ],
+      "favorito": false,
+      "usos": 0,
+      "criado_em": "2026-11-12T00:00:00.000Z",
+      "atualizado_em": "2026-11-13T15:14:38.000Z"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Configuração do projeto Cloudflare Pages "Kit do Técnico"
+# Confira a sintaxe em: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+
+name = "kit-do-tecnico"
+compatibility_date = "2026-11-01"
+pages_build_output_dir = "./public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kit-do-tecnico"
+# Substitua pelo ID exibido por: npx wrangler d1 create kit-do-tecnico
+database_id = "d125ccc5-d6e1-4a71-babb-c7af8d8b6896"

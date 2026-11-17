@@ -1,0 +1,22 @@
+# Cache e banco local do wrangler (contém a identificação da conta)
+.wrangler/
+**/.wrangler/
+
+# Dependências e logs
+node_modules/
+*.log
+
+# Backups exportados do D1 e do app (contêm todos os dados)
+backup*.sql
+*.sql.bak
+kit-do-tecnico-backup-*.json
+
+# Variáveis locais e segredos
+.env
+.env.*
+.dev.vars
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store

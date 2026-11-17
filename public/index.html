@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#06142B">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Biblioteca pessoal de comandos, atalhos e soluções técnicas.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kit Técnico">
+  <title>Kit do Técnico</title>
+  <!-- use-credentials: com Cloudflare Access, sem o cookie de login o manifesto seria bloqueado -->
+  <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="/js/tema.js"></script>
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+  <header class="topo" id="topo">
+    <div class="topo-linha">
+      <button type="button" id="btn-gaveta" class="btn-icone" aria-label="Abrir menu" aria-expanded="false" aria-controls="gaveta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="marca">
+        <img src="/icons/icon.svg" alt="" width="28" height="28">
+        <span>Kit do Técnico</span>
+      </div>
+      <div class="busca">
+        <svg class="busca-icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="campo-busca" type="search" placeholder="Buscar comando, sintoma ou tag" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Buscar">
+        <kbd class="busca-dica" aria-hidden="true">Ctrl K</kbd>
+        <button type="button" id="btn-limpar-busca" class="btn-limpar" aria-label="Limpar busca" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <span id="status-conexao" class="pilula pilula-offline" hidden>Offline</span>
+      <button type="button" id="btn-tema" class="btn-icone" aria-label="Alternar cor do tema">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z" fill="currentColor"/></svg>
+      </button>
+      <button type="button" id="btn-novo-topo" class="btn btn-primario btn-novo-topo so-online">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Novo item</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="aviso-offline" class="aviso-offline" hidden>
+    Sem conexão. Modo somente leitura, com os dados salvos neste aparelho.
+  </div>
+
+  <!-- Menu lateral: abre sobre o conteúdo, sem deslocar a lista -->
+  <div id="gaveta-fundo" class="gaveta-fundo" hidden></div>
+  <nav id="gaveta" class="gaveta" aria-label="Menu principal" hidden>
+    <div class="gaveta-topo">
+      <div class="marca">
+        <img src="/icons/icon.svg" alt="" width="28" height="28">
+        <span>Kit do Técnico</span>
+      </div>
+    </div>
+    <ul class="gaveta-lista">
+      <li><button type="button" class="gaveta-item" data-secao="biblioteca">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6"/></svg>
+        <span>Biblioteca</span><span class="gaveta-contador" data-contador="biblioteca"></span></button></li>
+      <li><button type="button" class="gaveta-item" data-secao="favoritos">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>
+        <span>Favoritos</span><span class="gaveta-contador" data-contador="favoritos"></span></button></li>
+      <li><button type="button" class="gaveta-item" data-secao="recentes">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+        <span>Recentes</span><span class="gaveta-contador" data-contador="recentes"></span></button></li>
+    </ul>
+    <p class="gaveta-sub">Ferramentas</p>
+    <ul class="gaveta-lista">
+      <li><button type="button" class="gaveta-item so-online" data-acao="categorias">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Gerenciar categorias</span></button></li>
+      <li><button type="button" class="gaveta-item" data-acao="exportar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+        <span>Exportar backup</span></button></li>
+      <li><button type="button" class="gaveta-item so-online" data-acao="importar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V9m0 0-4 4m4-4 4 4M5 4h14"/></svg>
+        <span>Importar backup</span></button></li>
+      <li><button type="button" class="gaveta-item" data-acao="recarregar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>
+        <span>Recarregar dados</span></button></li>
+    </ul>
+    <p class="gaveta-dica">No computador: Ctrl + K ou / para buscar, Esc para fechar.</p>
+  </nav>
+
+  <div class="layout" id="layout">
+    <main id="principal" class="principal">
+      <div class="cabeca-secao">
+        <h1 id="titulo-secao" class="titulo-secao">Biblioteca</h1>
+      </div>
+      <div id="chips" class="chips" role="toolbar" aria-label="Filtros"></div>
+      <div class="barra-lista">
+        <span id="contagem" class="contagem" aria-live="polite"></span>
+        <label class="ordem">
+          <span class="sr-only">Ordenar por</span>
+          <select id="ordenacao">
+            <option value="relevancia">Relevância</option>
+            <option value="usados">Mais usados</option>
+            <option value="recentes">Recentes</option>
+            <option value="alfabetica">A–Z</option>
+          </select>
+        </label>
+      </div>
+      <ul id="lista" class="lista" aria-label="Itens"></ul>
+      <div id="vazio" class="vazio" hidden></div>
+      <div id="carregando" class="vazio">Carregando…</div>
+    </main>
+    <!-- Detalhe do item no computador (no celular abre em tela cheia) -->
+    <aside id="detalhe" class="detalhe-lateral" aria-label="Detalhe do item" hidden></aside>
+  </div>
+
+  <button type="button" id="btn-novo" class="fab" aria-label="Novo item">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    <span>Novo item</span>
+  </button>
+
+  <!-- Painéis sobrepostos (detalhe no celular, formulário, categorias) são montados pelo JS aqui -->
+  <div id="camada"></div>
+
+  <dialog id="dialogo" class="dialogo">
+    <form method="dialog" class="dialogo-corpo">
+      <p id="dialogo-texto"></p>
+      <div class="dialogo-acoes">
+        <button type="submit" value="cancelar" class="btn btn-secundario">Cancelar</button>
+        <button type="submit" value="ok" id="dialogo-ok" class="btn btn-perigo">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite" hidden></div>
+
+  <input type="file" id="arquivo-backup" accept="application/json,.json" hidden>
+  <noscript><p class="vazio">Ative o JavaScript para usar o Kit do Técnico.</p></noscript>
+</body>
+</html>
