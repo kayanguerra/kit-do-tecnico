@@ -1,6 +1,6 @@
 # Kit do Técnico — Documentação técnica e operacional
 
-> Gerada em 16/11/2026 a partir do código em `C:\Projetos\kit-do-tecnico-final`.
+> Gerada em 16/11/2026 e **atualizada em 17/11/2026** a partir do código em `C:\Projetos\kit-do-tecnico-final` (repositório privado no GitHub, branch `main`).
 > Nenhum segredo, token ou valor de configuração foi copiado para este documento (o `database_id` do D1 foi omitido de propósito).
 
 ## Como ler as marcações
@@ -8,10 +8,11 @@
 | Marcação | Significado |
 |---|---|
 | **[Código]** | Confirmado lendo os arquivos do projeto. |
+| **[Testado]** | Conferido em 17/11/2026 com testes feitos por você no ambiente publicado (prints enviados). |
 | **[Informado]** | Você me informou em conversas anteriores, mas eu **não** consegui verificar no ambiente publicado. |
 | **[Pendente]** | Depende de conferência no painel da Cloudflare ou de um teste. A tabela de pendências (seção 7) diz como resolver. |
 
-**Limite desta análise:** não consegui abrir `kit-do-tecnico.pages.dev` daqui (o acesso de rede da minha sessão bloqueia o domínio). Portanto **nada do ambiente publicado foi confirmado por mim**. Tudo o que diz respeito a produção está marcado como [Informado] ou [Pendente].
+**Limite desta análise:** não consigo abrir `kit-do-tecnico.pages.dev` daqui (o acesso de rede da minha sessão bloqueia o domínio). O que diz respeito a produção foi conferido pelos testes que você fez em 17/11/2026 e está marcado como [Testado]; o resto continua [Informado] ou [Pendente].
 
 ---
 
@@ -20,14 +21,18 @@
 - **O que é:** uma biblioteca pessoal de comandos (PowerShell, CMD, Win+R), atalhos de teclado, links e artigos de solução de problemas, feita para consultar e copiar pelo celular durante atendimentos. Funciona como app instalável (PWA) e abre offline em modo somente leitura.
 - **Como é feito:** HTML, CSS e JavaScript puros (sem framework) na pasta `public/`; uma API pequena em **Cloudflare Pages Functions** na pasta `functions/`; dados no **Cloudflare D1** (um banco SQLite gerenciado pela Cloudflare). Não há `package.json`, build nem dependências de terceiros no navegador.
 - **Onde ficam os dados:** no D1, na sua conta Cloudflare. No celular ficam apenas uma cópia para uso offline (cache do service worker), a preferência de tema e a data da última sincronização. Limpar o navegador não apaga nada do banco; publicar uma nova versão do site também não.
-- **Segurança:** a API **não tem login próprio**. Toda a proteção depende do **Cloudflare Access** cobrindo o domínio de produção **e** os endereços de pré-visualização (`*.kit-do-tecnico.pages.dev`). Você informou que ativou o Access; eu não consegui confirmar. **Esta é a verificação mais importante da lista.**
-- **Custo:** com o uso de uma pessoa, tudo cabe nos planos gratuitos (Workers Free, D1 Free, Zero Trust Free, subdomínio `pages.dev`). No plano gratuito, ao estourar um limite o serviço **para** até o dia seguinte em vez de cobrar. Você só passaria a pagar se assinasse o Workers Paid (US$ 5/mês), um domínio próprio ou passasse de 50 usuários no Access. O plano real da conta precisa ser conferido no painel.
-- **Pontos fracos encontrados:**
-  1. Uma pasta `public/.wrangler/` (cache do wrangler com a identificação da sua conta) está **dentro da pasta publicada** e provavelmente foi enviada ao site.
-  2. Não há Git: não existe histórico de alterações do código.
-  3. O `schema.sql` começa com `DROP TABLE`: rodar de novo apaga todos os dados. Não há sistema de migrações.
-  4. Backup depende de você exportar manualmente; a recuperação automática do D1 (Time Travel) cobre só 7 dias no plano gratuito.
-- **Três primeiras ações recomendadas:** (1) testar o Access em janela anônima, inclusive na URL de pré-visualização, e adicionar validação do token do Access na API; (2) remover `public/.wrangler`, criar `.gitignore` e colocar o projeto no Git; (3) trocar o `schema.sql` destrutivo por migrações e criar uma rotina de backup com `wrangler d1 export`.
+- **Segurança:** duas camadas. (1) O **Cloudflare Access** fica na frente do site e exige login por código no e-mail; cobre `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev` e só aceita o seu e-mail. (2) A **API confere o token assinado do Access** em toda requisição e responde 403 se ele faltar ou não conferir. Cookie do login com **HTTP Only**. **[Testado]**
+- **Custo:** com o uso de uma pessoa, tudo cabe nos planos gratuitos (Workers Free, D1 Free, Zero Trust Free, subdomínio `pages.dev`). No plano gratuito, ao estourar um limite o serviço **para** até o dia seguinte em vez de cobrar. A conta está no **Zero Trust Free** [Testado]; o plano do Workers ainda precisa ser conferido no painel.
+- **Visual:** segue o **Kayan Design System** (fundo preto, verde neon como única cor de destaque, Space Grotesk, Inter e JetBrains Mono servidas pelo próprio site), com temas escuro e claro.
+- **O que foi resolvido em 17/11/2026:**
+  1. Access conferido em produção e nas pré-visualizações; outro e-mail não recebe código. **[Testado]**
+  2. `public/.wrangler` (identificação da conta) removido do site; o endereço agora cai na página inicial. **[Testado]**
+  3. Projeto no Git, com `.gitignore`, e num repositório **privado** no GitHub.
+  4. `schema.sql` destrutivo trocado por **migrações** (`migrations/`); a `0001` foi aplicada em produção.
+  5. **Script de backup** (`scripts/backup.ps1`) gravando no OneDrive, pronto para rodar toda semana pelo Agendador de Tarefas.
+  6. API valida o token do Access; cookie do login com HTTP Only.
+  7. Visual novo publicado.
+- **O que ainda vale fazer:** fixar a versão do wrangler (`package.json`), testar o Time Travel uma vez, olhar o `backup.log` todo mês e decidir sobre a lixeira. Detalhes na seção 6.
 
 ---
 
@@ -53,25 +58,28 @@ O Kit do Técnico é uma aplicação de página única (SPA): o navegador carreg
 | PWA | `manifest.webmanifest` + `service-worker.js` | **PWA**: site que pode ser instalado como app. **Service worker**: script que roda em segundo plano no navegador e intercepta requisições, permitindo cache offline. |
 | API | Cloudflare **Pages Functions** em `functions/` | Funções JavaScript que rodam nos servidores da Cloudflare quando alguém acessa `/api/...`. O nome do arquivo define a rota (roteamento por arquivo). |
 | Banco | Cloudflare **D1** | Banco SQL baseado em SQLite, hospedado pela Cloudflare. O código acessa por um **binding** chamado `DB` (uma variável injetada pela Cloudflare; não há senha no código). |
-| Hospedagem | Cloudflare **Pages** | Hospeda os arquivos estáticos e as Functions. Publicação por **Direct Upload** (envio direto pelo `wrangler`, sem Git). |
-| Proteção | Cloudflare **Access** (Zero Trust) | Fica na frente do site e exige login (código enviado por e-mail) antes de qualquer requisição chegar ao site ou à API. |
+| Hospedagem | Cloudflare **Pages** | Hospeda os arquivos estáticos e as Functions. Publicação por **Direct Upload** (envio direto pelo `wrangler`). O código fica no Git/GitHub, mas o GitHub **não** publica sozinho. |
+| Proteção | Cloudflare **Access** (Zero Trust) + validação do token na API | O Access fica na frente do site e exige login (código enviado por e-mail). A API confere o **JWT** (token assinado) que o Access envia no cabeçalho `Cf-Access-Jwt-Assertion`. |
+| Visual | **Kayan Design System** | Design system pessoal: tokens de cor, tipografia e componentes. Referência: https://claude.ai/artifact/6j9J5HrTFuTKpwcVSKY37c |
+| Código | **Git** + GitHub (privado) | Histórico de todas as alterações; branch `main` = o que está em produção. |
 | Ferramenta | **wrangler** (CLI da Cloudflare) | Programa de linha de comando para publicar, rodar localmente e consultar o D1. Executado via `npx`, sem instalação fixa. |
 
 **Onde roda e para onde vão os dados:**
 
 ```
 Celular / PC
-  │  (1) login no Cloudflare Access (código por e-mail)          [Informado]
+  │  (1) login no Cloudflare Access (código por e-mail)          [Testado]
   ▼
 kit-do-tecnico.pages.dev  ── arquivos de public/ (HTML, CSS, JS, ícones, fontes)
   │
   └── /api/*  →  Pages Functions (functions/)  →  D1 "kit-do-tecnico" (binding DB)
+                (2) _middleware.js confere o token do Access antes de tudo
                                                    (fica na sua conta Cloudflare)
 No aparelho: cache do service worker (cópia de /api/itens e /api/categorias)
              + localStorage (tema e data da última sincronização)
 ```
 
-Não há nenhum serviço externo além da Cloudflare: as fontes (Inter) estão no próprio projeto e a Content Security Policy em `public/_headers` bloqueia scripts, estilos e conexões de outros domínios. **[Código]**
+Não há nenhum serviço externo além da Cloudflare: as fontes (Inter, Space Grotesk e JetBrains Mono) estão no próprio projeto e a Content Security Policy em `public/_headers` bloqueia scripts, estilos e conexões de outros domínios. **[Código]**
 
 ---
 
@@ -97,8 +105,9 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 | Importar backup | Menu ☰ → Importar backup | 1º `POST /api/backup` com `confirmar:false` → só valida e mostra prévia (criar/substituir/categorias novas). 2º com `confirmar:true` → aplica tudo numa transação. Mesmo ID = substitui; itens fora do arquivo não são apagados. Limites: 5 MB e 5.000 itens. | `app.js` → `lerBackupEscolhido()`, `mostrarResultadoImportacao()`; `backup.js` → `analisar()` | [Código] OK. Comportamento com centenas de itens em produção: [Pendente] |
 | Modo offline | Abrir o app sem internet | Service worker devolve a última cópia de `/api/itens` e `/api/categorias` com o cabeçalho `X-Kit-Offline: 1`; o app esconde botões de gravação e mostra o aviso. Volta sozinho ao ficar online. | `public/service-worker.js`; `app.js` → `definirOffline()`, `exigirOnline()` | [Código] OK |
 | Instalar como app | Android: menu ⋮ → Instalar app. iPhone: Compartilhar → Adicionar à Tela de Início | `manifest.webmanifest` com `crossorigin="use-credentials"` para o navegador enviar o cookie do Access ao buscar o manifesto. | `public/manifest.webmanifest`, `index.html` | [Pendente] em aparelho real |
-| Tema | Botão de meia-lua no topo | Alterna "marinho"/"verde", salvo em `localStorage` (`kit-tema`). `tema.js` aplica antes da página aparecer. | `public/js/tema.js`; `app.js` → `alternarTema()` | [Código] OK |
-| Login / permissões | Tela da Cloudflare antes do site | **Não existe no código.** Não há usuários, perfis nem senha na API. Quem passa pelo Access pode ler, alterar e apagar tudo. | — (configuração no painel Zero Trust) | [Informado] / [Pendente] |
+| Tema | Botão de meia-lua no topo | Alterna "escuro"/"claro" (Kayan Design System), salvo em `localStorage` (`kit-tema`). `tema.js` aplica antes da página aparecer; valores antigos ("marinho", "verde") viram "escuro". | `public/js/tema.js`; `app.js` → `alternarTema()`; cores em `app.css` (`:root` e `[data-tema="claro"]`) | [Código] OK |
+| Login / permissões | Tela da Cloudflare antes do site | O login é do Access (só o seu e-mail). Não há usuários, perfis nem senha na API: quem passa pelo Access pode ler, alterar e apagar tudo. | Painel Zero Trust → Access controls → Applications → Kit do Técnico | [Testado] |
+| Validação do token do Access | Automático | Antes de qualquer rota `/api`, confere assinatura (chaves públicas da equipe em `/cdn-cgi/access/certs`, guardadas por 1 h), aplicação (`aud`), emissor (`iss`) e validade (`exp`/`nbf`). Sem token ou token inválido: **403**. Sem `ACCESS_TEAM_DOMAIN`/`ACCESS_AUD`: **500** (falha fechada, nunca libera). Em `localhost` a checagem é pulada. | `functions/_lib/access.js` → `validarAccess()`; `functions/api/_middleware.js`; `[vars]` no `wrangler.toml` | [Código] + [Testado] |
 | Sessão expirada | Automático | Com o Access, uma sessão vencida faz a API responder com redirecionamento; o app detecta (`redirect:'manual'`) e pede para recarregar. | `app.js` → `api()` | [Código]; efeito real [Pendente] |
 | Proteção contra outro site gravando | Automático | Middleware recusa `POST/PUT/PATCH/DELETE` cujo cabeçalho `Origin` seja de outro domínio (proteção básica contra CSRF). Requisições sem `Origin` (ex.: `curl`) passam. | `functions/api/_middleware.js` | [Código] OK |
 | Rota inexistente | — | Qualquer `/api/...` desconhecida devolve JSON 404. | `functions/api/[[rota]].js` | [Código] OK |
@@ -109,8 +118,8 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 **Cadastrar um comando**
 1. Você toca em **+ Novo item**. Se estiver offline, `exigirOnline()` bloqueia e avisa.
 2. Preenche o formulário e toca em **Salvar**. O app envia `POST /api/itens` com JSON.
-3. O Access confere o cookie de login (antes de chegar ao código). **[Informado]**
-4. `_middleware.js` confere a origem e se o binding `DB` existe.
+3. O Access confere o cookie de login (antes de chegar ao código). **[Testado]**
+4. `_middleware.js` confere o token do Access, a origem e se o binding `DB` existe.
 5. `itens/index.js` lê o JSON (exige `Content-Type: application/json`, máx. 1 MB), roda `validarItem()`, confere a categoria e os relacionados no D1.
 6. Gera um UUID, grava com `INSERT ... ON CONFLICT` e devolve o item salvo.
 7. O app atualiza a lista em memória e mostra "Salvo". Se a API recusar, mostra os erros vindos em `detalhes`.
@@ -127,7 +136,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 ### Situação de dados e arquivos auxiliares
 
 - `seed.sql`: 8 categorias e 5 itens de exemplo. **[Código]**
-- `importar/kit-importacao-completa.json`: backup pronto com 15 categorias e 97 itens (93 comandos, 4 artigos). Se ele já foi importado em produção: **[Pendente]** (consulta na seção 3).
+- `importar/kit-importacao-completa.json`: backup pronto com 15 categorias e 97 itens (93 comandos, 4 artigos). Já importado: produção tinha **108 itens** em 17/11/2026. **[Testado]**
 
 ---
 
@@ -140,7 +149,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 - **Quando alguém preenche um formulário, o que é salvo e onde?** O item inteiro (título, categoria, conteúdo, tags, favorito etc.) vai para a tabela `itens` do D1; categorias para a tabela `categorias`. Contagem de uso e favorito também ficam no D1.
 - **Os dados ficam disponíveis em outro dispositivo?** Sim. Qualquer aparelho que passe pelo login do Access vê os mesmos dados.
 - **E se eu limpar o navegador?** Perde apenas a cópia offline, o tema escolhido e a data da última sincronização. Ao abrir de novo com internet, tudo volta do D1.
-- **E se eu publicar uma nova versão?** O D1 não é afetado. O deploy só troca os arquivos de `public/` e o código de `functions/`. **O único jeito de apagar o banco pelo projeto é rodar o `schema.sql` de novo** (ele começa com `DROP TABLE`).
+- **E se eu publicar uma nova versão?** O D1 não é afetado. O deploy só troca os arquivos de `public/` e o código de `functions/`. A estrutura do banco agora muda só por **migrações** (`migrations/`), que nunca apagam tabelas. O antigo `schema.sql` foi renomeado para `schema-INSTALACAO-INICIAL-APAGA-TUDO.sql` e **não deve ser usado**: ele apaga todas as tabelas.
 - **Onde eu entro para consultar os dados?**
   - Painel: dash.cloudflare.com → **Storage & Databases → D1** → `kit-do-tecnico` → **Console** (aceita SQL). Os nomes de menu da Cloudflare mudam com frequência; se não bater, procure "D1" na busca do painel.
   - Terminal, na pasta do projeto: `npx wrangler d1 execute kit-do-tecnico --remote --command "SELECT tipo, COUNT(*) FROM itens GROUP BY tipo"`
@@ -148,7 +157,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
   - Pelo site: **qualquer pessoa que passe pelo Access**, sem distinção de perfil. Todos podem tudo.
   - Pelo painel/terminal: qualquer pessoa com acesso à sua conta Cloudflare ou com o login do `wrangler` na sua máquina (`npx wrangler login` deixa uma credencial salva no seu perfil do Windows).
 
-### Tabelas **[Código: `schema.sql`]**
+### Tabelas **[Código: `migrations/0001_esquema_inicial.sql`]**
 
 **`categorias`**
 
@@ -175,6 +184,8 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 
 Índices: `idx_itens_categoria`, `idx_itens_tipo`.
 
+**`d1_migrations`** (criada pelo wrangler): registra quais migrações já foram aplicadas. Não mexa nela à mão.
+
 **Relações:** não há chave estrangeira. `itens.categoria` aponta para `categorias.nome` por texto. O código mantém a coerência: renomear categoria atualiza os itens na mesma transação; excluir categoria com itens é bloqueado. `relacionados` aponta para `itens.id` dentro de um JSON; excluir um comando ou transformá-lo em artigo remove o vínculo dos artigos.
 
 | Conjunto de dados | Funções que usam |
@@ -187,17 +198,23 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 | Mecanismo | O que guarda | Onde | Consequência |
 |---|---|---|---|
 | D1 | Todos os dados | Cloudflare | Fonte única da verdade |
-| Cache do service worker (`kit-estaticos-v6`) | HTML, CSS, JS, fontes, ícones | Navegador do aparelho | Permite abrir offline |
+| Cache do service worker (`kit-estaticos-v7`) | HTML, CSS, JS, fontes, ícones | Navegador do aparelho | Permite abrir offline |
 | Cache do service worker (`kit-api-v1`) | Última resposta de `/api/itens` e `/api/categorias` | Navegador do aparelho | Cópia de leitura offline. **Ponto de atenção:** os dados ficam salvos no aparelho, fora da proteção do Access. Se o celular for perdido desbloqueado, a biblioteca pode ser lida. |
 | `localStorage` `kit-tema` | Tema escolhido | Navegador | Perde ao limpar o navegador |
 | `localStorage` `kit-ultima-sincronizacao` | Data da última carga online | Navegador | Só para o aviso offline |
 | Arquivo `.json` de backup | Cópia completa | Onde você salvar | Responsabilidade sua guardar |
+| Backup automático | `.json` (sempre) e `.sql` (quando a rede permite) | `OneDrive - Braga IT\Kayan\Backups-Kit-do-Tecnico` | 12 mais recentes de cada tipo + `backup.log` |
 
 ### Backup e restauração hoje
 
-1. **Manual pelo app:** Exportar/Importar backup (JSON). Importar **não apaga** itens que não estão no arquivo, então não serve para "voltar no tempo" se você criou itens errados depois. **[Código]**
-2. **Time Travel do D1:** recurso automático da Cloudflare que permite restaurar o banco para um momento passado. A documentação oficial informa retenção de **7 dias no plano Free** e 30 dias no Workers Paid. Comandos: `npx wrangler d1 time-travel info kit-do-tecnico` e `npx wrangler d1 time-travel restore kit-do-tecnico --timestamp=...`. Restaurar substitui o banco inteiro. **[Pendente]**: nunca testado neste projeto.
-3. **Exportação SQL:** `npx wrangler d1 export kit-do-tecnico --remote --output=backup.sql` gera um arquivo SQL com estrutura e dados. Não está automatizado.
+1. **Backup pelo script** (`scripts/backup.ps1`). Agendado no Agendador de Tarefas do Windows, roda toda segunda às 9h, só com você logado; para conferir se a tarefa existe, procure "Kit do Tecnico - Backup D1" no Agendador:
+   - **`.json` sempre:** lê o banco pela API do wrangler e grava no formato do "Exportar backup" do site. Restaura pelo site em Menu ☰ → Importar backup.
+   - **`.sql` quando a rede deixa:** `wrangler d1 export`. Na rede da empresa o download do export é **bloqueado** (`fetch failed`), então só sai fora dela. É o único formato que recria o banco do zero, com a estrutura junto.
+   - Mantém os 12 mais recentes de cada tipo e registra cada execução em `backup.log`. Se o login do wrangler vencer, o backup falha: confira o log uma vez por mês.
+   - Rodar na mão: `powershell -ExecutionPolicy Bypass -File .\scripts\backup.ps1` (na raiz do projeto, PowerShell normal).
+2. **Manual pelo app:** Exportar/Importar backup (JSON). Importar **não apaga** itens que não estão no arquivo, então não serve para "voltar no tempo" se você criou itens errados depois. **[Código]**
+3. **Time Travel do D1:** recurso automático da Cloudflare que permite restaurar o banco para um momento passado. A documentação oficial informa retenção de **7 dias no plano Free** e 30 dias no Workers Paid. Comandos: `npx wrangler d1 time-travel info kit-do-tecnico` e `npx wrangler d1 time-travel restore kit-do-tecnico --timestamp=...`. Restaurar substitui o banco inteiro. **[Pendente]**: nunca testado neste projeto.
+4. **Restaurar um `.sql`** só num banco **vazio**: `npx wrangler d1 execute kit-do-tecnico --remote --file=ARQUIVO.sql`.
 
 **Consulta para saber se a importação completa foi feita:**
 ```
@@ -216,9 +233,10 @@ Fonte: documentação oficial da Cloudflare, consultada em **16/11/2026**. Valor
 | Cloudflare Pages (arquivos estáticos) | Hospedar `public/` | [Informado] Free | Requisições a arquivos estáticos ilimitadas e gratuitas em qualquer plano; 500 builds/mês; 20.000 arquivos por site | Nada no uso atual. Builds só contam com integração Git (você publica por upload direto). | Painel → Workers & Pages → `kit-do-tecnico` |
 | Pages Functions (a API) | Rodar `functions/` | [Pendente] (Workers Free ou Paid) | Cobradas como Workers: 100.000 requisições/dia no Free, somando Workers e Functions; zera à 00:00 UTC | No Free: **não cobra**, a API para de responder até o dia seguinte. No Paid: US$ 5/mês mínimo, com cota mensal incluída | Painel → Workers & Pages → Plans / Billing; métricas em Workers & Pages → projeto → Functions |
 | Cloudflare D1 | Banco de dados | [Pendente] (vai junto do plano Workers) | Free: 5 milhões de linhas lidas/dia, 100 mil linhas gravadas/dia, 5 GB no total; 500 MB por banco; zera à 00:00 UTC | No Free: ao bater o limite, as consultas falham até o dia seguinte. No Paid: excedente por linha lida/gravada e GB armazenado | Painel → Storage & Databases → D1 → `kit-do-tecnico` → Metrics |
-| Cloudflare Access / Zero Trust | Login antes do site | [Informado] Free | Plano Free para até 50 usuários | Passar de 50 usuários ou contratar o plano pago (US$ 7 por usuário/mês, conforme a página de preços) | Painel Zero Trust → Settings → Account / Billing (o nome do menu pode variar) |
+| Cloudflare Access / Zero Trust | Login antes do site | [Testado] Zero Trust Free | Plano Free para até 50 usuários | Passar de 50 usuários ou contratar o plano pago (US$ 7 por usuário/mês, conforme a página de preços) | Painel Zero Trust → Settings → Account / Billing (o nome do menu pode variar) |
 | Domínio | Endereço do site | Subdomínio `kit-do-tecnico.pages.dev` [Informado] | Gratuito | Só se você registrar um domínio próprio | Painel → projeto → Custom domains (nenhum domínio próprio aparece no código) |
-| Fontes Inter | Tipografia | Arquivos no projeto | Licença OFL (gratuita), em `public/fonts/LICENSE-Inter.txt` | Nada | — |
+| Fontes Inter, Space Grotesk, JetBrains Mono | Tipografia | Arquivos no projeto | Licença OFL (gratuita), em `public/fonts/LICENSE-*.txt` | Nada | — |
+| GitHub | Guardar o código | Repositório privado | Gratuito | Nada no uso atual | github.com → Settings → Billing |
 
 ### Estimativa de consumo (com premissas)
 
@@ -240,16 +258,22 @@ Sim. Pelo código e pelos preços públicos, o uso pessoal cabe com folga nos pl
 ### Estrutura de pastas
 
 ```
-kit-do-tecnico-final/
-├── wrangler.toml            nome do projeto, pasta publicada (./public), binding D1 "DB"
-├── schema.sql               cria as tabelas — APAGA AS EXISTENTES (só para instalação inicial)
-├── seed.sql                 8 categorias e 5 exemplos
-├── README.md                guia de instalação, Access e checklist de testes
+kit-do-tecnico-final/          (repositório Git; branch main = produção)
+├── wrangler.toml            projeto, pasta publicada (./public), binding D1 "DB", [vars] do Access
+├── .gitignore               deixa de fora .wrangler/, node_modules/, .env e backups exportados
+├── migrations/
+│   └── 0001_esquema_inicial.sql   estrutura do banco (sem DROP)
+├── scripts/
+│   └── backup.ps1           backup do D1 de produção (.json e .sql) no OneDrive
+├── schema-INSTALACAO-INICIAL-APAGA-TUDO.sql   histórico — NÃO USE (apaga tudo)
+├── seed.sql                 8 categorias e 5 exemplos (só para banco novo e vazio)
+├── README.md                guia de instalação, Access, migrações, backup e checklist de testes
 ├── importar/                backup JSON com 97 itens para importar pelo app
 ├── functions/
 │   ├── _lib/util.js         validação, conversão, SQL compartilhado (não é rota)
+│   ├── _lib/access.js       validação do token do Cloudflare Access (não é rota)
 │   └── api/
-│       ├── _middleware.js   roda antes de toda rota /api: origem, binding, erros
+│       ├── _middleware.js   roda antes de toda rota /api: token do Access, origem, binding, erros
 │       ├── [[rota]].js      404 em JSON para rotas inexistentes
 │       ├── backup.js        GET/POST /api/backup
 │       ├── uso/[id].js      POST /api/uso/:id
@@ -259,9 +283,11 @@ kit-do-tecnico-final/
 │       └── categorias/[id].js    PUT/DELETE /api/categorias/:id
 ├── public/                  TUDO aqui é publicado
 │   ├── index.html, manifest.webmanifest, service-worker.js, _headers
-│   ├── css/app.css, js/app.js, js/tema.js, fonts/, icons/
-│   └── .wrangler/           ⚠️ cache do wrangler que não deveria estar aqui (ver seção 6)
-├── .wrangler/               cache e arquivos temporários do wrangler (não publicar, não versionar)
+│   ├── css/app.css          tokens e componentes do Kayan Design System
+│   ├── js/app.js, js/tema.js
+│   ├── fonts/               Inter, Space Grotesk, JetBrains Mono (+ licenças OFL)
+│   └── icons/               ícone ">_" do app
+├── .wrangler/               cache e banco local do wrangler (ignorado pelo Git, não publicar)
 └── docs/DOCUMENTACAO-DO-SITE.md   este documento
 ```
 
@@ -269,108 +295,141 @@ Nos nomes de arquivo, `[id]` significa "parte variável da URL" (`/api/itens/abc
 
 ### Variáveis de ambiente e configuração
 
-- **Variáveis de ambiente:** nenhuma é usada pelo código.
-- **Binding:** `DB` → banco D1 `kit-do-tecnico` (definido em `wrangler.toml`). Se o binding faltar, a API responde "Banco de dados não vinculado".
+- **`[vars]` no `wrangler.toml`** (não são segredos):
+  - `ACCESS_TEAM_DOMAIN = "https://muddy-wildflower-6d6c.cloudflareaccess.com"` — domínio da sua equipe no Zero Trust.
+  - `ACCESS_AUD` — o "Application Audience (AUD) Tag" da aplicação Kit do Técnico. **Se a aplicação do Access for recriada, o AUD muda** e a API passa a responder 403 até você atualizar este valor e publicar de novo. Para descobrir o AUD: logado no site, F12 → Console → leia o campo `aud` do cookie `CF_Authorization` (só funciona com HTTP Only desligado), ou procure no painel da aplicação.
+- **Binding:** `DB` → banco D1 `kit-do-tecnico`. Se o binding faltar, a API responde "Banco de dados não vinculado".
 - **Segredos:** nenhum no projeto. A credencial do `wrangler login` fica no seu perfil do Windows, fora da pasta.
 - **`compatibility_date = "2026-11-01"`:** fixa o comportamento do runtime da Cloudflare naquela data, para atualizações da plataforma não quebrarem o código.
 
 ### Rodar localmente
 
-Pré-requisito: Node.js LTS (`node -v`). No PowerShell, dentro da pasta do projeto:
+Pré-requisito: Node.js LTS (`node -v`). No PowerShell, **na raiz do projeto** (o prompt tem que mostrar `PS C:\Projetos\kit-do-tecnico-final>`):
 
 ```powershell
 # 1ª vez: criar o banco LOCAL (fica em .wrangler/state, separado da produção)
-npx wrangler d1 execute kit-do-tecnico --local --file=./schema.sql
+npx wrangler d1 migrations apply kit-do-tecnico --local
 npx wrangler d1 execute kit-do-tecnico --local --file=./seed.sql
 
 # Subir o site com API e D1 locais
 npx wrangler pages dev
 ```
 
-Abra o endereço mostrado (normalmente `http://localhost:8788`). Atenção: **localmente não há Access**, e o banco local é outro, diferente do de produção. A pasta `.wrangler/state` não existe hoje, então o banco local ainda precisa ser criado.
-
-**Sempre rode os comandos na raiz do projeto**, não dentro de `public/`. A pasta `public/.wrangler` provavelmente surgiu de um comando rodado dentro de `public/`.
+Abra o endereço mostrado (normalmente `http://localhost:8788`). Localmente não há Access, e a validação do token é pulada só em `localhost`. O banco local é outro, diferente do de produção.
 
 ### Fazer uma alteração
 
-1. **Visual/comportamento:** edite `public/js/app.js`, `public/css/app.css` ou `public/index.html`.
-2. **API:** edite o arquivo da rota em `functions/api/...`. Regras de validação e limites de tamanho ficam em `functions/_lib/util.js` (`LIMITES`, `validarItem`).
-3. **Banco (nova coluna etc.):** **não** rode o `schema.sql`. Crie um script com `ALTER TABLE` e teste primeiro com `--local`. Melhor ainda, adote migrações (seção 6).
-4. Teste com `npx wrangler pages dev`.
-5. Se mudou algo em `public/`, aumente a versão em `public/service-worker.js` (`kit-estaticos-v6` → `v7`). Observação: o service worker já busca a rede primeiro, então a versão nova costuma aparecer online mesmo sem essa troca; a troca garante que o cache antigo seja apagado. Mantenha a regra do README até testar.
+1. **Antes de mudança grande:** crie um branch (`git checkout -b nome-da-mudanca`), para poder descartar se não gostar.
+2. **Visual/comportamento:** edite `public/js/app.js`, `public/css/app.css` ou `public/index.html`. Cores e fontes ficam nos tokens do topo do `app.css`; siga o Kayan Design System.
+3. **API:** edite o arquivo da rota em `functions/api/...`. Regras de validação e limites ficam em `functions/_lib/util.js` (`LIMITES`, `validarItem`).
+4. **Banco (nova coluna etc.):**
+   ```powershell
+   npx wrangler d1 migrations create kit-do-tecnico descricao_da_mudanca
+   # escreva o ALTER TABLE no arquivo criado em migrations/
+   npx wrangler d1 migrations apply kit-do-tecnico --local
+   powershell -ExecutionPolicy Bypass -File .\scripts\backup.ps1
+   npx wrangler d1 migrations apply kit-do-tecnico --remote
+   ```
+   Nunca edite uma migração já aplicada; crie uma nova.
+5. Teste com `npx wrangler pages dev`.
+6. Se mudou algo em `public/`, aumente a versão em `public/service-worker.js` (hoje `kit-estaticos-v7`).
+7. Salve no Git: `git add -A`, `git commit -m "o que mudou"`, `git push`.
 
 ### Publicar
 
+Primeiro numa pré-visualização (produção não muda):
+
 ```powershell
+npx wrangler pages deploy --branch teste
+```
+
+Abra `https://teste.kit-do-tecnico.pages.dev` (pede login do Access) e confira. Se estiver bom, publique em produção a partir do `main`:
+
+```powershell
+git checkout main
+git merge nome-da-mudanca
+git push
 npx wrangler pages deploy
 ```
 
-Usa `pages_build_output_dir = ./public` do `wrangler.toml` e envia também a pasta `functions/`. Cada deploy cria:
-- uma URL de produção (`kit-do-tecnico.pages.dev`), se for o branch de produção;
-- uma URL de pré-visualização única (`<hash>.kit-do-tecnico.pages.dev`), que **também** precisa estar protegida pelo Access.
+Usa `pages_build_output_dir = ./public` e envia também a pasta `functions/`. Cada deploy cria uma URL de pré-visualização única (`<hash>.kit-do-tecnico.pages.dev`), coberta pelo Access. **[Testado]**
 
-**Voltar para a versão anterior:** painel → Workers & Pages → `kit-do-tecnico` → **Deployments** → deploy anterior → **Rollback**. Isso volta o código, **não** o banco.
+**Voltar para a versão anterior:** painel → Workers & Pages → `kit-do-tecnico` → **Deployments** → deploy anterior → **Rollback**. Isso volta o código, **não** o banco. Pelo Git: `git revert <commit>` e publicar de novo.
+
+No celular com o app instalado, feche e abra o app duas vezes depois de um deploy de visual.
 
 ### Onde ver erros
 
 | O quê | Onde |
 |---|---|
 | Erros da tela | DevTools do navegador (F12 → Console e Network). No Android, `chrome://inspect` com o celular no USB. |
-| Erros da API | `_middleware.js` grava `console.error('Erro na API: ...')`. Para ver ao vivo: `npx wrangler pages deployment tail --project-name kit-do-tecnico` ou painel → projeto → Deployments → deploy → **Functions** → Real-time logs. |
+| Erros da API | `_middleware.js` grava `console.error('Erro na API: ...')` e `console.error('Access: ...')` (falha ao validar o token ou obter as chaves). Para ver ao vivo: `npx wrangler pages deployment tail --project-name kit-do-tecnico` ou painel → projeto → Deployments → deploy → **Functions** → Real-time logs. |
 | Banco | Painel D1 → `kit-do-tecnico` → Metrics (consultas, linhas lidas/gravadas) e Console. |
 | Access | Painel Zero Trust → Logs → Access (tentativas de login permitidas e negadas). No plano Free a retenção de logs é curta; confira no painel. |
 | Configuração do deploy | Painel → projeto → Settings → **Bindings** (confirmar `DB` → `kit-do-tecnico`) e Settings → Functions → compatibility date. |
+| Site responde "Acesso negado" (403) logado | O token do Access não confere: aplicação recriada (AUD novo) ou domínio da equipe mudou. Atualize `[vars]` no `wrangler.toml` e publique. |
+| Backup | `backup.log` na pasta do OneDrive. |
 
 ### Conferir a configuração do Access (passo a passo)
 
-1. Painel Zero Trust → **Access → Applications**. Deve existir uma aplicação "Kit do Técnico" do tipo Self-hosted.
-2. Em **Destinations / Application domain**, devem existir **dois** destinos: `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev`.
-3. Policy: Action **Allow**, Include → **Emails** → só o seu e-mail. Nada de "Everyone" ou domínio de e-mail genérico.
-4. Login method: One-time PIN.
-5. Teste: janela anônima em `https://kit-do-tecnico.pages.dev/api/itens` → deve aparecer a tela de login, **não** JSON. Repita com a URL de pré-visualização do último deploy (aparece no fim do `wrangler pages deploy` ou na aba Deployments).
+Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico" com os destinos `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev`; policy só com o seu e-mail; login por código no e-mail; cookie **HTTP Only** ligado; Binding Cookie e Enforce cookie path desligados; Eager redirect cookie ligado. Duração da sessão: estava em 730 h (30 dias); confira se ficou em 24 h ou 1 semana.
+
+1. Painel Cloudflare One → **Access controls → Applications → Kit do Técnico → Configure**.
+2. **Destinations:** os dois destinos acima. Não apague nenhum: apagar um deixa o site ou as pré-visualizações abertos.
+3. **Policies:** Action **Allow**, Include → **Emails** → só o seu e-mail. Nada de "Everyone" ou domínio de e-mail genérico.
+4. **Additional settings → Cookie settings:** HTTP Only ligado.
+5. **Details → Session Duration:** 24 h ou 1 semana.
+6. Teste depois de qualquer mudança: janela anônima em `https://kit-do-tecnico.pages.dev/api/itens` e na URL de pré-visualização do último deploy. As duas têm que mostrar a tela de login, **não** JSON. Tente também com outro e-mail seu: o código não pode chegar.
+7. Teste do HTTP Only: logado, F12 → Console → `document.cookie`. O `CF_Authorization` não pode aparecer.
 
 ---
 
 ## 6. Melhorias futuras (ordenadas por prioridade)
 
-| # | Problema observado | Mudança sugerida | Benefício | Esforço | Custo |
+### Concluídas em 17/11/2026
+
+| # | Item | Como ficou |
+|---|---|---|
+| 1 | API confiava 100% no Access | Access testado (produção, pré-visualização, outro e-mail) e token validado na API (`_lib/access.js`). Cookie HTTP Only. |
+| 2 | `public/.wrangler` publicado | Pasta apagada, site republicado; o endereço cai na página inicial. |
+| 3 | Sem Git | Git com `.gitignore` e repositório privado no GitHub. |
+| 4 | `schema.sql` destrutivo | Migrações em `migrations/`; `0001` aplicada em produção; o arquivo antigo foi renomeado com aviso. |
+| 5 | Backup manual | `scripts/backup.ps1` no OneDrive (.json sempre, .sql quando a rede deixa), para agendamento semanal. |
+| — | Visual | Kayan Design System aplicado; temas escuro e claro; fontes locais. |
+
+### Pendentes
+
+| # | Problema | Mudança sugerida | Benefício | Esforço | Custo |
 |---|---|---|---|---|---|
-| 1 | **A API confia 100% no Access.** Se a aplicação do Access tiver um erro de domínio, de policy, ou não cobrir as URLs de pré-visualização, qualquer pessoa com o link lê, altera e apaga tudo. Não verifiquei a configuração. | (a) Fazer os testes da seção 5 agora. (b) No `_middleware.js`, validar o cabeçalho `Cf-Access-Jwt-Assertion` (o token assinado que o Access envia ao site) contra as chaves públicas da sua equipe e o "AUD" da aplicação; recusar com 403 se faltar ou for inválido. A Cloudflare tem um plugin pronto para Pages (`@cloudflare/pages-plugin-cloudflare-access`), mas ele exigiria criar um `package.json`. | Defesa em profundidade: um erro no painel não expõe mais os dados. | Baixo (a); médio (b) | Nenhum |
-| 2 | `public/.wrangler/cache/wrangler-account.json` (identificação da sua conta Cloudflare) está dentro da pasta publicada. Pela lista de arquivos ignorados que encontrei (de 2022, pode ter mudado), o wrangler não ignora `.wrangler`, então **provavelmente foi publicado**. | Apagar `public/.wrangler`, sempre rodar comandos na raiz e publicar de novo. Testar se `https://kit-do-tecnico.pages.dev/.wrangler/cache/wrangler-account.json` devolve 404. | Não expor dados da conta. Risco baixo (ID de conta não é senha e o site está atrás do Access), mas é lixo publicado. | Baixo | Nenhum |
-| 3 | Sem Git: não há histórico de código nem como desfazer uma alteração ruim além do rollback de deploy. | `git init`, `.gitignore` com `.wrangler/`, `node_modules/` e `*.sql` de backup; repositório **privado** no GitHub. Pode continuar publicando com `wrangler pages deploy`. | Histórico, comparação de versões, backup do código. | Baixo | Nenhum (repositório privado é gratuito no GitHub; confira os termos atuais) |
-| 4 | `schema.sql` começa com `DROP TABLE`. Rodar por engano apaga tudo. Não há forma segura de evoluir o banco. | Adotar migrações do wrangler: pasta `migrations/` com `0001_inicial.sql` (sem DROP), aplicar com `npx wrangler d1 migrations apply kit-do-tecnico --remote`. O wrangler registra quais já foram aplicadas. Renomear o `schema.sql` atual para algo como `schema-INSTALACAO-INICIAL-APAGA-TUDO.sql`. | Elimina o maior risco de perda de dados por erro operacional. | Baixo/médio | Nenhum |
-| 5 | Backup depende de lembrar de exportar; Time Travel cobre 7 dias no Free; exclusão de item é imediata e sem lixeira. | Script `backup.ps1` que roda `wrangler d1 export --remote` com data no nome, salvando no OneDrive; agendar no Agendador de Tarefas do Windows (semanal). Opcional: "lixeira" com coluna `excluido_em` em vez de DELETE. | Recuperação além de 7 dias e proteção contra exclusão acidental. | Baixo (script); médio (lixeira) | Nenhum |
-| 6 | Wrangler roda via `npx` sem versão fixa: cada execução pode baixar uma versão nova, com mudanças de comportamento. | Criar `package.json` com `wrangler` fixado como dependência de desenvolvimento e scripts `npm run dev`, `npm run deploy`, `npm run backup`. | Deploy previsível; comandos padronizados. | Baixo | Nenhum |
-| 7 | A cópia offline (`kit-api-v1`) mantém os dados no aparelho sem proteção extra. | Aceitar o risco (os dados não têm informação de clientes, segundo o que você definiu) ou oferecer opção "não guardar offline". Manter bloqueio de tela no celular. | Clareza sobre onde os dados ficam. | Baixo | Nenhum |
-| 8 | Contador de "uso" soma ao abrir artigo e ao copiar comando; "Mais usados" mistura leitura com cópia. | Decidir a regra (ex.: só cópias) ou separar em `copias` e `leituras`. | Ordenação "Mais usados" mais confiável. | Baixo | Nenhum |
-| 9 | `itens.categoria` guarda o nome em vez do ID; a contagem de itens por categoria usa subconsulta com `COLLATE NOCASE`, que pode não usar o índice. | Para o volume atual, nada. Se passar de alguns milhares de itens: guardar `categoria_id` e usar `GROUP BY`. | Escalabilidade futura. | Médio | Nenhum |
-| 10 | Importação grande em produção nunca foi testada; o plano Free tem limites por invocação (CPU de 10 ms, número de consultas ao D1). Não está claro como um `batch` grande é contado. | Testar importando o JSON de 97 itens (se ainda não foi feito) e um arquivo maior; se falhar, dividir a importação em lotes no frontend. | Evitar falha no momento de restaurar um backup. | Baixo (teste) | Nenhum |
-
-### As três primeiras que eu faria
-
-1. **#1: verificar o Access e validar o token na API.** É o único item em que uma falha significa seus dados abertos para a internet, e hoje ninguém confirmou que está certo. O teste custa 5 minutos.
-2. **#2 + #3: limpar `public/.wrangler` e colocar o projeto no Git.** Juntas levam menos de uma hora, removem um arquivo que não deveria estar publicado e dão histórico a tudo o que vier depois.
-3. **#4 + #5: migrações e backup agendado.** O maior risco operacional deste projeto é perder dados por um comando errado ou uma exclusão. Isso fecha o risco sem custo.
+| 6 | Wrangler roda via `npx` sem versão fixa: cada execução pode baixar uma versão nova. | `package.json` com `wrangler` fixado e scripts `npm run dev`, `npm run deploy`, `npm run backup`. | Deploy e backup previsíveis. | Baixo | Nenhum |
+| 7 | Time Travel nunca testado; backup agendado falha em silêncio se o login do wrangler vencer. | Rodar `npx wrangler d1 time-travel info kit-do-tecnico` uma vez; olhar o `backup.log` todo mês; ter pelo menos um `.sql` gerado fora da rede da empresa. | Saber que a restauração funciona antes de precisar. | Baixo | Nenhum |
+| 8 | Exclusão de item é imediata e sem lixeira. | Coluna `excluido_em` (migração 0002) e tela de lixeira, ou confiar no backup semanal. | Desfazer exclusão acidental. | Médio | Nenhum |
+| 9 | A cópia offline (`kit-api-v1`) mantém os dados no aparelho sem proteção extra. | Aceitar o risco (sem dados de clientes) e manter bloqueio de tela no celular, ou opção "não guardar offline". | Clareza sobre onde os dados ficam. | Baixo | Nenhum |
+| 10 | Contador de "uso" soma ao abrir artigo e ao copiar comando. | Decidir a regra (ex.: só cópias) ou separar em `copias` e `leituras`. | "Mais usados" mais confiável. | Baixo | Nenhum |
+| 11 | `itens.categoria` guarda o nome em vez do ID; contagem por categoria usa subconsulta. | Nada no volume atual. Acima de alguns milhares de itens: `categoria_id` e `GROUP BY`. | Escalabilidade futura. | Médio | Nenhum |
+| 12 | Importação grande em produção pouco testada (limites de CPU por invocação no Free). | Testar um arquivo maior; se falhar, importar em lotes. | Restauração sem surpresa. | Baixo | Nenhum |
 
 ---
 
 ## 7. Pendências e como resolver
 
-| Pendência | Como resolver |
-|---|---|
-| Access protege produção **e** pré-visualizações? | Janela anônima em `/api/itens` no domínio de produção e na URL `<hash>.kit-do-tecnico.pages.dev` do último deploy. Ambas devem pedir login. |
-| Policy do Access restrita ao seu e-mail? | Zero Trust → Access → Applications → Kit do Técnico → Policies. |
-| `public/.wrangler` foi publicado? | Logado, abrir `https://kit-do-tecnico.pages.dev/.wrangler/cache/wrangler-account.json`. Se abrir, remover a pasta e publicar de novo. |
-| Plano da conta (Workers Free/Paid) e cobranças | dash.cloudflare.com → Manage Account → Billing; Workers & Pages → Plans. |
-| Binding `DB` em produção aponta para o banco certo | Workers & Pages → kit-do-tecnico → Settings → Bindings. |
-| Os 97 itens foram importados? | `npx wrangler d1 execute kit-do-tecnico --remote --command "SELECT tipo, COUNT(*) FROM itens GROUP BY tipo"` |
-| Time Travel funciona para você | `npx wrangler d1 time-travel info kit-do-tecnico` (só consulta, não altera nada). |
-| PWA instala e funciona offline em aparelho real | Checklist do `README.md`, seção 8, "Instalação e offline". |
-| Região do banco D1 | Painel D1 → kit-do-tecnico → Overview. |
+| Pendência | Situação | Como resolver |
+|---|---|---|
+| Access protege produção **e** pré-visualizações? | **Resolvida** [Testado] | — |
+| Policy do Access restrita ao seu e-mail? | **Resolvida** [Testado] | — |
+| `public/.wrangler` foi publicado? | **Resolvida** [Testado] | — |
+| Os 97 itens foram importados? | **Resolvida** (108 itens em produção) | — |
+| Tarefa agendada do backup criada | Confirmar | Agendador de Tarefas → "Kit do Tecnico - Backup D1". Comando de criação no `README.md`, seção 6 (Backup). |
+| Duração da sessão do Access abaixo de 30 dias | Aberta | Access controls → Applications → Kit do Técnico → Details → Session Duration. |
+| Plano do Workers (Free/Paid) e cobranças | Aberta | dash.cloudflare.com → Manage Account → Billing; Workers & Pages → Plans. Zero Trust já confirmado como Free. |
+| Binding `DB` em produção aponta para o banco certo | Implícita (o site lê e grava normalmente) | Workers & Pages → kit-do-tecnico → Settings → Bindings. |
+| Time Travel funciona para você | Aberta | `npx wrangler d1 time-travel info kit-do-tecnico` (só consulta). |
+| PWA instala e funciona offline em aparelho real | Aberta | Checklist do `README.md`, seção 8, "Instalação e offline". |
+| Região do banco D1 | Aberta | Painel D1 → kit-do-tecnico → Overview. |
 
 ---
 
-## Fontes (consultadas em 16/11/2026, preços em USD)
+## Fontes (consultadas em 16 e 17/11/2026, preços em USD)
 
 - Cloudflare D1 — Pricing: https://developers.cloudflare.com/d1/platform/pricing/
 - Cloudflare D1 — Limits (Time Travel 7/30 dias, 500 MB por banco no Free): https://developers.cloudflare.com/d1/platform/limits
@@ -380,3 +439,4 @@ Usa `pages_build_output_dir = ./public` do `wrangler.toml` e envia também a pas
 - Cloudflare Pages — Limits: https://developers.cloudflare.com/pages/platform/limits
 - Cloudflare Access — página do produto e preços: https://www.cloudflare.com/en-au/products/cloudflare-access
 - Lista de arquivos ignorados pelo `wrangler pages` (artigo de terceiro, código de 2022): https://4xf.pages.dev/files-ignored-by-wrangler-pages-cli
+- Cloudflare D1 — Migrations: https://developers.cloudflare.com/d1/reference/migrations/

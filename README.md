@@ -171,6 +171,17 @@ de cada tipo e registra cada execução em `backup.log` na mesma pasta:
 - `kit-do-tecnico-AAAA-MM-DD_HHMM.sql`: só quando a rede permite o download do `wrangler d1 export`
   (algumas redes corporativas bloqueiam). Restaura um banco **vazio** com
   `npx wrangler d1 execute kit-do-tecnico --remote --file=ARQUIVO.sql`.
+Para o backup rodar sozinho toda segunda às 9h (só com você logado no Windows), rode uma vez no PowerShell:
+
+```powershell
+$acao = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -File "C:\Projetos\kit-do-tecnico-final\scripts\backup.ps1"' -WorkingDirectory 'C:\Projetos\kit-do-tecnico-final'
+$gatilho = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 9am
+$config = New-ScheduledTaskSettingsSet -StartWhenAvailable
+Register-ScheduledTask -TaskName 'Kit do Tecnico - Backup D1' -Action $acao -Trigger $gatilho -Settings $config
+```
+
+Confira o `backup.log` uma vez por mês: se o login do wrangler vencer, o backup falha.
+
 Para voltar o banco de produção a um momento dos últimos 7 dias, use o Time Travel do D1:
 `npx wrangler d1 time-travel info kit-do-tecnico`.
 

@@ -15,7 +15,7 @@
     indice: new Map(),
     secao: 'biblioteca', // biblioteca | favoritos | recentes
     busca: '',
-    tipo: 'todos',       // todos | comando | artigo | favoritos
+    tipo: 'todos',       // todos | comando | artigo
     categoria: null,     // nome da categoria ou null
     onde: null,          // powershell | cmd | executar | atalho | null
     ordem: 'relevancia', // relevancia | usados | recentes | alfabetica
@@ -47,6 +47,7 @@
     atualizar: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/>',
     restaurar: '<path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/>',
     externo: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    filtro: '<path d="M4 6h16M7 12h10M10 18h4"/>',
     livro: '<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6"/>'
   };
 
@@ -309,7 +310,6 @@
       if (estado.secao === 'recentes' && !item.ultimo_uso) return false;
       if (estado.tipo === 'comando' && item.tipo !== 'comando') return false;
       if (estado.tipo === 'artigo' && item.tipo !== 'artigo') return false;
-      if (estado.tipo === 'favoritos' && !item.favorito) return false;
       if (cat && normalizar(item.categoria) !== cat) return false;
       if (estado.onde && !ondeRodar(item).includes(estado.onde)) return false;
       return true;
@@ -592,6 +592,15 @@
     registrarUso(id);
   }
 
+  // Na linha da lista: só categoria e onde roda, em texto, e Admin quando precisa
+  function metaLinha(item) {
+    const partes = [item.categoria, ...ondeRodar(item).map((k) => ONDE.find((o) => o[0] === k)[1])].filter(Boolean);
+    return [
+      partes.length ? el('span', { class: 'meta-texto', text: partes.join(' · ') }) : null,
+      item.requer_admin ? el('span', { class: 'selo selo-admin', title: 'Requer administrador' }, icone('escudo'), 'Admin') : null
+    ];
+  }
+
   function selos(item) {
     return [
       el('span', { class: `selo selo-${ehLink(item) ? 'link' : item.tipo}`, text: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando') }),
@@ -605,7 +614,9 @@
     let previa = null;
     if (item.tipo === 'comando') {
       if (ehAtalho(item.conteudo)) previa = el('div', { class: 'linha-previa' }, teclas(item.conteudo));
-      else previa = el('p', { class: 'linha-previa', text: item.conteudo.split('\n')[0] });
+      else previa = el('p', { class: 'linha-previa' },
+        el('span', { class: 'linha-prompt', 'aria-hidden': 'true', text: '>' }),
+        el('span', { class: 'linha-comando', text: item.conteudo.split('\n')[0] }));
     }
     const resumo = item.tipo === 'artigo' ? item.sintoma : item.descricao;
 
@@ -613,7 +624,7 @@
       el('span', { class: 'linha-titulo', text: item.titulo }),
       resumo ? el('span', { class: 'linha-resumo', text: resumo }) : null,
       previa,
-      el('span', { class: 'linha-meta' }, selos(item)));
+      el('span', { class: 'linha-meta' }, metaLinha(item)));
     principal.addEventListener('click', () => {
       if (item.tipo === 'artigo') lerItem(item.id);
       else abrirDetalhe(item.id);
@@ -666,7 +677,6 @@
     // 1. Tipo
     const g1 = grupo('chips-tipo');
     const tipos = [['todos', 'Todos'], ['comando', 'Comandos'], ['artigo', 'Artigos']];
-    if (estado.secao === 'biblioteca') tipos.push(['favoritos', 'Favoritos']);
     for (const [valor, rotulo] of tipos) {
       g1.append(chip(rotulo, estado.tipo === valor, () => { estado.tipo = valor; redesenhar(); }));
     }
@@ -680,10 +690,7 @@
 
     // 3. Categorias com itens (a selecionada aparece sempre)
     const g3 = grupo('chips-cat');
-    const usadas = new Set(estado.itens.map((i) => normalizar(i.categoria)));
-    const visiveis = estado.categorias.filter((c) => usadas.has(normalizar(c.nome))
-      || (estado.categoria && normalizar(estado.categoria) === normalizar(c.nome)));
-    for (const c of visiveis) {
+    for (const c of categoriasVisiveis()) {
       const ativo = estado.categoria !== null && normalizar(estado.categoria) === normalizar(c.nome);
       g3.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; redesenhar(); }));
     }
@@ -701,8 +708,53 @@
     // Categorias + Redefinir: no celular as categorias rolam de lado e o Redefinir fica fixo no fim
     const g3wrap = el('div', { class: 'chips-cat-wrap' }, g3, redefinir);
 
-    raiz.append(g1, el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g2,
+    // Celular: Onde roda e Categoria ficam atrás de um botão Filtros, com a quantidade ativa
+    const ativos = (estado.onde ? 1 : 0) + (estado.categoria ? 1 : 0);
+    const btnFiltros = el('button', {
+      type: 'button', class: 'chip chip-filtros', 'aria-pressed': String(ativos > 0),
+      'aria-label': ativos ? `Filtros, ${ativos} ativo${ativos > 1 ? 's' : ''}` : 'Filtros'
+    }, icone('filtro'), el('span', { text: 'Filtros' }), ativos ? el('span', { class: 'chip-total', text: String(ativos) }) : null);
+    btnFiltros.addEventListener('click', abrirFiltros);
+    const linhaTipo = el('div', { class: 'chips-linha-tipo' }, g1, btnFiltros);
+
+    raiz.append(linhaTipo, el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g2,
       el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g3wrap);
+  }
+
+  function categoriasVisiveis() {
+    const usadas = new Set(estado.itens.map((i) => normalizar(i.categoria)));
+    return estado.categorias.filter((c) => usadas.has(normalizar(c.nome))
+      || (estado.categoria && normalizar(estado.categoria) === normalizar(c.nome)));
+  }
+
+  // Painel de filtros do celular (Onde roda e Categoria)
+  function abrirFiltros() {
+    const btnLimpar = el('button', { type: 'button', class: 'btn btn-secundario', text: 'Redefinir' });
+    const btnVer = el('button', { type: 'button', class: 'btn btn-primario' });
+    const p = abrirPainel({ titulo: 'Filtros', nome: 'filtros', rodape: [btnLimpar, btnVer] });
+    const mudou = () => { renderizarChips(); renderizarLista(); p.render(); };
+    p.render = () => {
+      const corpo = limpar(p.corpo);
+      const onde = el('div', { class: 'chips-painel', role: 'group', 'aria-label': 'Onde roda' });
+      for (const [valor, rotulo] of ONDE) {
+        const ativo = estado.onde === valor;
+        onde.append(chip(rotulo, ativo, () => { estado.onde = ativo ? null : valor; mudou(); }));
+      }
+      const cats = el('div', { class: 'chips-painel', role: 'group', 'aria-label': 'Categoria' });
+      for (const c of categoriasVisiveis()) {
+        const ativo = estado.categoria !== null && normalizar(estado.categoria) === normalizar(c.nome);
+        cats.append(chip(c.nome, ativo, () => { estado.categoria = ativo ? null : c.nome; mudou(); }));
+      }
+      corpo.append(
+        el('section', { class: 'secao' }, el('h3', { text: 'Onde roda' }), onde),
+        el('section', { class: 'secao' }, el('h3', { text: 'Categoria' }), cats));
+      const n = itensVisiveis().length;
+      btnVer.textContent = n === 1 ? 'Ver 1 resultado' : `Ver ${n} resultados`;
+      btnLimpar.disabled = !estado.onde && !estado.categoria;
+    };
+    btnLimpar.addEventListener('click', () => { estado.onde = null; estado.categoria = null; mudou(); });
+    btnVer.addEventListener('click', () => fecharPainel());
+    p.render();
   }
 
   function atualizarContadores() {
@@ -718,7 +770,6 @@
 
   function trocarSecao(secao) {
     estado.secao = secao;
-    if (secao === 'favoritos' && estado.tipo === 'favoritos') estado.tipo = 'todos';
     $('#titulo-secao').textContent = TITULOS_SECAO[secao];
     document.querySelectorAll('.gaveta-item[data-secao]').forEach((b) => {
       if (b.dataset.secao === secao) b.setAttribute('aria-current', 'page');
@@ -1299,10 +1350,11 @@
     $('#gaveta-fundo').addEventListener('click', () => fecharGaveta(true));
     document.querySelectorAll('.gaveta-item[data-secao]').forEach((b) => {
       b.addEventListener('click', () => {
+        const eraGaveta = gavetaAberta();
         fecharGaveta();
         if (detalheLateral) fecharLateral();
         trocarSecao(b.dataset.secao);
-        $('#btn-gaveta').focus({ preventScroll: true });
+        if (eraGaveta) $('#btn-gaveta').focus({ preventScroll: true });
       });
     });
     const acoes = {
@@ -1330,6 +1382,8 @@
         else if (!e.shiftKey && i === lista.length - 1) { e.preventDefault(); lista[0].focus(); }
       }
     });
+    // No computador a gaveta vira barra lateral fixa: sai do modo sobreposto ao ampliar a janela
+    DESKTOP.addEventListener('change', (e) => { if (e.matches) fecharGaveta(); });
     trocarSecao(estado.secao);
   }
 
