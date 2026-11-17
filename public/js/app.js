@@ -23,7 +23,7 @@
     carregado: false
   };
 
-  let detalheLateral = null; // { id } quando o painel da direita (computador) está aberto
+  let detalheLateral = null; // { id, anteriores } quando o painel da direita (computador) está aberto; anteriores = itens abertos antes via "Comandos relacionados"
   const DESKTOP = window.matchMedia('(min-width: 1024px)');
   const pilha = [];          // painéis abertos: { no, corpo, nome, id, render }
   const esperandoVolta = []; // promessas aguardando o popstate
@@ -880,27 +880,53 @@
     btnFav.addEventListener('click', () => alternarFavorito(item.id));
     const btnFechar = el('button', { type: 'button', class: 'btn-icone', 'aria-label': 'Fechar detalhe' }, icone('fechar'));
     btnFechar.addEventListener('click', () => fecharLateral(true));
+    let btnVoltar = null;
+    if (detalheLateral.anteriores.length) {
+      btnVoltar = el('button', { type: 'button', class: 'btn-icone', 'aria-label': 'Voltar ao item anterior', title: 'Voltar' }, icone('voltar'));
+      btnVoltar.addEventListener('click', () => voltarLateral());
+    }
     const btnExcluir = el('button', { type: 'button', class: 'btn btn-perigo' }, icone('lixo'), 'Excluir');
     btnExcluir.addEventListener('click', () => excluirItem(item.id));
     const btnEditar = el('button', { type: 'button', class: 'btn btn-primario' }, icone('editar'), 'Editar item');
     btnEditar.addEventListener('click', () => { if (exigirOnline()) abrirFormulario(buscarItem(item.id)); });
 
     raiz.append(
-      el('div', { class: 'painel-topo' },
+      el('div', { class: 'painel-topo' }, btnVoltar,
         el('h2', { text: item.tipo === 'artigo' ? 'Artigo' : (ehLink(item) ? 'Link' : 'Comando') }), btnFav, btnFechar),
       el('div', { class: 'painel-corpo' }, conteudoDetalhe(item)),
       el('div', { class: 'painel-rodape so-online' }, btnExcluir, btnEditar));
   }
 
-  function abrirLateral(id) {
+  function abrirLateral(id, empilhar = false) {
     const jaAberto = Boolean(detalheLateral);
-    detalheLateral = { id };
+    const anteriores = empilhar && detalheLateral && detalheLateral.id !== id
+      ? [...detalheLateral.anteriores, detalheLateral.id]
+      : [];
+    detalheLateral = { id, anteriores };
     $('#detalhe').hidden = false;
     document.body.classList.add('com-detalhe');
     renderizarLateral();
     marcarSelecionada();
     $('#detalhe').scrollTop = 0;
     if (!jaAberto) $('#detalhe').querySelector('.painel-topo h2').setAttribute('tabindex', '-1');
+  }
+
+  // Volta ao item anterior quando o atual foi aberto por "Comandos relacionados"
+  function voltarLateral() {
+    if (!detalheLateral) return;
+    const anteriores = [...detalheLateral.anteriores];
+    let anterior = null;
+    while (anteriores.length && !anterior) {
+      const id = anteriores.pop();
+      if (buscarItem(id)) anterior = id; // pula itens que foram excluídos
+    }
+    if (!anterior) { fecharLateral(true); return; }
+    detalheLateral = { id: anterior, anteriores };
+    renderizarLateral();
+    marcarSelecionada();
+    $('#detalhe').scrollTop = 0;
+    const voltar = $('#detalhe').querySelector('.painel-topo .btn-icone');
+    if (voltar) voltar.focus({ preventScroll: true });
   }
 
   function fecharLateral(devolverFoco = false) {
@@ -927,11 +953,11 @@
     return texto && texto.trim() ? el('p', { class: 'texto-livre' }, comLinks(texto)) : null;
   }
 
-  function abrirDetalhe(id) {
+  function abrirDetalhe(id, relacionado = false) {
     const item = buscarItem(id);
     if (!item) return;
     if (DESKTOP.matches && !pilha.length) {
-      abrirLateral(id);
+      abrirLateral(id, relacionado);
       return;
     }
 
@@ -995,7 +1021,7 @@
       if (rel.length) {
         frag.append(secao('Comandos relacionados', el('div', null, rel.map((r) => {
           const link = el('button', { type: 'button', class: 'relacionado-link', text: r.titulo });
-          link.addEventListener('click', () => abrirDetalhe(r.id));
+          link.addEventListener('click', () => abrirDetalhe(r.id, true));
           const copia = el('button', { type: 'button', class: 'btn btn-pequeno btn-copiar' }, icone('copiar'), el('span', { class: 'rotulo', text: 'Copiar' }));
           copia.addEventListener('click', () => copiar(r.conteudo, copia, r.id));
           return el('div', { class: 'relacionado' }, link, copia);
@@ -1675,7 +1701,8 @@
         fecharPainel();
       } else if (detalheLateral) {
         e.preventDefault();
-        fecharLateral(true);
+        if (detalheLateral.anteriores.length) voltarLateral();
+        else fecharLateral(true);
       }
     });
 
