@@ -163,7 +163,7 @@ Itens que não estão no arquivo não são apagados.
 powershell -ExecutionPolicy Bypass -File .\scripts\backup.ps1
 ```
 
-Salva em `OneDrive\Backups\kit-do-tecnico` (ou em Documentos, sem OneDrive), mantém os 12 mais recentes
+Salva em `OneDrive\Kayan\Backups-Kit-do-Tecnico` (ou em Documentos, sem OneDrive), mantém os 12 mais recentes
 de cada tipo e registra cada execução em `backup.log` na mesma pasta:
 
 - `kit-do-tecnico-AAAA-MM-DD_HHMM.json`: sempre. Mesmo formato do Exportar backup do site; restaura

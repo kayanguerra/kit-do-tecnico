@@ -13,7 +13,7 @@
   Mantém os últimos $Manter de cada tipo. Precisa do "npx wrangler login" feito neste usuário.
 #>
 param(
-  [string]$Destino = $(if ($env:OneDrive) { Join-Path $env:OneDrive 'Backups\kit-do-tecnico' } else { Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Backups\kit-do-tecnico' }),
+  [string]$Destino = $(if ($env:OneDrive) { Join-Path $env:OneDrive 'Kayan\Backups-Kit-do-Tecnico' } else { Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Backups-Kit-do-Tecnico' }),
   [int]$Manter = 12,
   [switch]$SemSql
 )
