@@ -677,7 +677,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   overflow-wrap: anywhere;
 }
 .conta-papel {
-  justify-self: start; font-family: var(--mono); font-size: 11px; line-height: 16px;
+  justify-self: start; white-space: nowrap; font-family: var(--mono); font-size: 11px; line-height: 16px;
   padding: 1px 8px; border-radius: var(--raio-sm, 4px);
   color: var(--destaque); background: var(--destaque-suave); border: 1px solid var(--borda);
 }
