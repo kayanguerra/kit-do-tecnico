@@ -666,14 +666,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* ---------- Conta no menu: e-mail, nível de acesso e Sair ---------- */
 .gaveta-conta {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 12px;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px;
   margin: 16px 12px 0; padding: 12px;
   border: 1px solid var(--borda); border-radius: var(--raio-md, 8px); background: var(--superficie-2);
 }
 .gaveta-conta[hidden] { display: none; }
 .conta-info { display: contents; }
 .conta-email {
-  grid-column: 1 / -1; font-family: var(--mono); font-size: 12px; line-height: 16px; color: var(--texto);
+  font-family: var(--mono); font-size: 12px; line-height: 16px; color: var(--texto);
   overflow-wrap: anywhere;
 }
 .conta-papel {
@@ -682,7 +682,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   color: var(--destaque); background: var(--destaque-suave); border: 1px solid var(--borda);
 }
 .conta-papel.leitor { color: var(--alerta); background: transparent; border-color: var(--alerta); }
-.conta-sair { min-height: 40px; padding: 0 14px; gap: 6px; }
+.conta-sair { width: 100%; min-height: 40px; padding: 0 14px; gap: 6px; justify-content: center; }
 .conta-sair svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ---------- Tablet ---------- */
