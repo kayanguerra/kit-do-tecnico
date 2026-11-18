@@ -22,7 +22,7 @@
 - **Como é feito:** HTML, CSS e JavaScript puros (sem framework) na pasta `public/`; uma API pequena em **Cloudflare Pages Functions** na pasta `functions/`; dados no **Cloudflare D1** (um banco SQLite gerenciado pela Cloudflare). Não há `package.json`, build nem dependências de terceiros no navegador.
 - **Onde ficam os dados:** no D1, na sua conta Cloudflare. No celular ficam apenas uma cópia para uso offline (cache do service worker), a preferência de tema e a data da última sincronização. Limpar o navegador não apaga nada do banco; publicar uma nova versão do site também não.
 - **Segurança:** três camadas. (1) O **Cloudflare Access** fica na frente do site e exige login por código no e-mail; cobre `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev` e só aceita os e-mails da policy. (2) A **API confere o token assinado do Access** em toda requisição e responde 403 se ele faltar ou não conferir. (3) **Permissão de edição:** só os e-mails da variável secreta `EDITORES` gravam; os demais só leem. Cookie do login com **HTTP Only**. **[Testado]**
-- **Quem acessa hoje [Testado em 18/11/2026]:** `kayan.batista@outlook.com` e `kayan.guerra@nexguardtech.com.br` (editores); `kayan.batista@bragait.com` (somente leitura).
+- **Quem acessa hoje [Testado em 18/11/2026]:** três e-mails no Access, dois deles editores. A lista não fica neste documento de propósito (seria uma lista de alvos): veja a policy do Access e a `EDITORES` no painel. Proteja essas caixas de e-mail com MFA, porque quem as controla entra no site.
 - **Custo:** com o uso de uma pessoa, tudo cabe nos planos gratuitos (Workers Free, D1 Free, Zero Trust Free, subdomínio `pages.dev`). No plano gratuito, ao estourar um limite o serviço **para** até o dia seguinte em vez de cobrar. A conta está no **Zero Trust Free** [Testado]; o plano do Workers ainda precisa ser conferido no painel.
 - **Visual:** segue o **Kayan Design System** (fundo preto, verde neon como única cor de destaque, Space Grotesk, Inter e JetBrains Mono servidas pelo próprio site), com temas escuro e claro.
 - **O que foi resolvido em 17/11/2026:**
@@ -321,7 +321,7 @@ Nos nomes de arquivo, `[id]` significa "parte variável da URL" (`/api/itens/abc
 - **`[vars]` no `wrangler.toml`** (não são segredos):
   - `ACCESS_TEAM_DOMAIN = "https://muddy-wildflower-6d6c.cloudflareaccess.com"` — domínio da sua equipe no Zero Trust.
   - `ACCESS_AUD` — o "Application Audience (AUD) Tag" da aplicação Kit do Técnico. **Se a aplicação do Access for recriada, o AUD muda** e a API passa a responder 403 até você atualizar este valor e publicar de novo. Para descobrir o AUD: logado no site, F12 → Console → leia o campo `aud` do cookie `CF_Authorization` (só funciona com HTTP Only desligado), ou procure no painel da aplicação.
-- **Secret `EDITORES`** (não fica no código): e-mails que podem gravar, separados por vírgula, **sem aspas e sem espaço**. Existe **separada** em produção e em pré-visualização. Hoje: `kayan.batista@outlook.com,kayan.guerra@nexguardtech.com.br`. Como mudar: seção "Gerenciar logins e permissões".
+- **Secret `EDITORES`** (não fica no código): e-mails que podem gravar, separados por vírgula, **sem aspas e sem espaço**. Existe **separada** em produção e em pré-visualização. Formato: `email1@dominio.com,email2@dominio.com`. O valor atual não fica neste documento; o painel não mostra (é secreto), então ao mudar digite a lista completa. Como mudar: seção "Gerenciar logins e permissões".
 - **Binding:** `DB` → banco D1 `kit-do-tecnico`. Se o binding faltar, a API responde "Banco de dados não vinculado".
 - **Segredos:** nenhum no projeto. A credencial do `wrangler login` fica no seu perfil do Windows, fora da pasta.
 - **`compatibility_date = "2026-11-01"`:** fixa o comportamento do runtime da Cloudflare naquela data, para atualizações da plataforma não quebrarem o código.
@@ -495,7 +495,8 @@ Sair do login: botão **Sair** no menu. Se o Access entrar sem pedir código dep
 | Os 97 itens foram importados? | **Resolvida** (108 itens em produção) | — |
 | `EDITORES` em produção e pré-visualização | **Resolvida** [Testado] | — |
 | Migração `0002_scripts.sql` em produção | **Resolvida** (cadastro do item "Teste" funcionou) | — |
-| E-mail `kayan.batista@bragait.com` precisa entrar? | Decidir | Se não precisa, tirar da policy do Access. Hoje ele lê e exporta a biblioteca inteira. |
+| O e-mail somente leitura precisa mesmo entrar? | Decidir | Se não precisa, tirar da policy do Access. Hoje ele lê e exporta a biblioteca inteira. |
+| MFA nas contas de e-mail com acesso, na Cloudflare e no GitHub | Fazer | Quem controla um desses e-mails entra no site; quem entra na Cloudflare muda tudo sem passar pelo site. |
 | Item "Teste" criado no teste de 18/11 | Limpar | Excluir pelo site. |
 | Tarefa agendada do backup criada | Confirmar | Agendador de Tarefas → "Kit do Tecnico - Backup D1". Comando de criação no `README.md`, seção 6 (Backup). |
 | Duração da sessão do Access abaixo de 30 dias | Aberta | Access controls → Applications → Kit do Técnico → Details → Session Duration. |
