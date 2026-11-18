@@ -13,6 +13,11 @@ kit-do-tecnico/
 └── public/                site (HTML, CSS, JS, PWA)
 ```
 
+
+> **⚠️ Regra de publicação (sempre, mesmo para mudança pequena):** branch separado → `npx wrangler pages deploy --branch teste` e conferir em `https://teste.kit-do-tecnico.pages.dev` → só então `git checkout main`, `git merge <branch>`, `git push`, `npx wrangler pages deploy --branch main`.
+>
+> **Permissões:** quem entra = policy do Cloudflare Access; quem edita = secret `EDITORES` do Pages (e-mails separados por vírgula, sem aspas, em **production e preview**). Sem `EDITORES`, ninguém edita. Detalhes: `docs/DOCUMENTACAO-DO-SITE.md`, "Gerenciar logins e permissões".
+
 ---
 
 ## 1. Antes de começar

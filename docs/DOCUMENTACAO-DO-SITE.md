@@ -1,6 +1,6 @@
 # Kit do Técnico — Documentação técnica e operacional
 
-> Gerada em 16/11/2026 e **atualizada em 17/11/2026** a partir do código em `C:\Projetos\kit-do-tecnico-final` (repositório privado no GitHub, branch `main`).
+> Gerada em 16/11/2026 e **atualizada em 18/11/2026** a partir do código em `C:\Projetos\kit-do-tecnico-final` (repositório privado no GitHub, branch `main`).
 > Nenhum segredo, token ou valor de configuração foi copiado para este documento (o `database_id` do D1 foi omitido de propósito).
 
 ## Como ler as marcações
@@ -8,11 +8,11 @@
 | Marcação | Significado |
 |---|---|
 | **[Código]** | Confirmado lendo os arquivos do projeto. |
-| **[Testado]** | Conferido em 17/11/2026 com testes feitos por você no ambiente publicado (prints enviados). |
+| **[Testado]** | Conferido em 17 e 18/11/2026 com testes feitos por você no ambiente publicado (prints enviados). |
 | **[Informado]** | Você me informou em conversas anteriores, mas eu **não** consegui verificar no ambiente publicado. |
 | **[Pendente]** | Depende de conferência no painel da Cloudflare ou de um teste. A tabela de pendências (seção 7) diz como resolver. |
 
-**Limite desta análise:** não consigo abrir `kit-do-tecnico.pages.dev` daqui (o acesso de rede da minha sessão bloqueia o domínio). O que diz respeito a produção foi conferido pelos testes que você fez em 17/11/2026 e está marcado como [Testado]; o resto continua [Informado] ou [Pendente].
+**Limite desta análise:** não consigo abrir `kit-do-tecnico.pages.dev` daqui (o acesso de rede da minha sessão bloqueia o domínio). O que diz respeito a produção foi conferido pelos testes que você fez em 17 e 18/11/2026 e está marcado como [Testado]; o resto continua [Informado] ou [Pendente].
 
 ---
 
@@ -21,7 +21,8 @@
 - **O que é:** uma biblioteca pessoal de comandos (PowerShell, CMD, Win+R), atalhos de teclado, links e artigos de solução de problemas, feita para consultar e copiar pelo celular durante atendimentos. Funciona como app instalável (PWA) e abre offline em modo somente leitura.
 - **Como é feito:** HTML, CSS e JavaScript puros (sem framework) na pasta `public/`; uma API pequena em **Cloudflare Pages Functions** na pasta `functions/`; dados no **Cloudflare D1** (um banco SQLite gerenciado pela Cloudflare). Não há `package.json`, build nem dependências de terceiros no navegador.
 - **Onde ficam os dados:** no D1, na sua conta Cloudflare. No celular ficam apenas uma cópia para uso offline (cache do service worker), a preferência de tema e a data da última sincronização. Limpar o navegador não apaga nada do banco; publicar uma nova versão do site também não.
-- **Segurança:** duas camadas. (1) O **Cloudflare Access** fica na frente do site e exige login por código no e-mail; cobre `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev` e só aceita o seu e-mail. (2) A **API confere o token assinado do Access** em toda requisição e responde 403 se ele faltar ou não conferir. Cookie do login com **HTTP Only**. **[Testado]**
+- **Segurança:** três camadas. (1) O **Cloudflare Access** fica na frente do site e exige login por código no e-mail; cobre `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev` e só aceita os e-mails da policy. (2) A **API confere o token assinado do Access** em toda requisição e responde 403 se ele faltar ou não conferir. (3) **Permissão de edição:** só os e-mails da variável secreta `EDITORES` gravam; os demais só leem. Cookie do login com **HTTP Only**. **[Testado]**
+- **Quem acessa hoje [Testado em 18/11/2026]:** `kayan.batista@outlook.com` e `kayan.guerra@nexguardtech.com.br` (editores); `kayan.batista@bragait.com` (somente leitura).
 - **Custo:** com o uso de uma pessoa, tudo cabe nos planos gratuitos (Workers Free, D1 Free, Zero Trust Free, subdomínio `pages.dev`). No plano gratuito, ao estourar um limite o serviço **para** até o dia seguinte em vez de cobrar. A conta está no **Zero Trust Free** [Testado]; o plano do Workers ainda precisa ser conferido no painel.
 - **Visual:** segue o **Kayan Design System** (fundo preto, verde neon como única cor de destaque, Space Grotesk, Inter e JetBrains Mono servidas pelo próprio site), com temas escuro e claro.
 - **O que foi resolvido em 17/11/2026:**
@@ -32,7 +33,20 @@
   5. **Script de backup** (`scripts/backup.ps1`) gravando no OneDrive, pronto para rodar toda semana pelo Agendador de Tarefas.
   6. API valida o token do Access; cookie do login com HTTP Only.
   7. Visual novo publicado.
-- **O que ainda vale fazer:** fixar a versão do wrangler (`package.json`), testar o Time Travel uma vez, olhar o `backup.log` todo mês e decidir sobre a lixeira. Detalhes na seção 6.
+- **O que mudou em 18/11/2026:**
+  1. Novo tipo **Script** (comando de várias linhas que se baixa como `.ps1`, `.bat` ou `.sh`), com a migração `0002`.
+  2. **Permissões:** variável `EDITORES` e rota `/api/eu`; quem não é editor vê o site sem os botões de gravação.
+  3. **Conta no menu:** e-mail logado, selo Editor/Somente leitura e botão **Sair** (que também apaga a cópia offline do aparelho).
+  4. Filtros de categoria recolhidos com contagem, botão Redefinir, menu do celular reorganizado e botão voltar nos comandos relacionados.
+  5. Correções: "nullnull" em itens com campos vazios e a quebra da tela inteira causada por uma função duplicada.
+- **O que ainda vale fazer:** fixar a versão do wrangler (`package.json`), testar o Time Travel uma vez, olhar o `backup.log` todo mês, confirmar a tarefa agendada e a duração da sessão, e decidir sobre a lixeira. Detalhes nas seções 6 e 7.
+
+> **⚠️ Regra de publicação — sempre, sem exceção, mesmo para mudança de uma linha:**
+> 1. Branch separado: `git checkout -b nome-da-mudanca`
+> 2. Testar na pré-visualização: `npx wrangler pages deploy --branch teste` e abrir `https://teste.kit-do-tecnico.pages.dev`
+> 3. Só então produção: `git checkout main`, `git merge nome-da-mudanca`, `git push`, `npx wrangler pages deploy --branch main`
+>
+> Em 18/11/2026 uma correção pequena publicada direto em produção quebrou a tela inteira. Detalhes em "Lições aprendidas", seção 5.
 
 ---
 
@@ -43,7 +57,7 @@ O Kit do Técnico é uma aplicação de página única (SPA): o navegador carreg
 **O que o usuário consegue fazer:**
 
 - Buscar por título, conteúdo, tags e categoria, com tolerância a acentos.
-- Filtrar por tipo (comando, artigo, favoritos), categoria e "onde rodar" (PowerShell, CMD, Win+R, atalho).
+- Filtrar por tipo (comando, script, artigo, favoritos), categoria e "onde rodar" (PowerShell, CMD, Win+R, atalho).
 - Copiar um comando com um toque (com vibração no Android).
 - Ler artigos de solução de problemas com passos numerados, blocos de código copiáveis, links e comandos relacionados.
 - Cadastrar, editar, favoritar e excluir itens; criar, renomear e excluir categorias.
@@ -74,6 +88,7 @@ kit-do-tecnico.pages.dev  ── arquivos de public/ (HTML, CSS, JS, ícones, fo
   │
   └── /api/*  →  Pages Functions (functions/)  →  D1 "kit-do-tecnico" (binding DB)
                 (2) _middleware.js confere o token do Access antes de tudo
+                (3) gravações só para e-mails em EDITORES
                                                    (fica na sua conta Cloudflare)
 No aparelho: cache do service worker (cópia de /api/itens e /api/categorias)
              + localStorage (tema e data da última sincronização)
@@ -106,7 +121,12 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 | Modo offline | Abrir o app sem internet | Service worker devolve a última cópia de `/api/itens` e `/api/categorias` com o cabeçalho `X-Kit-Offline: 1`; o app esconde botões de gravação e mostra o aviso. Volta sozinho ao ficar online. | `public/service-worker.js`; `app.js` → `definirOffline()`, `exigirOnline()` | [Código] OK |
 | Instalar como app | Android: menu ⋮ → Instalar app. iPhone: Compartilhar → Adicionar à Tela de Início | `manifest.webmanifest` com `crossorigin="use-credentials"` para o navegador enviar o cookie do Access ao buscar o manifesto. | `public/manifest.webmanifest`, `index.html` | [Pendente] em aparelho real |
 | Tema | Botão de meia-lua no topo | Alterna "escuro"/"claro" (Kayan Design System), salvo em `localStorage` (`kit-tema`). `tema.js` aplica antes da página aparecer; valores antigos ("marinho", "verde") viram "escuro". | `public/js/tema.js`; `app.js` → `alternarTema()`; cores em `app.css` (`:root` e `[data-tema="claro"]`) | [Código] OK |
-| Login / permissões | Tela da Cloudflare antes do site | O login é do Access (só o seu e-mail). Não há usuários, perfis nem senha na API: quem passa pelo Access pode ler, alterar e apagar tudo. | Painel Zero Trust → Access controls → Applications → Kit do Técnico | [Testado] |
+| Login | Tela da Cloudflare antes do site | O login é do Access (código no e-mail). Só entra quem está na policy da aplicação. Não há senha na API. | Painel Zero Trust → Access controls → Applications → Kit do Técnico | [Testado] |
+| Permissão de edição | Automático | Quem está em `EDITORES` lê e grava; quem não está só lê. A API recusa `POST/PUT/PATCH/DELETE` com 403 "Seu acesso é somente leitura." (exceto `POST /api/uso/:id`, o contador). Sem a variável, **ninguém edita** (falha fechada). O site consulta `GET /api/eu` e, para leitores, esconde Novo item, Editar, Excluir, favoritos, Gerenciar categorias e Importar (classe `somente-leitor` no `<body>`). | `functions/api/_middleware.js` → `podeEditar()`; `functions/api/eu.js`; `app.js` → `definirPermissao()` | [Código] + [Testado] |
+| Conta no menu e Sair | Menu ☰, rodapé | Mostra o e-mail logado e o selo **Editor** ou **Somente leitura**. **Sair** apaga a cópia offline (`kit-api-v1`) e a data de sincronização, limpa a lista e abre `/cdn-cgi/access/logout`. O tema fica. | `index.html` → `#gaveta-conta`; `app.js` → `mostrarConta()`, `sair()` | [Código] + [Testado] |
+| Scripts | Tipo **Script** no formulário e no filtro | Comando com `script = 1`: várias linhas, botão **Baixar** com extensão pela regra "onde rodar" (PowerShell → `.ps1`, CMD → `.bat` com quebras de linha do Windows, `#!` na 1ª linha → `.sh`, senão `.txt`). Artigos podem relacionar scripts. | `app.js` → `tipoDe()`, `extensaoScript()`, `nomeArquivo()`; `util.js` → `validarItem()`; `migrations/0002_scripts.sql` | [Código] |
+| Filtros de categoria | Computador: faixa "Categorias" com botão **+N**; celular: painel de filtros | Categorias recolhidas em uma linha, com contagem de itens. **Redefinir** limpa Tipo, Onde roda e Categoria (mantém seção, busca e ordenação). No celular, atalhos de "Onde roda" também no menu. | `app.js` → `renderizarChips()`, `ajustarCategorias()`, `filtrosAtivos()` | [Código] |
+| Voltar nos relacionados | Painel da direita (computador) | Ao abrir um comando a partir de "Comandos relacionados", aparece **voltar** para o item anterior. | `app.js` → `detalheLateral.anteriores` | [Código] |
 | Validação do token do Access | Automático | Antes de qualquer rota `/api`, confere assinatura (chaves públicas da equipe em `/cdn-cgi/access/certs`, guardadas por 1 h), aplicação (`aud`), emissor (`iss`) e validade (`exp`/`nbf`). Sem token ou token inválido: **403**. Sem `ACCESS_TEAM_DOMAIN`/`ACCESS_AUD`: **500** (falha fechada, nunca libera). Em `localhost` a checagem é pulada. | `functions/_lib/access.js` → `validarAccess()`; `functions/api/_middleware.js`; `[vars]` no `wrangler.toml` | [Código] + [Testado] |
 | Sessão expirada | Automático | Com o Access, uma sessão vencida faz a API responder com redirecionamento; o app detecta (`redirect:'manual'`) e pede para recarregar. | `app.js` → `api()` | [Código]; efeito real [Pendente] |
 | Proteção contra outro site gravando | Automático | Middleware recusa `POST/PUT/PATCH/DELETE` cujo cabeçalho `Origin` seja de outro domínio (proteção básica contra CSRF). Requisições sem `Origin` (ex.: `curl`) passam. | `functions/api/_middleware.js` | [Código] OK |
@@ -119,7 +139,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 1. Você toca em **+ Novo item**. Se estiver offline, `exigirOnline()` bloqueia e avisa.
 2. Preenche o formulário e toca em **Salvar**. O app envia `POST /api/itens` com JSON.
 3. O Access confere o cookie de login (antes de chegar ao código). **[Testado]**
-4. `_middleware.js` confere o token do Access, a origem e se o binding `DB` existe.
+4. `_middleware.js` confere o token do Access, se o e-mail está em `EDITORES` (senão 403), a origem e se o binding `DB` existe.
 5. `itens/index.js` lê o JSON (exige `Content-Type: application/json`, máx. 1 MB), roda `validarItem()`, confere a categoria e os relacionados no D1.
 6. Gera um UUID, grava com `INSERT ... ON CONFLICT` e devolve o item salvo.
 7. O app atualiza a lista em memória e mostra "Salvo". Se a API recusar, mostra os erros vindos em `detalhes`.
@@ -154,10 +174,10 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
   - Painel: dash.cloudflare.com → **Storage & Databases → D1** → `kit-do-tecnico` → **Console** (aceita SQL). Os nomes de menu da Cloudflare mudam com frequência; se não bater, procure "D1" na busca do painel.
   - Terminal, na pasta do projeto: `npx wrangler d1 execute kit-do-tecnico --remote --command "SELECT tipo, COUNT(*) FROM itens GROUP BY tipo"`
 - **Quem consegue ler, cadastrar, alterar ou excluir?**
-  - Pelo site: **qualquer pessoa que passe pelo Access**, sem distinção de perfil. Todos podem tudo.
+  - Pelo site: **ler** — qualquer pessoa que passe pelo Access; **cadastrar, alterar, excluir, importar** — só quem está em `EDITORES`. Leitores também conseguem **exportar o backup inteiro** e ficam com a cópia offline no aparelho.
   - Pelo painel/terminal: qualquer pessoa com acesso à sua conta Cloudflare ou com o login do `wrangler` na sua máquina (`npx wrangler login` deixa uma credencial salva no seu perfil do Windows).
 
-### Tabelas **[Código: `migrations/0001_esquema_inicial.sql`]**
+### Tabelas **[Código: `migrations/0001_esquema_inicial.sql` + `0002_scripts.sql`]**
 
 **`categorias`**
 
@@ -176,6 +196,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 | `tipo` | todos | `comando` ou `artigo` (CHECK) |
 | `titulo`, `categoria` | todos | `categoria` guarda o **nome** da categoria, não o ID |
 | `conteudo`, `descricao`, `prerequisitos`, `requer_admin` | comando | `descricao` = "quando usar" |
+| `script` | comando | `1` = Script (migração `0002`); `0` nos demais |
 | `sintoma`, `causa`, `solucao`, `observacoes` | artigo | |
 | `relacionados` | artigo | Texto JSON com lista de IDs de comandos |
 | `tags` | todos | Texto JSON com lista de textos |
@@ -198,7 +219,7 @@ Arquivos principais: interface em `public/index.html` e `public/js/app.js` (≈6
 | Mecanismo | O que guarda | Onde | Consequência |
 |---|---|---|---|
 | D1 | Todos os dados | Cloudflare | Fonte única da verdade |
-| Cache do service worker (`kit-estaticos-v7`) | HTML, CSS, JS, fontes, ícones | Navegador do aparelho | Permite abrir offline |
+| Cache do service worker (`kit-estaticos-v15`) | HTML, CSS, JS, fontes, ícones | Navegador do aparelho | Permite abrir offline |
 | Cache do service worker (`kit-api-v1`) | Última resposta de `/api/itens` e `/api/categorias` | Navegador do aparelho | Cópia de leitura offline. **Ponto de atenção:** os dados ficam salvos no aparelho, fora da proteção do Access. Se o celular for perdido desbloqueado, a biblioteca pode ser lida. |
 | `localStorage` `kit-tema` | Tema escolhido | Navegador | Perde ao limpar o navegador |
 | `localStorage` `kit-ultima-sincronizacao` | Data da última carga online | Navegador | Só para o aviso offline |
@@ -262,7 +283,8 @@ kit-do-tecnico-final/          (repositório Git; branch main = produção)
 ├── wrangler.toml            projeto, pasta publicada (./public), binding D1 "DB", [vars] do Access
 ├── .gitignore               deixa de fora .wrangler/, node_modules/, .env e backups exportados
 ├── migrations/
-│   └── 0001_esquema_inicial.sql   estrutura do banco (sem DROP)
+│   ├── 0001_esquema_inicial.sql   estrutura do banco (sem DROP)
+│   └── 0002_scripts.sql           coluna script (tipo Script)
 ├── scripts/
 │   └── backup.ps1           backup do D1 de produção (.json e .sql) no OneDrive
 ├── schema-INSTALACAO-INICIAL-APAGA-TUDO.sql   histórico — NÃO USE (apaga tudo)
@@ -273,7 +295,8 @@ kit-do-tecnico-final/          (repositório Git; branch main = produção)
 │   ├── _lib/util.js         validação, conversão, SQL compartilhado (não é rota)
 │   ├── _lib/access.js       validação do token do Cloudflare Access (não é rota)
 │   └── api/
-│       ├── _middleware.js   roda antes de toda rota /api: token do Access, origem, binding, erros
+│       ├── _middleware.js   roda antes de toda rota /api: token do Access, permissão (EDITORES), origem, binding, erros
+│       ├── eu.js            GET /api/eu: e-mail logado e se pode editar
 │       ├── [[rota]].js      404 em JSON para rotas inexistentes
 │       ├── backup.js        GET/POST /api/backup
 │       ├── uso/[id].js      POST /api/uso/:id
@@ -298,6 +321,7 @@ Nos nomes de arquivo, `[id]` significa "parte variável da URL" (`/api/itens/abc
 - **`[vars]` no `wrangler.toml`** (não são segredos):
   - `ACCESS_TEAM_DOMAIN = "https://muddy-wildflower-6d6c.cloudflareaccess.com"` — domínio da sua equipe no Zero Trust.
   - `ACCESS_AUD` — o "Application Audience (AUD) Tag" da aplicação Kit do Técnico. **Se a aplicação do Access for recriada, o AUD muda** e a API passa a responder 403 até você atualizar este valor e publicar de novo. Para descobrir o AUD: logado no site, F12 → Console → leia o campo `aud` do cookie `CF_Authorization` (só funciona com HTTP Only desligado), ou procure no painel da aplicação.
+- **Secret `EDITORES`** (não fica no código): e-mails que podem gravar, separados por vírgula, **sem aspas e sem espaço**. Existe **separada** em produção e em pré-visualização. Hoje: `kayan.batista@outlook.com,kayan.guerra@nexguardtech.com.br`. Como mudar: seção "Gerenciar logins e permissões".
 - **Binding:** `DB` → banco D1 `kit-do-tecnico`. Se o binding faltar, a API responde "Banco de dados não vinculado".
 - **Segredos:** nenhum no projeto. A credencial do `wrangler login` fica no seu perfil do Windows, fora da pasta.
 - **`compatibility_date = "2026-11-01"`:** fixa o comportamento do runtime da Cloudflare naquela data, para atualizações da plataforma não quebrarem o código.
@@ -319,7 +343,7 @@ Abra o endereço mostrado (normalmente `http://localhost:8788`). Localmente não
 
 ### Fazer uma alteração
 
-1. **Antes de mudança grande:** crie um branch (`git checkout -b nome-da-mudanca`), para poder descartar se não gostar.
+1. **Sempre, em qualquer mudança:** crie um branch (`git checkout -b nome-da-mudanca`). Antes de criar uma função nova, procure o nome no código (`Select-String -Path public\js\app.js -Pattern 'function nome'`).
 2. **Visual/comportamento:** edite `public/js/app.js`, `public/css/app.css` ou `public/index.html`. Cores e fontes ficam nos tokens do topo do `app.css`; siga o Kayan Design System.
 3. **API:** edite o arquivo da rota em `functions/api/...`. Regras de validação e limites ficam em `functions/_lib/util.js` (`LIMITES`, `validarItem`).
 4. **Banco (nova coluna etc.):**
@@ -332,12 +356,12 @@ Abra o endereço mostrado (normalmente `http://localhost:8788`). Localmente não
    ```
    Nunca edite uma migração já aplicada; crie uma nova.
 5. Teste com `npx wrangler pages dev`.
-6. Se mudou algo em `public/`, aumente a versão em `public/service-worker.js` (hoje `kit-estaticos-v7`).
+6. Se mudou algo em `public/`, aumente a versão em `public/service-worker.js` (hoje `kit-estaticos-v15`).
 7. Salve no Git: `git add -A`, `git commit -m "o que mudou"`, `git push`.
 
 ### Publicar
 
-Primeiro numa pré-visualização (produção não muda):
+**Regra fixa:** nada vai direto para produção. Primeiro numa pré-visualização (produção não muda):
 
 ```powershell
 npx wrangler pages deploy --branch teste
@@ -349,8 +373,10 @@ Abra `https://teste.kit-do-tecnico.pages.dev` (pede login do Access) e confira. 
 git checkout main
 git merge nome-da-mudanca
 git push
-npx wrangler pages deploy
+npx wrangler pages deploy --branch main
 ```
+
+Use sempre `--branch main` para produção: sem ele, o wrangler publica no branch do Git em que você está, e se for outro branch o deploy vai para uma pré-visualização sem você perceber.
 
 Usa `pages_build_output_dir = ./public` e envia também a pasta `functions/`. Cada deploy cria uma URL de pré-visualização única (`<hash>.kit-do-tecnico.pages.dev`), coberta pelo Access. **[Testado]**
 
@@ -369,18 +395,58 @@ No celular com o app instalado, feche e abra o app duas vezes depois de um deplo
 | Configuração do deploy | Painel → projeto → Settings → **Bindings** (confirmar `DB` → `kit-do-tecnico`) e Settings → Functions → compatibility date. |
 | Site responde "Acesso negado" (403) logado | O token do Access não confere: aplicação recriada (AUD novo) ou domínio da equipe mudou. Atualize `[vars]` no `wrangler.toml` e publique. |
 | Backup | `backup.log` na pasta do OneDrive. |
+| Todo mundo aparece como "Somente leitura" | `EDITORES` ausente, com aspas/espaço no valor, criada só em outro ambiente (production × preview) ou sem deploy depois da mudança. Abra `/api/eu` no mesmo endereço para ver o e-mail e o `podeEditar`. |
+| Tela com "[object HTMLDivElement]" ou "null" | Erro de JavaScript na montagem da tela (foi o caso de 18/11). Volte a versão pelo Rollback e corrija em branch. Depois do deploy, Ctrl+Shift+R. |
 
 ### Conferir a configuração do Access (passo a passo)
 
-Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico" com os destinos `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev`; policy só com o seu e-mail; login por código no e-mail; cookie **HTTP Only** ligado; Binding Cookie e Enforce cookie path desligados; Eager redirect cookie ligado. Duração da sessão: estava em 730 h (30 dias); confira se ficou em 24 h ou 1 semana.
+Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico" com os destinos `kit-do-tecnico.pages.dev` e `*.kit-do-tecnico.pages.dev`; policy com três e-mails (ver Resumo); login por código no e-mail; cookie **HTTP Only** ligado; Binding Cookie e Enforce cookie path desligados; Eager redirect cookie ligado. Duração da sessão: estava em 730 h (30 dias); confira se ficou em 24 h ou 1 semana.
 
 1. Painel Cloudflare One → **Access controls → Applications → Kit do Técnico → Configure**.
 2. **Destinations:** os dois destinos acima. Não apague nenhum: apagar um deixa o site ou as pré-visualizações abertos.
-3. **Policies:** Action **Allow**, Include → **Emails** → só o seu e-mail. Nada de "Everyone" ou domínio de e-mail genérico.
+3. **Policies:** Action **Allow**, Include → **Emails** → só os e-mails autorizados. Nada de "Everyone" ou domínio de e-mail genérico.
 4. **Additional settings → Cookie settings:** HTTP Only ligado.
 5. **Details → Session Duration:** 24 h ou 1 semana.
 6. Teste depois de qualquer mudança: janela anônima em `https://kit-do-tecnico.pages.dev/api/itens` e na URL de pré-visualização do último deploy. As duas têm que mostrar a tela de login, **não** JSON. Tente também com outro e-mail seu: o código não pode chegar.
 7. Teste do HTTP Only: logado, F12 → Console → `document.cookie`. O `CF_Authorization` não pode aparecer.
+
+### Gerenciar logins e permissões
+
+Duas camadas, cada uma num lugar:
+
+| Pergunta | Onde se decide | Lugar no painel |
+|---|---|---|
+| **Quem entra** no site | Policy do Cloudflare Access (Include → Emails) | Zero Trust → Access controls → Applications → Kit do Técnico → Access policies |
+| **Quem edita** | Secret `EDITORES` do Pages | dash.cloudflare.com → Compute → Workers & Pages → kit-do-tecnico → Settings → Variables and secrets |
+
+| Situação | O que fazer |
+|---|---|
+| Colega só consulta | Adicionar o e-mail na policy do Access |
+| Colega também edita | Adicionar no Access **e** em `EDITORES` (lista completa, nos dois ambientes) e publicar |
+| Tirar a edição | Tirar de `EDITORES` (nos dois ambientes) e publicar; continua lendo |
+| Tirar tudo | Tirar do Access, tirar de `EDITORES` e revogar a sessão da pessoa no painel (Users) |
+
+Mudar a `EDITORES` pelo terminal (o comando **substitui a lista inteira**; sem `--env` ele usa produção):
+
+```powershell
+cd C:\Projetos\kit-do-tecnico-final
+npx wrangler pages secret put EDITORES --project-name kit-do-tecnico --env production
+npx wrangler pages secret put EDITORES --project-name kit-do-tecnico --env preview
+npx wrangler pages secret list --project-name kit-do-tecnico --env production
+npx wrangler pages deploy --branch main
+```
+
+Conferir: `https://kit-do-tecnico.pages.dev/api/eu` → `"podeEditar": true` para editores. No site, o menu ☰ mostra o e-mail e o selo.
+
+Sair do login: botão **Sair** no menu. Se o Access entrar sem pedir código depois, a sessão da equipe ainda está ativa: `https://muddy-wildflower-6d6c.cloudflareaccess.com/cdn-cgi/access/logout`. Para testar outro e-mail sem sair, use janela anônima.
+
+### Lições aprendidas (18/11/2026)
+
+| O que aconteceu | Causa | Regra daqui pra frente |
+|---|---|---|
+| Ninguém conseguia editar | A permissão `EDITORES` entrou num commit chamado "Menu mobile reorganizado…", sem aviso e sem a variável criada | Uma mudança por commit, mensagem dizendo o que muda; mudança de permissão ou banco vem com o passo de configuração no README |
+| Todos continuavam leitores depois de criar a variável | Variável só em um ambiente / valor errado / deploy no branch errado | `EDITORES` sempre nos dois ambientes, sem aspas; deploy de produção com `--branch main` |
+| Tela inteira virou "[object HTMLDivElement]" | Função nova com o mesmo nome de uma existente (`anexar`) substituiu a original; foi publicada sem teste | Fluxo branch → `--branch teste` → `--branch main`, sempre; procurar o nome no código antes de criar função |
 
 ---
 
@@ -397,13 +463,21 @@ Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico
 | 5 | Backup manual | `scripts/backup.ps1` no OneDrive (.json sempre, .sql quando a rede deixa), para agendamento semanal. |
 | — | Visual | Kayan Design System aplicado; temas escuro e claro; fontes locais. |
 
+### Concluídas em 18/11/2026
+
+| Item | Como ficou |
+|---|---|
+| Permissão por e-mail | `EDITORES` + `/api/eu`; leitores sem botões de gravação. |
+| Sair de verdade | Botão Sair apaga a cópia offline e faz logout do Access. |
+| Tipo Script | Migração `0002` aplicada; download como arquivo. |
+
 ### Pendentes
 
 | # | Problema | Mudança sugerida | Benefício | Esforço | Custo |
 |---|---|---|---|---|---|
 | 6 | Wrangler roda via `npx` sem versão fixa: cada execução pode baixar uma versão nova. | `package.json` com `wrangler` fixado e scripts `npm run dev`, `npm run deploy`, `npm run backup`. | Deploy e backup previsíveis. | Baixo | Nenhum |
 | 7 | Time Travel nunca testado; backup agendado falha em silêncio se o login do wrangler vencer. | Rodar `npx wrangler d1 time-travel info kit-do-tecnico` uma vez; olhar o `backup.log` todo mês; ter pelo menos um `.sql` gerado fora da rede da empresa. | Saber que a restauração funciona antes de precisar. | Baixo | Nenhum |
-| 8 | Exclusão de item é imediata e sem lixeira. | Coluna `excluido_em` (migração 0002) e tela de lixeira, ou confiar no backup semanal. | Desfazer exclusão acidental. | Médio | Nenhum |
+| 8 | Exclusão de item é imediata e sem lixeira. | Coluna `excluido_em` (nova migração, `0003`) e tela de lixeira, ou confiar no backup semanal. | Desfazer exclusão acidental. | Médio | Nenhum |
 | 9 | A cópia offline (`kit-api-v1`) mantém os dados no aparelho sem proteção extra. | Aceitar o risco (sem dados de clientes) e manter bloqueio de tela no celular, ou opção "não guardar offline". | Clareza sobre onde os dados ficam. | Baixo | Nenhum |
 | 10 | Contador de "uso" soma ao abrir artigo e ao copiar comando. | Decidir a regra (ex.: só cópias) ou separar em `copias` e `leituras`. | "Mais usados" mais confiável. | Baixo | Nenhum |
 | 11 | `itens.categoria` guarda o nome em vez do ID; contagem por categoria usa subconsulta. | Nada no volume atual. Acima de alguns milhares de itens: `categoria_id` e `GROUP BY`. | Escalabilidade futura. | Médio | Nenhum |
@@ -416,9 +490,13 @@ Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico
 | Pendência | Situação | Como resolver |
 |---|---|---|
 | Access protege produção **e** pré-visualizações? | **Resolvida** [Testado] | — |
-| Policy do Access restrita ao seu e-mail? | **Resolvida** [Testado] | — |
+| Policy do Access restrita aos e-mails autorizados? | **Resolvida** [Testado] | Conferir a lista sempre que incluir ou tirar alguém. |
 | `public/.wrangler` foi publicado? | **Resolvida** [Testado] | — |
 | Os 97 itens foram importados? | **Resolvida** (108 itens em produção) | — |
+| `EDITORES` em produção e pré-visualização | **Resolvida** [Testado] | — |
+| Migração `0002_scripts.sql` em produção | **Resolvida** (cadastro do item "Teste" funcionou) | — |
+| E-mail `kayan.batista@bragait.com` precisa entrar? | Decidir | Se não precisa, tirar da policy do Access. Hoje ele lê e exporta a biblioteca inteira. |
+| Item "Teste" criado no teste de 18/11 | Limpar | Excluir pelo site. |
 | Tarefa agendada do backup criada | Confirmar | Agendador de Tarefas → "Kit do Tecnico - Backup D1". Comando de criação no `README.md`, seção 6 (Backup). |
 | Duração da sessão do Access abaixo de 30 dias | Aberta | Access controls → Applications → Kit do Técnico → Details → Session Duration. |
 | Plano do Workers (Free/Paid) e cobranças | Aberta | dash.cloudflare.com → Manage Account → Billing; Workers & Pages → Plans. Zero Trust já confirmado como Free. |
@@ -429,7 +507,28 @@ Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico
 
 ---
 
-## Fontes (consultadas em 16 e 17/11/2026, preços em USD)
+## Histórico de alterações (Git, branch `main`)
+
+| Commit | Data | O que mudou |
+|---|---|---|
+| `dcddac4` | 17/11 | Versão inicial no Git; `public/.wrangler` removido; `.gitignore` |
+| `7351121` | 17/11 | Migração `0001`; `schema.sql` renomeado com aviso; `scripts/backup.ps1` |
+| `c69ab22` | 17/11 | Pasta do backup no OneDrive |
+| `3306f9e` | 17/11 | API valida o token do Access |
+| `8964c02` | 17/11 | Visual do Kayan Design System |
+| `b476074`, `1bc8dd9` | 17/11 | Ajustes de CSS e `app.js`; documentação |
+| `218a978` | 17/11 | Voltar nos comandos relacionados |
+| `23a2a7a` | 17/11 | Categorias recolhidas com contagem |
+| `2ef88bd` | 17/11 | Tipo Script (migração `0002`) |
+| `518e51f` | 18/11 | Menu mobile, Redefinir **e permissão `EDITORES` + `/api/eu`** |
+| `8cfd0e5`, `fe85d7f`, `631bd2d` | 18/11 | Conta no menu: e-mail, selo e Sair |
+| `198ccf5`, `fe47369` | 18/11 | Correção do "nullnull" e da quebra por função duplicada |
+
+Para ver tudo: `git log --oneline`.
+
+---
+
+## Fontes (consultadas em 16, 17 e 18/11/2026, preços em USD)
 
 - Cloudflare D1 — Pricing: https://developers.cloudflare.com/d1/platform/pricing/
 - Cloudflare D1 — Limits (Time Travel 7/30 dias, 500 MB por banco no Free): https://developers.cloudflare.com/d1/platform/limits
@@ -440,3 +539,4 @@ Situação em 17/11/2026 **[Testado]**: aplicação self-hosted "Kit do Técnico
 - Cloudflare Access — página do produto e preços: https://www.cloudflare.com/en-au/products/cloudflare-access
 - Lista de arquivos ignorados pelo `wrangler pages` (artigo de terceiro, código de 2022): https://4xf.pages.dev/files-ignored-by-wrangler-pages-cli
 - Cloudflare D1 — Migrations: https://developers.cloudflare.com/d1/reference/migrations/
+- Wrangler — comandos `pages secret` (opção `--env production|preview`, padrão production): https://www.mintlify.com/cloudflare/workers-sdk/commands/pages
