@@ -481,6 +481,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .modo-leitura .so-online,
 .somente-leitor .fab,
 .somente-leitor .so-online { display: none !important; }
+/* Menu: sem o botão, some também a célula da grade (senão fica um buraco) */
+.modo-leitura .gaveta-lista > li:has(> .so-online),
+.somente-leitor .gaveta-lista > li:has(> .so-online) { display: none !important; }
 
 /* ---------- Painel (tela cheia no celular) ---------- */
 
@@ -659,6 +662,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .aviso.ok { border-color: var(--destaque); color: var(--destaque); }
 .aviso.erro { border-color: var(--erro); color: var(--erro-texto); }
+
+
+/* ---------- Conta no menu: e-mail, nível de acesso e Sair ---------- */
+.gaveta-conta {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 12px;
+  margin: 16px 12px 0; padding: 12px;
+  border: 1px solid var(--borda); border-radius: var(--raio-md, 8px); background: var(--superficie-2);
+}
+.gaveta-conta[hidden] { display: none; }
+.conta-info { display: contents; }
+.conta-email {
+  grid-column: 1 / -1; font-family: var(--mono); font-size: 12px; line-height: 16px; color: var(--texto);
+  overflow-wrap: anywhere;
+}
+.conta-papel {
+  justify-self: start; font-family: var(--mono); font-size: 11px; line-height: 16px;
+  padding: 1px 8px; border-radius: var(--raio-sm, 4px);
+  color: var(--destaque); background: var(--destaque-suave); border: 1px solid var(--borda);
+}
+.conta-papel.leitor { color: var(--alerta); background: transparent; border-color: var(--alerta); }
+.conta-sair { min-height: 40px; padding: 0 14px; gap: 6px; }
+.conta-sair svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ---------- Tablet ---------- */
 

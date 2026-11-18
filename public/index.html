@@ -98,6 +98,16 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>
         <span>Recarregar dados</span></button></li>
     </ul>
+    <!-- Conta: quem está logado, nível de acesso e Sair (preenchido pelo JS a partir de /api/eu) -->
+    <div class="gaveta-conta" id="gaveta-conta" hidden>
+      <div class="conta-info">
+        <span class="conta-email" id="conta-email"></span>
+        <span class="conta-papel" id="conta-papel"></span>
+      </div>
+      <button type="button" class="btn btn-secundario conta-sair" id="btn-sair">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H4"/></svg>
+        <span>Sair</span></button>
+    </div>
     </div>
     <p class="gaveta-dica">No computador: Ctrl + K ou / para buscar, Esc para fechar.</p>
   </nav>

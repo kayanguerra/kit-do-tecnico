@@ -6,7 +6,7 @@
  * - Gravações (POST, PUT, PATCH, DELETE) nunca passam pelo cache.
  * IMPORTANTE: ao alterar index.html, CSS ou JS, aumente a VERSAO abaixo.
  */
-const VERSAO = 'kit-estaticos-v12';
+const VERSAO = 'kit-estaticos-v13';
 const CACHE_API = 'kit-api-v1';
 const ESTATICOS = [
   '/',
@@ -49,6 +49,7 @@ self.addEventListener('fetch', (evento) => {
 
   const url = new URL(pedido.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith('/cdn-cgi/')) return; // login/logout do Cloudflare Access: sempre direto na rede
 
   if (url.pathname.startsWith('/api/')) {
     if (API_OFFLINE.includes(url.pathname)) evento.respondWith(apiComReserva(pedido, url.pathname));

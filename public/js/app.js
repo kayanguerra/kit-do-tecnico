@@ -21,6 +21,7 @@
     ordem: 'relevancia', // relevancia | usados | recentes | alfabetica
     offline: false,
     podeEditar: false,   // vem de /api/eu; quem não está em EDITORES só lê
+    email: '',           // vem de /api/eu: e-mail do login no Cloudflare Access
     carregado: false
   };
 
@@ -205,6 +206,37 @@
     document.body.classList.toggle('somente-leitor', !estado.podeEditar);
   }
 
+  // ---------- Conta (menu): quem está logado, nível de acesso e Sair ----------
+
+  function mostrarConta(eu) {
+    const bloco = $('#gaveta-conta');
+    if (!bloco) return;
+    if (!eu) { // offline ou sem resposta: não dá para saber quem está logado
+      bloco.hidden = !estado.email;
+      return;
+    }
+    estado.email = eu.email || '';
+    $('#conta-email').textContent = estado.email || 'Modo local (sem login)';
+    $('#conta-email').title = estado.email;
+    const papel = $('#conta-papel');
+    papel.textContent = eu.podeEditar ? 'Editor' : 'Somente leitura';
+    papel.classList.toggle('leitor', !eu.podeEditar);
+    bloco.hidden = false;
+  }
+
+  // Sair: apaga a cópia offline da biblioteca neste aparelho e encerra o login do Access.
+  // O tema escolhido fica (é só preferência visual, sem dados).
+  async function sair() {
+    try {
+      if ('caches' in window) await caches.delete('kit-api-v1');
+    } catch { /* sem acesso ao cache: segue para o logout */ }
+    try { localStorage.removeItem(CHAVE_SYNC); } catch { /* armazenamento indisponível */ }
+    definirItens([]);
+    estado.categorias = [];
+    renderizarLista();
+    window.location.assign('/cdn-cgi/access/logout');
+  }
+
   // ---------- Dados ----------
 
   function indexar(item) {
@@ -251,6 +283,7 @@
         api('GET', '/eu').catch(() => null) // sem resposta: continua como leitor
       ]);
       definirPermissao(rEu && rEu.podeEditar);
+      mostrarConta(rEu && !rEu.__offline ? rEu : null);
       definirItens(rItens.itens);
       estado.categorias = rCats.categorias;
       estado.carregado = true;
@@ -1528,6 +1561,10 @@
       importar: () => { if (exigirOnline()) $('#arquivo-backup').click(); },
       recarregar: () => carregar()
     };
+    $('#btn-sair').addEventListener('click', () => {
+      fecharGaveta();
+      sair();
+    });
     document.querySelectorAll('.gaveta-item[data-acao]').forEach((b) => {
       b.addEventListener('click', () => {
         fecharGaveta();
