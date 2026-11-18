@@ -58,18 +58,23 @@ async function chavePorKid(equipe, kid) {
   return chaves.get(kid) || null;
 }
 
-// Retorna null se a requisição pode seguir; senão { status, mensagem }.
+// Retorna { usuario: { email, local } } se a requisição pode seguir; senão { bloqueio: { status, mensagem } }.
 export async function validarAccess(request, env) {
+  const r = await validarToken(request, env);
+  return r.bloqueio ? r : { usuario: r.usuario };
+}
+
+async function validarToken(request, env) {
   const url = new URL(request.url);
-  if (HOSTS_LOCAIS.has(url.hostname)) return null;
+  if (HOSTS_LOCAIS.has(url.hostname)) return { usuario: { email: '', local: true } };
 
   const equipe = String(env.ACCESS_TEAM_DOMAIN || '').replace(/\/+$/, '');
   const aud = String(env.ACCESS_AUD || '');
   if (!equipe || !aud) {
-    return { status: 500, mensagem: 'Validação do Access não configurada (ACCESS_TEAM_DOMAIN / ACCESS_AUD).' };
+    return { bloqueio: { status: 500, mensagem: 'Validação do Access não configurada (ACCESS_TEAM_DOMAIN / ACCESS_AUD).' } };
   }
 
-  const negado = { status: 403, mensagem: 'Acesso negado.' };
+  const negado = { bloqueio: { status: 403, mensagem: 'Acesso negado.' } };
   const token = request.headers.get('Cf-Access-Jwt-Assertion');
   if (!token) return negado;
 
@@ -90,7 +95,7 @@ export async function validarAccess(request, env) {
     chave = await chavePorKid(equipe, cabecalho.kid);
   } catch (e) {
     console.error('Access: não foi possível obter as chaves públicas:', e && e.message);
-    return { status: 503, mensagem: 'Não foi possível validar o login agora. Tente de novo.' };
+    return { bloqueio: { status: 503, mensagem: 'Não foi possível validar o login agora. Tente de novo.' } };
   }
   if (!chave) return negado;
 
@@ -109,5 +114,6 @@ export async function validarAccess(request, env) {
   if (typeof dados.exp !== 'number' || dados.exp < agoraS - FOLGA_RELOGIO_S) return negado;
   if (typeof dados.nbf === 'number' && dados.nbf > agoraS + FOLGA_RELOGIO_S) return negado;
 
-  return null;
+  const email = typeof dados.email === 'string' ? dados.email.trim().toLowerCase() : '';
+  return { usuario: { email, local: false } };
 }

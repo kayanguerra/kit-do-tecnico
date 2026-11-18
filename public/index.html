@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/css/app.css">
   <script src="/js/app.js" defer></script>
 </head>
-<body>
+<body class="somente-leitor">
   <header class="topo" id="topo">
     <div class="topo-linha">
       <button type="button" id="btn-gaveta" class="btn-icone" aria-label="Abrir menu" aria-expanded="false" aria-controls="gaveta">
@@ -61,6 +61,9 @@
       <div class="marca">
         <span class="marca-prompt" aria-hidden="true">&gt;</span><span class="marca-texto">Kit do Técnico</span><span class="marca-cursor" aria-hidden="true">_</span>
       </div>
+      <button type="button" id="btn-fechar-gaveta" class="btn-icone" aria-label="Fechar menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
     </div>
     <ul class="gaveta-lista">
       <li><button type="button" class="gaveta-item" data-secao="biblioteca">
@@ -73,6 +76,13 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
         <span>Recentes</span><span class="gaveta-contador" data-contador="recentes"></span></button></li>
     </ul>
+    <!-- Celular e tablet: atalhos que aplicam o filtro "Onde roda" direto do menu (preenchidos pelo JS) -->
+    <div class="gaveta-onde-bloco">
+      <p class="gaveta-sub" id="gaveta-onde-rotulo">Onde roda</p>
+      <div id="gaveta-onde" class="gaveta-onde" role="group" aria-labelledby="gaveta-onde-rotulo"></div>
+    </div>
+    <!-- Celular: ferramentas numa bandeja presa embaixo, ao alcance do polegar -->
+    <div class="gaveta-ferramentas">
     <p class="gaveta-sub">Ferramentas</p>
     <ul class="gaveta-lista">
       <li><button type="button" class="gaveta-item so-online" data-acao="categorias">
@@ -88,6 +98,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>
         <span>Recarregar dados</span></button></li>
     </ul>
+    </div>
     <p class="gaveta-dica">No computador: Ctrl + K ou / para buscar, Esc para fechar.</p>
   </nav>
 

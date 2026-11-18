@@ -20,6 +20,7 @@
     onde: null,          // powershell | cmd | executar | atalho | null
     ordem: 'relevancia', // relevancia | usados | recentes | alfabetica
     offline: false,
+    podeEditar: false,   // vem de /api/eu; quem não está em EDITORES só lê
     carregado: false
   };
 
@@ -192,7 +193,16 @@
       aviso('Sem conexão: modo somente leitura.', 'erro');
       return false;
     }
+    if (!estado.podeEditar) {
+      aviso('Seu acesso é somente leitura.', 'erro');
+      return false;
+    }
     return true;
+  }
+
+  function definirPermissao(pode) {
+    estado.podeEditar = Boolean(pode);
+    document.body.classList.toggle('somente-leitor', !estado.podeEditar);
   }
 
   // ---------- Dados ----------
@@ -235,7 +245,12 @@
 
   async function carregar() {
     try {
-      const [rItens, rCats] = await Promise.all([api('GET', '/itens'), api('GET', '/categorias')]);
+      const [rItens, rCats, rEu] = await Promise.all([
+        api('GET', '/itens'),
+        api('GET', '/categorias'),
+        api('GET', '/eu').catch(() => null) // sem resposta: continua como leitor
+      ]);
+      definirPermissao(rEu && rEu.podeEditar);
       definirItens(rItens.itens);
       estado.categorias = rCats.categorias;
       estado.carregado = true;
@@ -751,7 +766,39 @@
     raiz.append(
       el('div', { class: 'chips-linha1' }, linhaTipo, el('span', { class: 'chip-divisor', 'aria-hidden': 'true' }), g2, redefinir),
       g3wrap);
+    renderizarAtalhosOnde();
     requestAnimationFrame(ajustarCategorias);
+  }
+
+  // Menu (celular e tablet): atalhos "Onde roda" que aplicam o mesmo filtro da faixa e fecham o menu
+  function renderizarAtalhosOnde() {
+    const raiz = $('#gaveta-onde');
+    if (!raiz) return;
+    limpar(raiz);
+    const qtd = {};
+    for (const item of estado.itens) {
+      if (estado.secao === 'favoritos' && !item.favorito) continue;
+      if (estado.secao === 'recentes' && !item.ultimo_uso) continue;
+      for (const o of ondeRodar(item)) qtd[o] = (qtd[o] || 0) + 1;
+    }
+    for (const [valor, rotulo] of ONDE) {
+      const ativo = estado.onde === valor;
+      const n = qtd[valor] || 0;
+      const b = el('button', {
+        type: 'button', class: 'gaveta-atalho', 'aria-pressed': String(ativo),
+        'aria-label': `${rotulo}, ${n} ${n === 1 ? 'item' : 'itens'}`
+      }, el('span', { class: 'gaveta-atalho-nome', text: rotulo }), el('span', { class: 'gaveta-atalho-qtd', 'aria-hidden': 'true', text: String(n) }));
+      b.addEventListener('click', () => {
+        estado.onde = ativo ? null : valor;
+        if (!ativo && estado.tipo === 'artigo') estado.tipo = 'todos'; // artigos não têm "onde roda"
+        fecharGaveta();
+        renderizarChips();
+        renderizarLista();
+        window.scrollTo({ top: 0 });
+        $('#btn-gaveta').focus({ preventScroll: true });
+      });
+      raiz.append(b);
+    }
   }
 
   // Recolhe as categorias em uma linha e mostra "+N" com quantas ficaram escondidas
@@ -812,9 +859,10 @@
         el('section', { class: 'secao' }, el('h3', { text: 'Categoria' }), cats));
       const n = itensVisiveis().length;
       btnVer.textContent = n === 1 ? 'Ver 1 resultado' : `Ver ${n} resultados`;
-      btnLimpar.disabled = !estado.onde && !estado.categoria;
+      btnLimpar.disabled = !filtrosAtivos();
     };
-    btnLimpar.addEventListener('click', () => { estado.onde = null; estado.categoria = null; mudou(); });
+    // Igual ao Redefinir do computador: limpa Tipo, Onde roda e Categoria (mantém seção, busca e ordenação)
+    btnLimpar.addEventListener('click', () => { estado.tipo = 'todos'; estado.onde = null; estado.categoria = null; mudou(); });
     btnVer.addEventListener('click', () => fecharPainel());
     p.render();
   }
@@ -1458,12 +1506,13 @@
   }
 
   function itensGaveta() {
-    return [...document.querySelectorAll('#gaveta .gaveta-item')].filter((b) => b.offsetParent !== null);
+    return [...document.querySelectorAll('#gaveta button')].filter((b) => b.offsetParent !== null);
   }
 
   function prepararGaveta() {
     $('#btn-gaveta').addEventListener('click', () => (gavetaAberta() ? fecharGaveta(true) : abrirGaveta()));
     $('#gaveta-fundo').addEventListener('click', () => fecharGaveta(true));
+    $('#btn-fechar-gaveta').addEventListener('click', () => fecharGaveta(true));
     document.querySelectorAll('.gaveta-item[data-secao]').forEach((b) => {
       b.addEventListener('click', () => {
         const eraGaveta = gavetaAberta();
