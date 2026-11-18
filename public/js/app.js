@@ -1096,11 +1096,6 @@
 
   // ---------- Detalhe ----------
 
-  // append() do navegador escreve "null" na tela para cada valor vazio; aqui os vazios são ignorados.
-  function anexar(no, ...filhos) {
-    no.append(...filhos.filter((f) => f !== null && f !== undefined && f !== false));
-  }
-
   function secao(titulo, conteudo) {
     if (!conteudo) return null;
     return el('section', { class: 'secao' }, el('h3', { text: titulo }), conteudo);
@@ -1173,17 +1168,18 @@
       } else {
         frag.append(blocoCodigo(item.conteudo, item.id));
       }
-      anexar(frag,
+      // anexar() ignora seções vazias (null); frag.append(null) escreveria "null" na tela
+      anexar(frag, [
         secao('Quando usar', textoLivre(item.descricao)),
         secao('Pré-requisitos', textoLivre(item.prerequisitos))
-      );
+      ]);
     } else {
-      anexar(frag,
+      anexar(frag, [
         secao('Sintoma / problema', textoLivre(item.sintoma)),
         secao('Causa provável', textoLivre(item.causa)),
         secao('Solução passo a passo', textoFormatado(item.solucao, item.id)),
         secao('Observações', textoLivre(item.observacoes))
-      );
+      ]);
       const rel = item.relacionados.map(buscarItem).filter(Boolean);
       if (rel.length) {
         frag.append(secao(rel.some((r) => r.script) ? 'Comandos e scripts relacionados' : 'Comandos relacionados', el('div', null, rel.map((r) => {
